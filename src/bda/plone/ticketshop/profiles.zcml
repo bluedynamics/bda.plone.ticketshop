@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
+
+  <include package="Products.GenericSetup" file="meta.zcml" />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="bda.plone.ticketshop"
+      directory="profiles/default"
+      description="bda.plone.ticketshop"
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
+
+</configure>

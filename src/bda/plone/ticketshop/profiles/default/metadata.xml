@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<metadata>
+  <description>Sell tickets for events</description>
+  <version>1</version>
+  <dependencies>
+    <dependency>profile-bda.plone.ticketshop:default</dependency>
+  </dependencies>
+</metadata>
