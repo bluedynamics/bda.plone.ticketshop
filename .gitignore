@@ -2,3 +2,8 @@
 .project
 .pydevproject
 .settings/
+.mr.developer.cfg
+bin/
+devsrc/
+eggs/
+parts/
