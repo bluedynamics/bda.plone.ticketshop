@@ -3,6 +3,7 @@
   <description>AT Content types for ticket shop</description>
   <version>1</version>
   <dependencies>
+    <dependency>profile-collective.folderishtypes:default</dependency>
     <dependency>profile-bda.plone.ticketshop:default</dependency>
   </dependencies>
 </metadata>
