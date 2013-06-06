@@ -7,3 +7,6 @@ bin/
 devsrc/
 eggs/
 parts/
+.installed.cfg
+develop-eggs/
+src/bda.plone.ticketshop.egg-info/

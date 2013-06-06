@@ -3,6 +3,6 @@
   <description>Sell tickets for events</description>
   <version>1</version>
   <dependencies>
-    <dependency>profile-bda.plone.ticketshop:default</dependency>
+    <dependency>profile-bda.plone.shop:default</dependency>
   </dependencies>
 </metadata>

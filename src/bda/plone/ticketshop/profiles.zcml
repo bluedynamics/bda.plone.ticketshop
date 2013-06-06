@@ -11,4 +11,11 @@
       description="bda.plone.ticketshop"
       provides="Products.GenericSetup.interfaces.EXTENSION" />
 
+  <genericsetup:registerProfile
+      name="at"
+      title="bda.plone.ticketshop AT"
+      directory="profiles/at"
+      description="bda.plone.ticketshop AT"
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
+
 </configure>
