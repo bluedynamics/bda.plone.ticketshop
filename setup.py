@@ -34,7 +34,7 @@ setup(name='bda.plone.ticketshop',
       install_requires=[
           'setuptools',
           'Plone',
-          'plone.app.event[archetypes]',
+          'plone.app.event[archetypes,ploneintegration]',
           'collective.folderishtypes',
           'bda.plone.shop',
       ],
