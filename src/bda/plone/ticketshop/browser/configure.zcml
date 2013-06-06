@@ -1,6 +1,10 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:browser="http://namespaces.zope.org/browser">
 
+  <browser:resourceDirectory
+    name="bda.plone.ticketshop.images"
+    directory="images" />
+
   <browser:resource
     name="bda.plone.ticketshop.js"
     file="ticketshop.js" />
