@@ -9,4 +9,18 @@
     name="bda.plone.ticketshop.css"
     file="ticketshop.css" />
 
+  <browser:page
+    for="bda.plone.ticketshop.interfaces.ITicket"
+    name="ticket_view"
+    template="ticket.pt"
+    class=".views.TicketView"
+    permission="zope2.View" />
+
+  <browser:page
+    for="bda.plone.ticketshop.interfaces.ITicketOccurrence"
+    name="ticket_view"
+    template="ticket.pt"
+    class=".views.TicketOccurrenceView"
+    permission="zope2.View" />
+
 </configure>
