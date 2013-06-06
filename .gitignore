@@ -3,6 +3,7 @@
 .pydevproject
 .settings/
 .mr.developer.cfg
+var/
 bin/
 devsrc/
 eggs/
