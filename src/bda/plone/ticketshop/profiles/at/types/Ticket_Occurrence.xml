@@ -11,7 +11,7 @@
   <property name="product">bda.plone.ticketshop</property>
   <property name="factory">addTicketOccurrence</property>
   <property name="immediate_view">ticket_view</property>
-  <property name="global_allow">True</property>
+  <property name="global_allow">False</property>
   <property name="filter_content_types">False</property>
   <property name="allow_discussion">False</property>
   <property name="default_view">ticket_view</property>
