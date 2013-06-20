@@ -25,7 +25,6 @@ schema = atapi.Schema((
             label=_(u'label_start', default=u'Start'),
             description=_(u'help_start',
                           default=u"Date and Time"),
-            with_time=1,
             ),
         ),
 
@@ -39,7 +38,6 @@ schema = atapi.Schema((
             label=_(u'label_end', default=u'End'),
             description=_(u'help_end',
                           default=u"Date and Time"),
-            with_time=1,
             ),
         ),
 ))
@@ -57,42 +55,12 @@ class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     schema = TicketOccurrence_schema
     exclude_from_nav = True
 
-    def _dt_getter(self, field):
-        event = aq_parent(aq_parent(self))
-        timezone = event.getField('timezone').get(event)
-        dt = self.getField(field).get(self)
-        return dt.toZone(timezone)
-
-    def _dt_setter(self, fieldtoset, value, **kwargs):
-        if not isinstance(value, DateTime):
-            value = DT(value)
-        value = DateTime(
-            '%04d-%02d-%02dT%02d:%02d:%02d' % (
-                value.year(),
-                value.month(),
-                value.day(),
-                value.hour(),
-                value.minute(),
-                int(value.second())
-            )
-        )
-        self.getField(fieldtoset).set(self, value, **kwargs)
-
     security.declareProtected('View', 'start')
     def start(self):
-        return self._dt_getter('startDate')
+        return self.getStartDate()
 
     security.declareProtected('View', 'end')
     def end(self):
-        return self._dt_getter('endDate')
-
-    security.declareProtected(ModifyPortalContent, 'setStartDate')
-    def setStartDate(self, value, **kwargs):
-        self._dt_setter('startDate', value, **kwargs)
-
-    security.declareProtected(ModifyPortalContent, 'setEndDate')
-    def setEndDate(self, value, **kwargs):
-        self._dt_setter('endDate', value, **kwargs)
-
+        return self.getEndDate()
 
 atapi.registerType(TicketOccurrence, PROJECTNAME)
