@@ -16,4 +16,7 @@
 
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
+  <adapter factory=".common.TicketSharedStock" />
+  <adapter factory=".common.TicketOccurrenceSharedStock" />
+
 </configure>

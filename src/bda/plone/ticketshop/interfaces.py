@@ -19,3 +19,8 @@ class ITicket(ISharedStock):
 class ITicketOccurrence(ISharedStock):
     """Marker interfaces for ticket occurrence.
     """
+
+
+class ISharedStockData(Interface):
+    """Interface for accessing shared stock data.
+    """

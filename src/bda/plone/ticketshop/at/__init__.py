@@ -11,6 +11,7 @@ from bda.plone.shop.interfaces import IShopExtensionLayer
 from ..interfaces import (
     ITicketOccurrence,
     ISharedStock,
+    ISharedStockData,
 )
 
 
@@ -44,20 +45,31 @@ class SharedStockExtensionField(object):
 
     def getAccessor(self, instance):
         def accessor(**kw):
-            # XXX: from parent, by uid, start end
+            stock_data = ISharedStockData(instance)
+
+            print 'accessor'
+            print stock_data
+
             return 99
         return accessor
 
     def getEditAccessor(self, instance):
         def edit_accessor(**kw):
-            # XXX: from parent, by uid, start end
+            stock_data = ISharedStockData(instance)
+
+            print 'edit_accessor'
+            print stock_data
+
             return 99
         return edit_accessor
 
     def getMutator(self, instance):
         def mutator(value, **kw):
-            print 'mutate'
-            print value
+
+            stock_data = ISharedStockData(instance)
+            print 'mutator'
+            print stock_data
+
         return mutator
 
     def getIndexAccessor(self, instance):
