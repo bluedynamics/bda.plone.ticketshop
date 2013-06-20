@@ -13,15 +13,32 @@
     name="bda.plone.ticketshop.css"
     file="ticketshop.css" />
 
+  <!-- occurrences action -->
   <browser:page
-    for="bda.plone.ticketshop.interfaces.ITicket"
+    for="*"
+    name="can_create_ticket_occurrences"
+    class=".actions.TicketOccurrence"
+    attribute="display"
+    permission="zope2.View" />
+
+  <browser:page
+    for="..interfaces.IBuyableEvent"
+    name="create_ticket_occurrences"
+    class=".actions.TicketOccurrence"
+    attribute="create"
+    permission="cmf.ModifyPortalContent" />
+
+  <!-- ticket view -->
+  <browser:page
+    for="..interfaces.ITicket"
     name="ticket_view"
     template="ticket.pt"
     class=".views.TicketView"
     permission="zope2.View" />
 
+  <!-- ticket occurrence view -->
   <browser:page
-    for="bda.plone.ticketshop.interfaces.ITicketOccurrence"
+    for="..interfaces.ITicketOccurrence"
     name="ticket_view"
     template="ticket.pt"
     class=".views.TicketOccurrenceView"

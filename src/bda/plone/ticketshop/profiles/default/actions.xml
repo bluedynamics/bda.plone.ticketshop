@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<object name="portal_actions"
+        meta_type="Plone Actions Tool"
+        xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+  <object name="object_buttons" meta_type="CMF Action Category">
+    <object name="createTicketOccurrences" 
+            meta_type="CMF Action"
+            i18n:domain="bda.plone.ticketshop">
+      <property name="title" i18n:translate="">
+          Create ticket occurrences
+      </property>
+      <property name="description" i18n:translate="">
+          Create ticket occurrences for all existing event occurrences
+      </property>
+      <property name="url_expr">
+          string:${object/absolute_url}/@@create_ticket_occurrences
+      </property>
+      <property name="icon_expr"></property>
+      <property name="available_expr">
+          object/@@can_create_ticket_occurrences
+      </property>
+      <property name="permissions">
+          <element value="Modify portal content" />
+      </property>
+      <property name="visible">True</property>
+    </object>
+  </object>
+</object>
