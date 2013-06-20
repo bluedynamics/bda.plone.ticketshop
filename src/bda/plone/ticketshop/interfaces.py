@@ -6,11 +6,16 @@ class IBuyableEvent(Interface):
     """
 
 
-class ITicket(Interface):
+class ISharedStock(Interface):
+    """Marker for items providing shared stock.
+    """
+
+
+class ITicket(ISharedStock):
     """Marker interfaces for ticket.
     """
 
 
-class ITicketOccurrence(Interface):
+class ITicketOccurrence(ISharedStock):
     """Marker interfaces for ticket occurrence.
     """

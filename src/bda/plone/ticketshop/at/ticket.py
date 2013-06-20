@@ -24,5 +24,4 @@ class Ticket(atapi.BaseFolder, BrowserDefaultMixin):
     schema = Ticket_schema
     exclude_from_nav = False
 
-
 atapi.registerType(Ticket, PROJECTNAME)

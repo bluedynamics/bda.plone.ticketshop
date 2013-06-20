@@ -24,5 +24,4 @@ class TicketOccurrence(atapi.BaseFolder, BrowserDefaultMixin):
     schema = TicketOccurrence_schema
     exclude_from_nav = True
 
-
 atapi.registerType(TicketOccurrence, PROJECTNAME)

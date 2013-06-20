@@ -8,8 +8,10 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
-  <include file="profiles.zcml"/>
+  <include file="profiles.zcml" />
 
-  <include package=".browser"/>
+  <include package=".at" />
+
+  <include package=".browser" />
 
 </configure>
