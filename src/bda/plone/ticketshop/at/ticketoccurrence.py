@@ -16,7 +16,6 @@ schema = atapi.Schema((
     atapi.DateTimeField('startDate',
         required=True,
         searchable=False,
-        accessor='start',
         write_permission=ModifyPortalContent,
         languageIndependent=True,
         widget=DatetimeWidget(
@@ -29,7 +28,6 @@ schema = atapi.Schema((
     atapi.DateTimeField('endDate',
         required=True,
         searchable=False,
-        accessor='end',
         write_permission=ModifyPortalContent,
         languageIndependent=True,
         widget=DatetimeWidget(
