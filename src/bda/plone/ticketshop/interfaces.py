@@ -39,3 +39,16 @@ class ISharedStockData(Interface):
     def set(value):
         """Set shared stock value.
         """
+
+
+class ITicketOccurrenceData(Interface):
+    """Buyable event adapter interface for accessing and managing ticket
+    occurrences.
+    """
+
+    tickets = Attribute(u"Ticket objects contained in event")
+
+    def create_ticket_occurrences():
+        """Create Ticket occurrence objects inside all ticket objects for
+        event occurrences if not exists yet.
+        """

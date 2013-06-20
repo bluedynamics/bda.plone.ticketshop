@@ -12,30 +12,6 @@ from zope.interface import implementer
 
 
 schema = atapi.Schema((
-
-    atapi.DateTimeField('startDate',
-        required=True,
-        searchable=False,
-        write_permission=ModifyPortalContent,
-        languageIndependent=True,
-        widget=DatetimeWidget(
-            label=_(u'label_start', default=u'Start'),
-            description=_(u'help_start',
-                          default=u"Occurence Start Date"),
-            ),
-        ),
-
-    atapi.DateTimeField('endDate',
-        required=True,
-        searchable=False,
-        write_permission=ModifyPortalContent,
-        languageIndependent=True,
-        widget=DatetimeWidget(
-            label=_(u'label_end', default=u'End'),
-            description=_(u'help_end',
-                          default=u"Occurence End Date"),
-            ),
-        ),
 ))
 
 
@@ -51,13 +27,5 @@ class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     schema = TicketOccurrence_schema
     exclude_from_nav = True
 
-    security.declareProtected('View', 'start_date_iso')
-    def start_date_iso(self):
-        return pydt(self.getStartDate(), exact=False).date().isoformat()
-
-    # XXX: needed?
-    security.declareProtected('View', 'end_date_iso')
-    def end_date_iso(self):
-        return pydt(self.getEndDate(), exact=False).date().isoformat()
 
 atapi.registerType(TicketOccurrence, PROJECTNAME)

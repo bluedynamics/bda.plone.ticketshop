@@ -14,17 +14,11 @@
 
   <include package=".browser" />
 
-  <adapter
-    name="ticket_occurrence_start"
-    factory=".indexer.ticket_occurrence_start" />
-
-  <adapter
-    name="ticket_occurrence_end"
-    factory=".indexer.ticket_occurrence_end" />
-
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
   <adapter factory=".common.TicketSharedStock" />
   <adapter factory=".common.TicketOccurrenceSharedStock" />
+
+  <adapter factory=".common.TicketOccurrenceData" />
 
 </configure>

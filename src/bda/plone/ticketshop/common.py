@@ -3,11 +3,15 @@ from zope.component import adapter
 from zope.annotation.interfaces import IAnnotations
 from BTrees.OOBTree import OOBTree
 from Acquisition import aq_parent
+from Products.CMFCore.utils import getToolByName
+from plone.event.interfaces import IRecurrenceSupport
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from .interfaces import (
+    IBuyableEvent,
     ITicket,
     ITicketOccurrence,
     ISharedStockData,
+    ITicketOccurrenceData,
 )
 
 
@@ -73,6 +77,31 @@ class TicketOccurrenceSharedStock(SharedStockData):
     @property
     def shared_stock_key(self):
         context = self.context
-        # XXX: end date as well? plone.app.event currently only
-        #      uses start date
-        return context.start_date_iso
+        return context.id
+
+
+@implementer(ITicketOccurrenceData)
+@adapter(IBuyableEvent)
+class TicketOccurrenceData(object):
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def _catalog(self):
+        return getToolByName(self.context, 'portal_catalog')
+
+    @property
+    def tickets(self):
+        brains = self._catalog.query(**{
+            'portal_type': 'Ticket',
+            'path': '/'.join(self.context.getPhysicalPath()),
+        })
+        return [brain.getObject() for brain in brains]
+
+    def create_ticket_occurrences(self):
+        tickets = self.tickets
+        recurrence = IRecurrenceSupport(self.context)
+        for occurrence in recurrence.occurrences():
+            for ticket in tickets:
+                pass

@@ -1,6 +1,9 @@
 from zExceptions import Redirect
 from Products.Five import BrowserView
-from ..interfaces import IBuyableEvent
+from ..interfaces import (
+    IBuyableEvent,
+    ITicketOccurrenceData,
+)
 
 
 class TicketOccurrence(BrowserView):
@@ -9,5 +12,5 @@ class TicketOccurrence(BrowserView):
         return IBuyableEvent.providedBy(self.context)
 
     def create(self):
-        print 'create ticket occurrences'
+        ITicketOccurrenceData(self.context).create_ticket_occurrences()
         raise Redirect(self.context.absolute_url())
