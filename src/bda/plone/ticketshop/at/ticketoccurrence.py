@@ -55,6 +55,7 @@ class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     def start_date_iso(self):
         return pydt(self.getStartDate(), exact=False).date().isoformat()
 
+    # XXX: needed?
     security.declareProtected('View', 'end_date_iso')
     def end_date_iso(self):
         return pydt(self.getEndDate(), exact=False).date().isoformat()

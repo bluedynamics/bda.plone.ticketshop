@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <object name="portal_javascripts" meta_type="JavaScripts Registry">
+
+  <javascript
+    id="++resource++plone.app.jquerytools.dateinput.js"
+    enabled="True" />
+
   <javascript
     cacheable="True"
     compression="safe"
@@ -8,4 +13,5 @@
     expression=""
     id="++resource++bda.plone.ticketshop.js"
     inline="False" />
+
 </object>

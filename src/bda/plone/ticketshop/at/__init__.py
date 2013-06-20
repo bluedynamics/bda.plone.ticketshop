@@ -45,31 +45,17 @@ class SharedStockExtensionField(object):
 
     def getAccessor(self, instance):
         def accessor(**kw):
-            stock_data = ISharedStockData(instance)
-
-            print 'accessor'
-            print stock_data
-
-            return 99
+            return ISharedStockData(instance).get()
         return accessor
 
     def getEditAccessor(self, instance):
         def edit_accessor(**kw):
-            stock_data = ISharedStockData(instance)
-
-            print 'edit_accessor'
-            print stock_data
-
-            return 99
+            return ISharedStockData(instance).get()
         return edit_accessor
 
     def getMutator(self, instance):
         def mutator(value, **kw):
-
-            stock_data = ISharedStockData(instance)
-            print 'mutator'
-            print stock_data
-
+            ISharedStockData(instance).set(value)
         return mutator
 
     def getIndexAccessor(self, instance):

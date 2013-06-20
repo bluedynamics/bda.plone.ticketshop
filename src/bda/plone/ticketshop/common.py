@@ -31,6 +31,11 @@ class SharedStockData(object):
         raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
                                   u"implement ``shared_stock_context``")
 
+    @property
+    def shared_stock_key(self):
+        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
+                                  u"implement ``shared_stock_key``")
+
     def stock_data(self):
         annotations = IAnnotations(self.shared_stock_context)
         data = annotations.get(SHARED_STOCK_DATA_KEY, None)
@@ -38,6 +43,12 @@ class SharedStockData(object):
             data = OOBTree()
             annotations[SHARED_STOCK_DATA_KEY] = data
         return data
+
+    def get(self):
+        return 10.0
+
+    def set(self, value):
+        pass
 
 
 @adapter(ITicket)
@@ -47,6 +58,10 @@ class TicketSharedStock(SharedStockData):
     def shared_stock_context(self):
         return aq_parent(self.context)
 
+    @property
+    def shared_stock_key(self):
+        return 'canonical_tickets'
+
 
 @adapter(ITicketOccurrence)
 class TicketOccurrenceSharedStock(SharedStockData):
@@ -54,3 +69,10 @@ class TicketOccurrenceSharedStock(SharedStockData):
     @property
     def shared_stock_context(self):
         return aq_parent(aq_parent(self.context))
+
+    @property
+    def shared_stock_key(self):
+        context = self.context
+        # XXX: end date as well? plone.app.event currently only
+        #      uses start date
+        return context.start_date_iso

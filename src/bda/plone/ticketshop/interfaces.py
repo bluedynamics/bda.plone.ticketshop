@@ -1,4 +1,7 @@
-from zope.interface import Interface
+from zope.interface import (
+    Interface,
+    Attribute,
+)
 
 
 class IBuyableEvent(Interface):
@@ -24,3 +27,15 @@ class ITicketOccurrence(ISharedStock):
 class ISharedStockData(Interface):
     """Interface for accessing shared stock data.
     """
+
+    shared_stock_context = Attribute(u"Context which holds shared stock data.")
+
+    shared_stock_key = Attribute(u"Shared stock key.")
+
+    def get():
+        """Get shared stock value.
+        """
+
+    def set(value):
+        """Set shared stock value.
+        """

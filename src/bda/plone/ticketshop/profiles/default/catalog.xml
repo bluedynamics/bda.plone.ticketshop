@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+  <index name="ticket_occurrence_start" meta_type="DateIndex">
+    <indexed_attr value="ticket_occurrence_start" />
+  </index>
+  <index name="ticket_occurrence_end" meta_type="DateIndex">
+    <indexed_attr value="ticket_occurrence_end" />
+  </index>
+</object>
