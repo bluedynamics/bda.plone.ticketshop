@@ -45,11 +45,11 @@ schema = atapi.Schema((
 ))
 
 
-TicketOccurrence_schema = atapi.BaseFolderSchema.copy() + schema.copy()
+TicketOccurrence_schema = atapi.BaseSchema.copy() + schema.copy()
 
 
 @implementer(ITicketOccurrence, IBuyable)
-class TicketOccurrence(atapi.BaseFolder, BrowserDefaultMixin):
+class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     security = ClassSecurityInfo()
     portal_type = 'Ticket Occurrence'
     meta_type = 'TicketOccurrence'
