@@ -21,7 +21,7 @@ schema = atapi.Schema((
         widget=DatetimeWidget(
             label=_(u'label_start', default=u'Start'),
             description=_(u'help_start',
-                          default=u"Date and Time"),
+                          default=u"Occurence Start Date"),
             ),
         ),
 
@@ -33,7 +33,7 @@ schema = atapi.Schema((
         widget=DatetimeWidget(
             label=_(u'label_end', default=u'End'),
             description=_(u'help_end',
-                          default=u"Date and Time"),
+                          default=u"Occurence End Date"),
             ),
         ),
 ))
