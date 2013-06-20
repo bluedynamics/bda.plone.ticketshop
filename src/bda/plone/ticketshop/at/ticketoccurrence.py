@@ -1,16 +1,14 @@
-from zope.interface import implementer
-from Acquisition import aq_parent
+from .. import _
+from ..config import PROJECTNAME
+from ..interfaces import ITicketOccurrence
 from AccessControl import ClassSecurityInfo
-from DateTime import DateTime
 from Products.Archetypes import atapi
 from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
-from plone.app.event.base import DT
-from plone.formwidget.datetime.at import DatetimeWidget
 from bda.plone.shop.interfaces import IBuyable
-from ..interfaces import ITicketOccurrence
-from ..config import PROJECTNAME
-from .. import _
+from plone.event.utils import pydt
+from plone.formwidget.datetime.at import DatetimeWidget
+from zope.interface import implementer
 
 
 schema = atapi.Schema((
@@ -55,12 +53,12 @@ class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     schema = TicketOccurrence_schema
     exclude_from_nav = True
 
-    security.declareProtected('View', 'start')
-    def start(self):
-        return self.getStartDate()
+    security.declareProtected('View', 'start_date_iso')
+    def start_date_iso(self):
+        return pydt(self.getStartDate(), exact=False).date().isoformat()
 
-    security.declareProtected('View', 'end')
-    def end(self):
-        return self.getEndDate()
+    security.declareProtected('View', 'end_date_iso')
+    def end_date_iso(self):
+        return pydt(self.getEndDate(), exact=False).date().isoformat()
 
 atapi.registerType(TicketOccurrence, PROJECTNAME)
