@@ -7,7 +7,6 @@ from Products.CMFCore.permissions import ModifyPortalContent
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from plone.app.event.base import DT
 from plone.formwidget.datetime.at import DatetimeWidget
-from archetypes.referencebrowserwidget import ReferenceBrowserWidget
 from bda.plone.shop.interfaces import IBuyable
 from ..interfaces import ITicketOccurrence
 from ..config import PROJECTNAME
@@ -15,16 +14,6 @@ from .. import _
 
 
 schema = atapi.Schema((
-
-    atapi.ReferenceField('canonical_ticket',
-        widget=ReferenceBrowserWidget(
-            label=_(u'label_canonical_ticket', default=u'Canonical Ticket'),
-        ),
-        write_permission=ModifyPortalContent,
-        allowed_types=['Ticket'],
-        multiValued=0,
-        relationship='canonical_ticket',
-    ),
 
     atapi.DateTimeField('startDate',
         required=True,
@@ -69,7 +58,7 @@ class TicketOccurrence(atapi.BaseFolder, BrowserDefaultMixin):
     exclude_from_nav = True
 
     def _dt_getter(self, field):
-        event = aq_parent(self)
+        event = aq_parent(aq_parent(self))
         timezone = event.getField('timezone').get(event)
         dt = self.getField(field).get(self)
         return dt.toZone(timezone)
