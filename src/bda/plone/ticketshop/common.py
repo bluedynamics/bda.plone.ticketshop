@@ -41,9 +41,12 @@ class TicketCartItemState(CartItemState):
 
     @property
     def aggregated_count(self):
-        # XXX: aggregate tickets
         items = extractitems(readcookie(self.request))
-        return aggregate_cart_item_count(self.context.UID(), items)
+        stock_data = ISharedStockData(self.context)
+        aggregated_count = 0
+        for uid in stock_data.related_uids:
+            aggregated_count += aggregate_cart_item_count(uid, items)
+        return aggregated_count
 
     @property
     def completely_exceeded_message(self):
