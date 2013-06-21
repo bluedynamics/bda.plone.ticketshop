@@ -37,17 +37,37 @@
     manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
     permission="zope2.View"
     for="..interfaces.IBuyableEvent"
-    class=".views.BuyableEventViewlet"
+    class=".views.TicketsViewlet"
     layer="bda.plone.shop.interfaces.IShopExtensionLayer"
   />
 
   <!-- buyable event occurrence tickets viewlet -->
   <browser:viewlet
-    name="bda.plone.ticketshop.occurrence_tickets"
+    name="bda.plone.ticketshop.tickets"
     manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
     permission="zope2.View"
     for="plone.event.interfaces.IOccurrence"
-    class=".views.BuyableEventOccurrenceViewlet"
+    class=".views.TicketsViewlet"
+    layer="bda.plone.shop.interfaces.IShopExtensionLayer"
+  />
+
+  <!-- buyable event tickets -->
+  <browser:page
+    name="buyable_tickets"
+    for="..interfaces.IBuyableEvent"
+    class=".views.BuyableEventTickets"
+    template="tickets.pt"
+    permission="zope2.View"
+    layer="bda.plone.shop.interfaces.IShopExtensionLayer"
+  />
+
+  <!-- buyable event occurrence tickets -->
+  <browser:page
+    name="buyable_tickets"
+    for="plone.event.interfaces.IOccurrence"
+    class=".views.BuyableEventOccurrenceTickets"
+    template="tickets.pt"
+    permission="zope2.View"
     layer="bda.plone.shop.interfaces.IShopExtensionLayer"
   />
 

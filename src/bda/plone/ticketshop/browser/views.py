@@ -8,8 +8,18 @@ from bda.plone.shop.at import field_value
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 
 
-class SharedStockBuyableViewletBase(ViewletBase):
-    index = ViewPageTemplateFile('tickets.pt')
+class TicketsViewlet(ViewletBase):
+    index = ViewPageTemplateFile('tickets_viewlet.pt')
+
+
+class SharedStockBuyables(BrowserView):
+
+    @property
+    def listen_uid_css(self):
+        classes = list()
+        for ticket in self.tickets:
+            classes.append('cart_item_%s' % ticket.UID())
+        return ' '.join(classes)
 
     @property
     def _item_availability(self):
@@ -29,26 +39,24 @@ class SharedStockBuyableViewletBase(ViewletBase):
                                   u"does not implement tickets")
 
 
-class BuyableEventViewlet(SharedStockBuyableViewletBase):
+class BuyableEventTickets(SharedStockBuyables):
 
     @property
     def tickets(self):
-        print 'BuyableEventViewlet'
-        data = ITicketOccurrenceData(self.context)
-        print data.tickets
-        print '---'
-        return data.tickets
+        if not hasattr(self.request, '_tickets'):
+            data = ITicketOccurrenceData(self.context)
+            self.request._tickets = data.tickets
+        return self.request._tickets
 
 
-class BuyableEventOccurrenceViewlet(SharedStockBuyableViewletBase):
+class BuyableEventOccurrenceTickets(SharedStockBuyables):
 
     @property
     def tickets(self):
-        print 'BuyableEventOccurrenceViewlet'
-        data = ITicketOccurrenceData(aq_parent(self.context))
-        print data.ticket_occurrences(self.context.id)
-        print '---'
-        return data.ticket_occurrences(self.context.id)
+        if not hasattr(self.request, '_tickets'):
+            data = ITicketOccurrenceData(aq_parent(self.context))
+            self.request._tickets = data.ticket_occurrences(self.context.id)
+        return self.request._tickets
 
 
 class TicketView(BrowserView):

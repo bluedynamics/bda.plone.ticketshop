@@ -3,11 +3,7 @@
      class="buyable"
      i18n:domain="bda.plone.shop"
      ajax:bind="cart_changed"
-     tal:define="addable view/item_addable;
-                 css string:cart_item_${context/UID}"
-     tal:attributes="ajax:target context/absolute_url;
-                     ajax:action string:buyable_controls:.${css}:replace;
-                     class string:buyable ${css}">
+     tal:define="addable view/item_addable">
 
   <tal:net condition="not:view/display_gross">
     <strong i18n:translate="net">Net</strong>

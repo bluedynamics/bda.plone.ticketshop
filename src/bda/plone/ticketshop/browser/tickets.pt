@@ -1,5 +1,11 @@
-<div tal:condition="view/tickets"
-     class="tickets_wrapper">
+<div xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:ajax="http://namesspaces.bluedynamics.eu/ajax"
+     class="tickets_wrapper"
+     ajax:bind="cart_changed"
+     tal:attributes="ajax:target context/absolute_url;
+                     ajax:action string:buyable_tickets:.tickets_wrapper:replace;
+                     class string:tickets_wrapper ${view/listen_uid_css}"
+     tal:condition="view/tickets">
   <div class="availability"
        i18n:domain="bda.plone.shop">
     <strong i18n:translate="availability">Availability</strong>
