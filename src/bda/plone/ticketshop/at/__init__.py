@@ -77,7 +77,6 @@ class XFloatField(SharedStockExtensionField, FloatField):
 @adapter(ISharedStock)
 class SharedStockExtender(ExtenderBase):
     layer = IShopExtensionLayer
-
     fields = [
         XFloatField(
             name='item_available',
@@ -94,12 +93,3 @@ class SharedStockExtender(ExtenderBase):
             ),
         ),
     ]
-
-    def __init__(self, context):
-        self.context = context
-
-    def getFields(self):
-        return self.fields
-
-    def getOrder(self, original):
-        return original

@@ -5,6 +5,7 @@ from BTrees.OOBTree import OOBTree
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from plone.event.interfaces import IRecurrenceSupport
+from plone.app.event.recurrence import Occurrence
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from .interfaces import (
     IBuyableEvent,
@@ -93,7 +94,7 @@ class TicketOccurrenceData(object):
 
     @property
     def tickets(self):
-        brains = self._catalog.query(**{
+        brains = self._catalog(**{
             'portal_type': 'Ticket',
             'path': '/'.join(self.context.getPhysicalPath()),
         })
@@ -103,5 +104,19 @@ class TicketOccurrenceData(object):
         tickets = self.tickets
         recurrence = IRecurrenceSupport(self.context)
         for occurrence in recurrence.occurrences():
+            if not isinstance(occurrence, Occurrence):
+                continue
             for ticket in tickets:
-                pass
+                if occurrence.id in ticket.objectIds():
+                    continue
+                ticket.invokeFactory(
+                    'Ticket Occurrence',
+                    occurrence.id,
+                    title=occurrence.id)
+                ticket_occurrence = ticket[occurrence.id]
+                acc = ticket.getField('item_available').getAccessor(ticket)
+                available = acc()
+                mut = ticket_occurrence.getField(
+                    'item_available').getMutator(ticket_occurrence)
+                mut(available)
+                ticket_occurrence.reindexObject()
