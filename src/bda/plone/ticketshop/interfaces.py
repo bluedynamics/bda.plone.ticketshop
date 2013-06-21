@@ -51,6 +51,10 @@ class ITicketOccurrenceData(Interface):
 
     tickets = Attribute(u"Ticket objects contained in event")
 
+    def ticket_occurrences(occurrence_id):
+        """Return Ticket Occurrence objects for occurrence_id.
+        """
+
     def create_ticket_occurrences():
         """Create Ticket occurrence objects inside all ticket objects for
         event occurrences if not exists yet.

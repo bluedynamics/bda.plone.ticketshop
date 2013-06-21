@@ -22,7 +22,7 @@ class Ticket(atapi.BaseFolder, BrowserDefaultMixin):
     meta_type = 'Ticket'
     _at_rename_after_creation = True
     schema = Ticket_schema
-    exclude_from_nav = False
+    exclude_from_nav = True
 
 
 atapi.registerType(Ticket, PROJECTNAME)

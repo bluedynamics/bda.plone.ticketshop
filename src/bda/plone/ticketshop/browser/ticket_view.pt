@@ -11,7 +11,13 @@
   <metal:content-core fill-slot="content-core">
     <metal:block define-macro="content-core">
 
-      Ticket
+      <strong i18n:translate="item_available">Available</strong>
+      <span tal:content="view/available">0.0</span>
+
+      <br />
+
+      <strong i18n:translate="item_overbook">Overbook</strong>
+      <span tal:content="view/overbook">0.0</span>
 
     </metal:block>
   </metal:content-core>
