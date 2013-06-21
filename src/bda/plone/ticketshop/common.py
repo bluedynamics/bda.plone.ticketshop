@@ -2,14 +2,24 @@ from persistent.dict import PersistentDict
 from zope.interface import implementer
 from zope.component import adapter
 from zope.annotation.interfaces import IAnnotations
+from zope.i18n import translate
+from zope.i18nmessageid import MessageFactory
+from zope.publisher.interfaces.browser import IBrowserRequest
 from BTrees.OOBTree import OOBTree
 from Acquisition import aq_parent
 from Products.CMFCore.utils import getToolByName
 from plone.event.interfaces import IRecurrenceSupport
 from plone.app.event.recurrence import Occurrence
 from bda.plone.cart.interfaces import ICartItemDataProvider
+from bda.plone.cart import (
+    readcookie,
+    extractitems,
+    aggregate_cart_item_count,
+)
+from bda.plone.shop.cartdata import CartItemState
 from .interfaces import (
     IBuyableEvent,
+    ISharedStock,
     ITicket,
     ITicketOccurrence,
     ISharedStockData,
@@ -17,10 +27,48 @@ from .interfaces import (
 )
 
 
+_ = MessageFactory('bda.plone.ticketshop')
+
+
 @implementer(ICartItemDataProvider)
 @adapter(ITicketOccurrence)
 def TicketOccurrenceCartItemDataProviderProxy(context):
     return ICartItemDataProvider(aq_parent(context))
+
+
+@adapter(ISharedStock, IBrowserRequest)
+class TicketCartItemState(CartItemState):
+
+    @property
+    def aggregated_count(self):
+        # XXX: aggregate tickets
+        items = extractitems(readcookie(self.request))
+        return aggregate_cart_item_count(self.context.UID(), items)
+
+    @property
+    def completely_exceeded_message(self):
+        message = _(u'alert_ticket_no_longer_available',
+                    default=u'Ticket is no longer available, please '
+                            u'remove from cart')
+        return translate(message, context=self.request)
+
+    @property
+    def some_reservations_message(self):
+        message = _(u'alert_ticket_some_reserved',
+                    default=u'Some tickets reserved')
+        return translate(message, context=self.request)
+
+    def partly_exceeded_message(self, exceed):
+        message = _(u'alert_ticket_number_exceed',
+                    default=u'Limit exceed by ${exceed} tickets',
+                    mapping={'exceed': exceed})
+        return translate(message, context=self.request)
+
+    def number_reservations_message(self, reserved):
+        message = _(u'alert_ticket_number_reserved',
+                    default=u'${reserved} tickets reserved',
+                    mapping={'reserved': reserved})
+        return translate(message, context=self.request)
 
 
 class CatalogMixin(object):
