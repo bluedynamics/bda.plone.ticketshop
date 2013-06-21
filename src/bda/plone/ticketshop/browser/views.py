@@ -3,12 +3,33 @@ from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.event.browser.event_view import EventView
+from bda.plone.cart import get_item_availability
 from bda.plone.shop.at import field_value
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 
 
-class BuyableEventViewlet(ViewletBase):
+class SharedStockBuyableViewletBase(ViewletBase):
     index = ViewPageTemplateFile('tickets.pt')
+
+    @property
+    def _item_availability(self):
+        return get_item_availability(self.tickets[0], self.request)
+
+    @property
+    def availability_signal(self):
+        return self._item_availability.signal
+
+    @property
+    def availability_details(self):
+        return self._item_availability.details
+
+    @property
+    def tickets(self):
+        raise NotImplementedError(u"Abstract SharedStockBuyableViewletBase "
+                                  u"does not implement tickets")
+
+
+class BuyableEventViewlet(SharedStockBuyableViewletBase):
 
     @property
     def tickets(self):
@@ -19,8 +40,7 @@ class BuyableEventViewlet(ViewletBase):
         return data.tickets
 
 
-class BuyableEventOccurrenceViewlet(ViewletBase):
-    index = ViewPageTemplateFile('tickets.pt')
+class BuyableEventOccurrenceViewlet(SharedStockBuyableViewletBase):
 
     @property
     def tickets(self):

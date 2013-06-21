@@ -51,6 +51,15 @@
     layer="bda.plone.shop.interfaces.IShopExtensionLayer"
   />
 
+  <!-- buyable controls -->
+  <browser:page
+    name="buyable_controls"
+    for="..interfaces.ISharedStock"
+    class="bda.plone.shop.browser.buyable.BuyableControls"
+    template="buyable.pt"
+    permission="zope2.View"
+    layer="bda.plone.shop.interfaces.IShopExtensionLayer" />
+
   <!-- ticket view -->
   <browser:page
     for="..interfaces.ITicket"

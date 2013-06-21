@@ -1,6 +1,22 @@
-<div class="tickets">
-  <div class="ticket" tal:repeat="ticket view/tickets">
-    <h3 tal:content="ticket/Title">Title</h3>
-    <tal:buyable replace="structure ticket/@@buyable_controls" />
+<div tal:condition="view/tickets"
+     class="tickets_wrapper">
+  <div class="availability"
+       i18n:domain="bda.plone.shop">
+    <strong i18n:translate="availability">Availability</strong>
+    <div class="signal green"
+         tal:attributes="class string:signal ${view/availability_signal}">
+      &nbsp;
+    </div>
+    <div class="availability_details"
+         tal:content="structure view/availability_details">
+      deliverable until 1.1.2013
+    </div>
+  </div>
+
+  <div class="tickets">
+    <div class="ticket" tal:repeat="ticket view/tickets">
+      <h3 tal:content="ticket/Title">Title</h3>
+      <tal:buyable replace="structure ticket/@@buyable_controls" />
+    </div>
   </div>
 </div>

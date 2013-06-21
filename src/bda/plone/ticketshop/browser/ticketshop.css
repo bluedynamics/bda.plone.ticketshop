@@ -1,8 +1,9 @@
-div.event_property {
-    margin-top:1em;
+div.tickets_wrapper {
+    position:relative;
+    padding-top:2.5em;
 }
 div.tickets {
-    margin-top:1em;
+    margin-top:2.5em;
 }
 div.ticket {
     border-top:#ccc 1px solid;
