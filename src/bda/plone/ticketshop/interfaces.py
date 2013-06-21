@@ -32,12 +32,12 @@ class ISharedStockData(Interface):
 
     shared_stock_key = Attribute(u"Shared stock key.")
 
-    def get():
-        """Get shared stock value.
+    def get(field_name):
+        """Get shared stock value for field name.
         """
 
-    def set(value):
-        """Set shared stock value.
+    def set(field_name, value):
+        """Set shared stock value for field name.
         """
 
 

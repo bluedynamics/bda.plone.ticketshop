@@ -1,3 +1,4 @@
+from persistent.dict import PersistentDict
 from zope.interface import implementer
 from zope.component import adapter
 from zope.annotation.interfaces import IAnnotations
@@ -41,6 +42,7 @@ class SharedStockData(object):
         raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
                                   u"implement ``shared_stock_key``")
 
+    @property
     def stock_data(self):
         annotations = IAnnotations(self.shared_stock_context)
         data = annotations.get(SHARED_STOCK_DATA_KEY, None)
@@ -49,11 +51,16 @@ class SharedStockData(object):
             annotations[SHARED_STOCK_DATA_KEY] = data
         return data
 
-    def get(self):
-        return 10.0
+    def get(self, field_name):
+        return self.stock_data.get(self.shared_stock_key, {}).get(field_name)
 
-    def set(self, value):
-        pass
+    def set(self, field_name, value):
+        stock_data = self.stock_data
+        data = stock_data.setdefault(self.shared_stock_key, PersistentDict())
+        if not value:
+            data[field_name] = None
+        else:
+            data[field_name] = float(value)
 
 
 @adapter(ITicket)
@@ -77,8 +84,7 @@ class TicketOccurrenceSharedStock(SharedStockData):
 
     @property
     def shared_stock_key(self):
-        context = self.context
-        return context.id
+        return self.context.id
 
 
 @implementer(ITicketOccurrenceData)
