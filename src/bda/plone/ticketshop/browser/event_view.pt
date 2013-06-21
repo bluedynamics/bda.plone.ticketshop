@@ -113,10 +113,9 @@
           </span>
         </div>
 
-        <h3>Availabel Tickets</h3>
-
         <div class="tickets">
           <div class="ticket" tal:repeat="ticket view/tickets">
+            <h3 tal:content="ticket/Title">Title</h3>
             <tal:buyable replace="structure ticket/@@buyable_controls" />
           </div>
         </div>
