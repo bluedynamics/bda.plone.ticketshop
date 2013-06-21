@@ -31,38 +31,31 @@
     attribute="create"
     permission="cmf.ModifyPortalContent" />
 
-  <!-- buyable event view -->
-  <browser:page
+  <!-- buyable event tickets viewlet -->
+  <browser:viewlet
+    name="bda.plone.ticketshop.tickets"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    permission="zope2.View"
     for="..interfaces.IBuyableEvent"
-    name="event_view"
-    class=".views.BuyableEventView"
-    template="event_view.pt"
-    permission="zope2.View" />
+    class=".views.BuyableEventViewlet"
+    layer="bda.plone.shop.interfaces.IShopExtensionLayer"
+  />
 
-  <!-- buyable event occurrence view -->
-  <!-- unconfigure defaults -->
-  <unconfigure>
-    <browser:page
-      for="plone.event.interfaces.IOccurrence"
-      name="index_html"
-      class="plone.app.event.browser.event_view.EventView"
-      template="event_view.pt"
-      permission="zope2.View" />
-  </unconfigure>
-
-  <!-- configure own views -->
-  <browser:page
+  <!-- buyable event occurrence tickets viewlet -->
+  <browser:viewlet
+    name="bda.plone.ticketshop.occurrence_tickets"
+    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    permission="zope2.View"
     for="plone.event.interfaces.IOccurrence"
-    name="index_html"
-    class=".views.BuyableEventOccurrenceView"
-    template="event_view.pt"
-    permission="zope2.View" />
+    class=".views.BuyableEventOccurrenceViewlet"
+    layer="bda.plone.shop.interfaces.IShopExtensionLayer"
+  />
 
   <!-- ticket view -->
   <browser:page
     for="..interfaces.ITicket"
     name="ticket_view"
-    template="ticket_view.pt"
+    template="ticket.pt"
     class=".views.TicketView"
     permission="zope2.View" />
 
@@ -70,7 +63,7 @@
   <browser:page
     for="..interfaces.ITicketOccurrence"
     name="ticket_view"
-    template="ticket_view.pt"
+    template="ticket.pt"
     class=".views.TicketOccurrenceView"
     permission="zope2.View" />
 

@@ -8,10 +8,6 @@
 
   <five:registerPackage package="." initialize=".initialize" />
 
-  <include package="z3c.unconfigure" file="meta.zcml"/>
-
-  <include package="plone.app.event"/>
-
   <include file="profiles.zcml" />
 
   <include package=".at" />

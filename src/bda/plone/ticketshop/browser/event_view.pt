@@ -1,3 +1,7 @@
+<!--
+  XXX: create package plone.app.eventviews or similar
+-->
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
       xmlns:tal="http://xml.zope.org/namespaces/tal"
       xmlns:metal="http://xml.zope.org/namespaces/metal"
@@ -111,13 +115,6 @@
                   tal:attributes="src string:${portal_url}/++resource++plone.app.event/icon_export_ical.png"/>
               <span i18n:translate="label_add_to_ical">iCal</span></a>
           </span>
-        </div>
-
-        <div class="tickets">
-          <div class="ticket" tal:repeat="ticket view/tickets">
-            <h3 tal:content="ticket/Title">Title</h3>
-            <tal:buyable replace="structure ticket/@@buyable_controls" />
-          </div>
         </div>
 
       </tal:def>
