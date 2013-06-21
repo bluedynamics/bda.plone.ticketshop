@@ -32,6 +32,9 @@ class ISharedStockData(Interface):
 
     shared_stock_key = Attribute(u"Shared stock key.")
 
+    related_uids = Attribute(u"List of uids sharing stock data related to "
+                             u"adapted context.")
+
     def get(field_name):
         """Get shared stock value for field name.
         """

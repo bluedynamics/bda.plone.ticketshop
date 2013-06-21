@@ -13,6 +13,9 @@
     name="bda.plone.ticketshop.css"
     file="ticketshop.css" />
 
+  <!-- availability adapter -->
+  <adapter factory=".availability.SharedCartItemAvailability" />
+
   <!-- occurrences action -->
   <browser:page
     for="*"

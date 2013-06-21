@@ -23,6 +23,13 @@ def TicketOccurrenceCartItemDataProviderProxy(context):
     return ICartItemDataProvider(aq_parent(context))
 
 
+class CatalogMixin(object):
+
+    @property
+    def catalog(self):
+        return getToolByName(self.context, 'portal_catalog')
+
+
 SHARED_STOCK_DATA_KEY = 'bda.plone.ticketshop.shared_stock'
 
 
@@ -41,6 +48,11 @@ class SharedStockData(object):
     def shared_stock_key(self):
         raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
                                   u"implement ``shared_stock_key``")
+
+    @property
+    def related_uids(self):
+        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
+                                  u"implement ``related_uids``")
 
     @property
     def stock_data(self):
@@ -64,7 +76,7 @@ class SharedStockData(object):
 
 
 @adapter(ITicket)
-class TicketSharedStock(SharedStockData):
+class TicketSharedStock(SharedStockData, CatalogMixin):
 
     @property
     def shared_stock_context(self):
@@ -74,9 +86,18 @@ class TicketSharedStock(SharedStockData):
     def shared_stock_key(self):
         return 'canonical_tickets'
 
+    @property
+    def related_uids(self):
+        event = aq_parent(self.context)
+        brains = self.catalog(**{
+            'portal_type': 'Ticket',
+            'path': '/'.join(event.getPhysicalPath()),
+        })
+        return [brain.UID for brain in brains]
+
 
 @adapter(ITicketOccurrence)
-class TicketOccurrenceSharedStock(SharedStockData):
+class TicketOccurrenceSharedStock(SharedStockData, CatalogMixin):
 
     @property
     def shared_stock_context(self):
@@ -86,21 +107,27 @@ class TicketOccurrenceSharedStock(SharedStockData):
     def shared_stock_key(self):
         return self.context.id
 
+    @property
+    def related_uids(self):
+        event = aq_parent(aq_parent(self.context))
+        brains = self.catalog(**{
+            'portal_type': 'Ticket Occurrence',
+            'path': '/'.join(event.getPhysicalPath()),
+            'id': self.shared_stock_key,
+        })
+        return [brain.UID for brain in brains]
+
 
 @implementer(ITicketOccurrenceData)
 @adapter(IBuyableEvent)
-class TicketOccurrenceData(object):
+class TicketOccurrenceData(CatalogMixin):
 
     def __init__(self, context):
         self.context = context
 
     @property
-    def _catalog(self):
-        return getToolByName(self.context, 'portal_catalog')
-
-    @property
     def tickets(self):
-        brains = self._catalog(**{
+        brains = self.catalog(**{
             'portal_type': 'Ticket',
             'path': '/'.join(self.context.getPhysicalPath()),
         })
@@ -118,7 +145,7 @@ class TicketOccurrenceData(object):
                 ticket.invokeFactory(
                     'Ticket Occurrence',
                     occurrence.id,
-                    title=occurrence.id)
+                    title=ticket.Title())
                 ticket_occurrence = ticket[occurrence.id]
                 acc = ticket.getField('item_available').getAccessor(ticket)
                 available = acc()
