@@ -16,8 +16,8 @@ from bda.plone.cart import (
     extractitems,
     aggregate_cart_item_count,
     get_item_stock,
+    CartItemStateBase,
 )
-from bda.plone.shop.cartdata import CartItemState
 from .interfaces import (
     IBuyableEvent,
     ISharedStock,
@@ -38,7 +38,7 @@ def TicketOccurrenceCartItemDataProviderProxy(context):
 
 
 @adapter(ISharedStock, IBrowserRequest)
-class TicketCartItemState(CartItemState):
+class TicketCartItemState(CartItemStateBase):
 
     @property
     def aggregated_count(self):
@@ -54,12 +54,6 @@ class TicketCartItemState(CartItemState):
         message = _(u'alert_ticket_no_longer_available',
                     default=u'Ticket is no longer available, please '
                             u'remove from cart')
-        return translate(message, context=self.request)
-
-    @property
-    def some_reservations_alert(self):
-        message = _(u'alert_ticket_some_reserved',
-                    default=u'Some tickets reserved')
         return translate(message, context=self.request)
 
     def partly_exceeded_alert(self, exceed):
@@ -96,14 +90,7 @@ class TicketCartItemState(CartItemState):
             return self.completely_exceeded_alert
         # reservations
         if reserved:
-            aggregated_count = float(self.aggregated_count)
-            count = float(count)
-            # some reservations message
-            if aggregated_count > count:
-                return self.some_reservations_alert
-            # number reservations message
-            else:
-                return self.number_reservations_alert(reserved)
+            return self.number_reservations_alert(reserved)
         return ''
 
 
