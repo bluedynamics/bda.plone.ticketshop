@@ -36,9 +36,14 @@ class SharedCartItemAvailability(CartItemAvailability):
 
     @property
     def full_available_message(self):
+        available = self.available
+        if available is None:
+            available = ''
+        else:
+            available = int(available)
         message = _(u'ticket_full_available_message',
                     default=u'${available} tickets(s) available.',
-                    mapping={'available': int(self.available)})
+                    mapping={'available': available})
         return message
 
     @property
@@ -51,10 +56,14 @@ class SharedCartItemAvailability(CartItemAvailability):
     @property
     def overbook_available_message(self):
         state = get_item_state(self.context, self.request)
-        reservable = self.stock.overbook - state.reserved
+        overbook = self.stock.overbook
+        if overbook is None:
+            reservable = ''
+        else:
+            reservable = int(overbook - state.reserved)
         message = _(u'ticket_overbook_available_message',
                     default=u'Tickets are sold out. You can add ${reservable} '
                             u'tickets on a reservations list. If some tickets '
                             u'gets refused, you\'ll get informed.',
-                    mapping={'reservable': int(reservable)})
+                    mapping={'reservable': reservable})
         return message
