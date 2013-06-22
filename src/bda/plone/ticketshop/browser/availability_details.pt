@@ -1,31 +1,40 @@
 <tal:availability_details
-   i18n:domain="bda.plone.shop">
+   i18n:domain="bda.plone.ticketshop">
 
   <tal:not_available condition="view/not_available">
-    <strong i18n:translate="not_available_title">Not deliverable</strong>
-    <p i18n:translate="not_available_message">
-      This item is not available at the moment
+    <strong i18n:translate="ticket_not_available_title">
+      No more tickets available
+    </strong>
+    <p i18n:translate="ticket_not_available_message">
+      Tickets are sold out.
     </p>
   </tal:not_available>
 
   <tal:full_available condition="view/full_available">
-    <strong i18n:translate="full_available_title">Item available</strong>
-    <p i18n:translate="full_available_message">
-      Full available
+    <strong i18n:translate="ticket_full_available_title">
+      Tickets available
+    </strong>
+    <p tal:content="view/ticket_full_available_message">
+      10 tickets(s) available.
     </p>
   </tal:full_available>
 
   <tal:critical_available condition="view/critical_available">
-    <strong i18n:translate="critical_available_title">Item available</strong>
-    <p i18n:translate="critical_available_message">
-      Critical available
+    <strong i18n:translate="ticket_critical_available_title">
+      Low tickets available
+    </strong>
+    <p tal:content="view/ticket_critical_available_message">
+      Just 5 tickets(s) left.
     </p>
   </tal:critical_available>
 
   <tal:overbook_available condition="view/overbook_available">
-    <strong i18n:translate="overbook_available_title">Overbook available</strong>
-    <p i18n:translate="overbook_available_message">
-      Overbook available
+    <strong i18n:translate="ticket_overbook_available_title">
+      Ticket reservations available
+    </strong>
+    <p tal:content="view/ticket_overbook_available_message">
+      Tickets are sold out. You can add 2 tickets on a reservations list.
+      If some tickets gets refused, you'll get informed.
     </p>
   </tal:overbook_available>
 

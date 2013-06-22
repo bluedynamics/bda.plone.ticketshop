@@ -59,36 +59,29 @@ class TicketCartItemState(CartItemStateBase):
     def partly_exceeded_alert(self, exceed):
         message = _(u'alert_ticket_number_exceed',
                     default=u'Limit exceed by ${exceed} tickets',
-                    mapping={'exceed': exceed})
+                    mapping={'exceed': int(exceed)})
         return translate(message, context=self.request)
 
     def number_reservations_alert(self, reserved):
         message = _(u'alert_ticket_number_reserved',
                     default=u'${reserved} tickets reserved',
-                    mapping={'reserved': reserved})
+                    mapping={'reserved': int(reserved)})
         return translate(message, context=self.request)
 
     def alert(self, count):
         stock = get_item_stock(self.context)
         available = stock.available
-        # no limitation
         if available is None:
             return ''
         reserved = self.reserved
         exceed = self.exceed
-        # no reservations and no exceed
         if not reserved and not exceed:
-            # no message
             return ''
-        # exceed
         if exceed:
             remaining_available = self.remaining_available
-            # partly exceeded
             if remaining_available > 0:
                 return self.partly_exceeded_alert(exceed)
-            # completely exceeded
             return self.completely_exceeded_alert
-        # reservations
         if reserved:
             return self.number_reservations_alert(reserved)
         return ''
