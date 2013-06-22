@@ -1,10 +1,6 @@
-from zope.i18nmessageid import MessageFactory
 from Products.CMFCore import utils
 from Products.Archetypes import atapi
 from . import config
-
-
-_ = MessageFactory(config.PROJECTNAME)
 
 
 def initialize(context):
@@ -26,4 +22,3 @@ def initialize(context):
             permission=config.ADD_PERMISSIONS[atype.portal_type],
             extra_constructors=(constructor,),
             ).initialize(context)
-

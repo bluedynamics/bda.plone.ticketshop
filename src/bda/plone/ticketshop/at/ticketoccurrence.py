@@ -1,6 +1,3 @@
-from .. import _
-from ..config import PROJECTNAME
-from ..interfaces import ITicketOccurrence
 from AccessControl import ClassSecurityInfo
 from Products.Archetypes import atapi
 from Products.CMFCore.permissions import ModifyPortalContent
@@ -9,6 +6,8 @@ from bda.plone.shop.interfaces import IBuyable
 from plone.event.utils import pydt
 from plone.formwidget.datetime.at import DatetimeWidget
 from zope.interface import implementer
+from ..interfaces import ITicketOccurrence
+from ..config import PROJECTNAME
 
 
 schema = atapi.Schema((

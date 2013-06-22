@@ -5,7 +5,6 @@ from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from bda.plone.shop.interfaces import IBuyable
 from ..interfaces import ITicket
 from ..config import PROJECTNAME
-from .. import _
 
 
 schema = atapi.Schema((

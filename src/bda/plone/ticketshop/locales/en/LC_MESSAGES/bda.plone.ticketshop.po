@@ -16,104 +16,104 @@ msgstr ""
 
 #: ./profiles/at/types/Buyable_Event.xml
 msgid "Buyable Event"
-msgstr ""
+msgstr "Buyable Event"
 
 #: ./profiles/default/actions.xml
 msgid "Create ticket occurrences"
-msgstr ""
+msgstr "Create ticket occurrences"
 
 #: ./profiles/default/actions.xml
 msgid "Create ticket occurrences for all existing event occurrences"
-msgstr ""
+msgstr "Create ticket occurrences for all existing event occurrences"
 
 #: ./profiles/at/types/Buyable_Event.xml
 msgid "Information about an upcoming event, which can be sold."
-msgstr ""
+msgstr "Information about an upcoming event, which can be sold."
 
 #: ./profiles/at/types/Ticket_Occurrence.xml
 msgid "Occurrence of Ticket"
-msgstr ""
+msgstr "Occurrence of Ticket"
 
 #: ./profiles/at/types/Ticket.xml
 msgid "Ticket"
-msgstr ""
+msgstr "Ticket"
 
 #: ./profiles/at/types/Ticket_Occurrence.xml
 msgid "Ticket Occurrence"
-msgstr ""
+msgstr "Ticket Occurrence"
 
 #. Default: "Ticket is no longer available, please remove from cart"
 #: ./common.py:54
 msgid "alert_ticket_no_longer_available"
-msgstr ""
+msgstr "Ticket is no longer available, please remove from cart"
 
 #. Default: "Limit exceed by ${exceed} tickets"
 #: ./common.py:60
 msgid "alert_ticket_number_exceed"
-msgstr ""
+msgstr "Limit exceed by ${exceed} tickets"
 
 #. Default: "${reserved} tickets reserved"
 #: ./common.py:66
 msgid "alert_ticket_number_reserved"
-msgstr ""
+msgstr "${reserved} tickets reserved"
 
 #. Default: "Available"
 #: ./browser/ticket.pt:14
 msgid "item_available"
-msgstr ""
+msgstr "Available"
 
 #. Default: "Overbook"
 #: ./browser/ticket.pt:19
 msgid "item_overbook"
-msgstr ""
+msgstr "Overbook"
 
 #. Default: "Item stock available"
 #: ./at/__init__.py:85
 msgid "label_item_available"
-msgstr ""
+msgstr "Item stock available"
 
 #. Default: "Item stock overbook"
 #: ./at/__init__.py:92
 msgid "label_item_overbook"
-msgstr ""
+msgstr "Item stock overbook"
 
 #. Default: "Just ${available} tickets(s) left."
 #: ./browser/availability.py:51
 msgid "ticket_critical_available_message"
-msgstr ""
+msgstr "Just ${available} tickets(s) left."
 
 #. Default: "Low tickets available"
 #: ./browser/availability_details.pt:23
 msgid "ticket_critical_available_title"
-msgstr ""
+msgstr "Low tickets available"
 
 #. Default: "${available} tickets(s) available."
 #: ./browser/availability.py:44
 msgid "ticket_full_available_message"
-msgstr ""
+msgstr "${available} tickets(s) available."
 
 #. Default: "Tickets available"
 #: ./browser/availability_details.pt:14
 msgid "ticket_full_available_title"
-msgstr ""
+msgstr "Tickets available"
 
 #. Default: "Tickets are sold out."
 #: ./browser/availability_details.pt:8
 msgid "ticket_not_available_message"
-msgstr ""
+msgstr "Tickets are sold out."
 
 #. Default: "No more tickets available"
 #: ./browser/availability_details.pt:5
 msgid "ticket_not_available_title"
-msgstr ""
+msgstr "No more tickets available"
 
 #. Default: "Tickets are sold out. You can add ${reservable} tickets on a reservations list. If some tickets gets refused, you'll get informed."
 #: ./browser/availability.py:64
 msgid "ticket_overbook_available_message"
-msgstr ""
+msgstr "Tickets are sold out. You can add ${reservable} tickets on a reservations list. If some tickets gets refused, you'll get informed."
 
 #. Default: "Ticket reservations available"
 #: ./browser/availability_details.pt:32
 msgid "ticket_overbook_available_title"
-msgstr ""
+msgstr "Ticket reservations available"
 

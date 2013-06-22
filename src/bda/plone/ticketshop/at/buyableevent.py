@@ -4,7 +4,6 @@ from Products.Archetypes import atapi
 from collective.folderishtypes.content.folderish_event import FolderishEvent
 from ..interfaces import IBuyableEvent
 from ..config import PROJECTNAME
-from .. import _
 
 
 schema = atapi.Schema((
