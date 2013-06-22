@@ -50,7 +50,7 @@ msgstr "Keine Tickets mehr verfügbar. Bitte entfernen Sie dieses Ticket aus dem
 #. Default: "Limit exceed by ${exceed} tickets"
 #: ./common.py:60
 msgid "alert_ticket_number_exceed"
-msgstr "Anzahl Tickets um ${exceed} überschritten. Bitte passen Sie die Anzahl dieses Tickets im Warenkorm an."
+msgstr "Anzahl Tickets um ${exceed} überschritten. Bitte passen Sie die Anzahl dieses Tickets im Warenkorb an."
 
 #. Default: "${reserved} tickets reserved"
 #: ./common.py:66
