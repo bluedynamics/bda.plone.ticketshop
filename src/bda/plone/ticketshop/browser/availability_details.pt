@@ -14,7 +14,7 @@
     <strong i18n:translate="ticket_full_available_title">
       Tickets available
     </strong>
-    <p tal:content="view/ticket_full_available_message">
+    <p tal:content="view/full_available_message">
       10 tickets(s) available.
     </p>
   </tal:full_available>
@@ -23,7 +23,7 @@
     <strong i18n:translate="ticket_critical_available_title">
       Low tickets available
     </strong>
-    <p tal:content="view/ticket_critical_available_message">
+    <p tal:content="view/critical_available_message">
       Just 5 tickets(s) left.
     </p>
   </tal:critical_available>
@@ -32,7 +32,7 @@
     <strong i18n:translate="ticket_overbook_available_title">
       Ticket reservations available
     </strong>
-    <p tal:content="view/ticket_overbook_available_message">
+    <p tal:content="view/overbook_available_message">
       Tickets are sold out. You can add 2 tickets on a reservations list.
       If some tickets gets refused, you'll get informed.
     </p>

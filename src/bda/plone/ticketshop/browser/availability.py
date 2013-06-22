@@ -35,21 +35,21 @@ class SharedCartItemAvailability(CartItemAvailability):
         return available
 
     @property
-    def ticket_full_available_message(self):
+    def full_available_message(self):
         message = _(u'ticket_full_available_message',
                     default=u'${available} tickets(s) available.',
                     mapping={'available': int(self.available)})
         return message
 
     @property
-    def ticket_critical_available_message(self):
+    def critical_available_message(self):
         message = _(u'ticket_critical_available_message',
                     default=u'Just ${available} tickets(s) left.',
                     mapping={'available': int(self.available)})
         return message
 
     @property
-    def ticket_overbook_available_message(self):
+    def overbook_available_message(self):
         state = get_item_state(self.context, self.request)
         reservable = self.stock.overbook - state.reserved
         message = _(u'ticket_overbook_available_message',
