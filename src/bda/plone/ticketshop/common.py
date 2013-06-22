@@ -15,6 +15,7 @@ from bda.plone.cart import (
     readcookie,
     extractitems,
     aggregate_cart_item_count,
+    get_item_stock,
 )
 from bda.plone.shop.cartdata import CartItemState
 from .interfaces import (
@@ -49,29 +50,61 @@ class TicketCartItemState(CartItemState):
         return aggregated_count
 
     @property
-    def completely_exceeded_message(self):
+    def completely_exceeded_alert(self):
         message = _(u'alert_ticket_no_longer_available',
                     default=u'Ticket is no longer available, please '
                             u'remove from cart')
         return translate(message, context=self.request)
 
     @property
-    def some_reservations_message(self):
+    def some_reservations_alert(self):
         message = _(u'alert_ticket_some_reserved',
                     default=u'Some tickets reserved')
         return translate(message, context=self.request)
 
-    def partly_exceeded_message(self, exceed):
+    def partly_exceeded_alert(self, exceed):
         message = _(u'alert_ticket_number_exceed',
                     default=u'Limit exceed by ${exceed} tickets',
                     mapping={'exceed': exceed})
         return translate(message, context=self.request)
 
-    def number_reservations_message(self, reserved):
+    def number_reservations_alert(self, reserved):
         message = _(u'alert_ticket_number_reserved',
                     default=u'${reserved} tickets reserved',
                     mapping={'reserved': reserved})
         return translate(message, context=self.request)
+
+    def alert(self, count):
+        stock = get_item_stock(self.context)
+        available = stock.available
+        # no limitation
+        if available is None:
+            return ''
+        reserved = self.reserved
+        exceed = self.exceed
+        # no reservations and no exceed
+        if not reserved and not exceed:
+            # no message
+            return ''
+        # exceed
+        if exceed:
+            remaining_available = self.remaining_available
+            # partly exceeded
+            if remaining_available > 0:
+                return self.partly_exceeded_alert(exceed)
+            # completely exceeded
+            return self.completely_exceeded_alert
+        # reservations
+        if reserved:
+            aggregated_count = float(self.aggregated_count)
+            count = float(count)
+            # some reservations message
+            if aggregated_count > count:
+                return self.some_reservations_alert
+            # number reservations message
+            else:
+                return self.number_reservations_alert(reserved)
+        return ''
 
 
 class CatalogMixin(object):
