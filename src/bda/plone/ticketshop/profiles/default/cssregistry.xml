@@ -10,5 +10,5 @@
     id="++resource++bda.plone.ticketshop.css"
     media="all"
     rel="stylesheet"
-    rendering="import" />
+    rendering="link" />
 </object>
