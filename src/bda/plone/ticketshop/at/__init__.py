@@ -43,6 +43,16 @@ class TicketOccurenceBuyableExtender(ExtenderBase):
 @implementer(IExtensionField)
 class SharedStockExtensionField(object):
 
+    def set(self, instance, value, **kwargs):
+        if value == '':
+            value = None
+        elif value is not None:
+            __traceback_info__ = (self.getName(), instance, value, kwargs)
+            if isinstance(value, basestring):
+                value = value.replace(',', '.')
+            value = float(value)
+        ISharedStockData(instance).set(self.getName(), value)
+
     def getAccessor(self, instance):
         def accessor(**kw):
             return ISharedStockData(instance).get(self.getName())
