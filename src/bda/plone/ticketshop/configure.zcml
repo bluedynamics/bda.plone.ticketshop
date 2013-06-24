@@ -14,6 +14,12 @@
 
   <include package=".browser" />
 
+  <!-- register OrderCheckoutAdapter for event occurrences -->
+  <adapter
+    for="plone.event.interfaces.IOccurrence
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory="bda.plone.orders.common.OrderCheckoutAdapter" />
+
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
   <adapter factory=".common.TicketCartItemState" />
