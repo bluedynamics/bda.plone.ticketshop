@@ -4,7 +4,7 @@ from plone.app.testing import (
     PLONE_FIXTURE,
     PloneSandboxLayer,
 )
-from bda.plone.ticketshop.interfaces import ITicketshopExtensionLayer
+from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 
 
 def set_browserlayer(request):
@@ -13,7 +13,7 @@ def set_browserlayer(request):
     We have to set the browserlayer manually, since importing the profile alone
     doesn't do it in tests.
     """
-    alsoProvides(request, ITicketshopExtensionLayer)
+    alsoProvides(request, ITicketShopExtensionLayer)
 
 
 class TicketshopLayer(PloneSandboxLayer):

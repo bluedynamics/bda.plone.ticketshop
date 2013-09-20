@@ -4,6 +4,11 @@ from zope.interface import (
 )
 
 
+class ITicketShopExtensionLayer(Interface):
+    """Browser layer for bda.plone.ticketshop
+    """
+
+
 class IBuyableEvent(Interface):
     """Marker interfaces for buyable events.
     """
