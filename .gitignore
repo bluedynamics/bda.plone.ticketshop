@@ -11,3 +11,5 @@ parts/
 .installed.cfg
 develop-eggs/
 src/bda.plone.ticketshop.egg-info/
+coverage/
+report/
