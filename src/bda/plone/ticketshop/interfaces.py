@@ -2,9 +2,10 @@ from zope.interface import (
     Interface,
     Attribute,
 )
+from bda.plone.shop.interfaces import IShopExtensionLayer
 
 
-class ITicketShopExtensionLayer(Interface):
+class ITicketShopExtensionLayer(IShopExtensionLayer):
     """Browser layer for bda.plone.ticketshop
     """
 
