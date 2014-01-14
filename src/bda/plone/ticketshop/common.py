@@ -120,8 +120,9 @@ class SharedStockData(object):
 
     @property
     def stock_data(self):
-        annotations = IAnnotations(self.shared_stock_context)
-        data = annotations.get(SHARED_STOCK_DATA_KEY, None)
+        annotations = IAnnotations(self.shared_stock_context, None)
+        data = annotations and annotations.get(SHARED_STOCK_DATA_KEY, None)\
+                or None
         if data is None:
             data = OOBTree()
             annotations[SHARED_STOCK_DATA_KEY] = data
