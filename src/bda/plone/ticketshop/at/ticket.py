@@ -6,12 +6,7 @@ from bda.plone.shop.interfaces import IBuyable
 from ..interfaces import ITicket
 from ..config import PROJECTNAME
 
-
-schema = atapi.Schema((
-))
-
-
-Ticket_schema = atapi.BaseFolderSchema.copy() + schema.copy()
+Ticket_schema = atapi.BaseFolderSchema.copy()
 
 
 @implementer(ITicket, IBuyable)

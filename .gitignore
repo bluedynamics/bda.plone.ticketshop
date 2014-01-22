@@ -7,6 +7,9 @@ var/
 bin/
 devsrc/
 eggs/
+include/
+lib/
+local/
 parts/
 .installed.cfg
 develop-eggs/
