@@ -5,18 +5,12 @@ from collective.folderishtypes.content.folderish_event import FolderishEvent
 from ..interfaces import IBuyableEvent
 from ..config import PROJECTNAME
 
-
-schema = atapi.Schema((
-))
-
-
-BuyableEvent_schema = FolderishEvent.schema.copy() + schema.copy()
+BuyableEvent_schema = FolderishEvent.schema.copy()
 
 
 @implementer(IBuyableEvent)
 class BuyableEvent(FolderishEvent):
     security = ClassSecurityInfo()
-    portal_type = 'Buyable Event'
     meta_type = 'BuyableEvent'
     _at_rename_after_creation = True
     schema = BuyableEvent_schema

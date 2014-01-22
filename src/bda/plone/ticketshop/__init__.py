@@ -17,8 +17,8 @@ def initialize(context):
         config.PROJECTNAME)
 
     for atype, constructor in zip(content_types, constructors):
-        utils.ContentInit("%s: %s" % (config.PROJECTNAME, atype.portal_type),
+        utils.ContentInit("%s: %s" % (config.PROJECTNAME, atype.meta_type),
             content_types=(atype,),
-            permission=config.ADD_PERMISSIONS[atype.portal_type],
+            permission=config.ADD_PERMISSIONS[atype.meta_type],
             extra_constructors=(constructor,),
             ).initialize(context)
