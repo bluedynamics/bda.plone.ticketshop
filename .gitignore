@@ -13,3 +13,4 @@ develop-eggs/
 src/bda.plone.ticketshop.egg-info/
 coverage/
 report/
+env/
