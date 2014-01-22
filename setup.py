@@ -45,14 +45,6 @@ setup(
             'plone.app.contenttypes',
             'Products.ATContentTypes',
             'bda.plone.ticketshop',
-            'souper.plone[test]',
-            'bda.plone.cart[test]',
-            'bda.plone.checkout[test]',
-            'bda.plone.orders[test]',
-            'bda.plone.payment[test]',
-            'bda.plone.shipping[test]',
-            'bda.plone.shop[test]',
-            'bda.plone.ticketshop[test]',
           ]
     },
     entry_points="""
