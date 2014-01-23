@@ -1,10 +1,8 @@
 import transaction
 from zExceptions import Redirect
 from Products.Five import BrowserView
-from ..interfaces import (
-    IBuyableEvent,
-    ITicketOccurrenceData,
-)
+from ..interfaces import IBuyableEvent
+from ..interfaces import ITicketOccurrenceData
 
 
 class TicketOccurrence(BrowserView):

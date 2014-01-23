@@ -1,18 +1,14 @@
 from zope.interface import implementer
 from zope.component import adapter
 from zope.i18nmessageid import MessageFactory
-from archetypes.schemaextender.interfaces import (
-    IExtensionField,
-    IOrderableSchemaExtender,
-    IBrowserLayerAwareExtender,
-)
+from archetypes.schemaextender.interfaces import IExtensionField
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from Products.Archetypes.public import FloatField
 from bda.plone.shop.interfaces import IShopExtensionLayer
-from ..interfaces import (
-    ITicketOccurrence,
-    ISharedStock,
-    ISharedStockData,
-)
+from ..interfaces import ITicketOccurrence
+from ..interfaces import ISharedStock
+from ..interfaces import ISharedStockData
 
 
 _ = MessageFactory('bda.plone.shop')

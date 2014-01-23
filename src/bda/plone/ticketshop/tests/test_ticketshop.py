@@ -1,8 +1,6 @@
 import unittest2 as unittest
-from bda.plone.ticketshop.tests import (
-    Ticketshop_INTEGRATION_TESTING,
-    set_browserlayer,
-)
+from . import Ticketshop_INTEGRATION_TESTING
+from . import set_browserlayer
 
 
 class TestTicketshop(unittest.TestCase):

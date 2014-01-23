@@ -1,7 +1,5 @@
-from zope.interface import (
-    Interface,
-    Attribute,
-)
+from zope.interface import Interface
+from zope.interface import Attribute
 from bda.plone.shop.interfaces import IShopExtensionLayer
 
 
