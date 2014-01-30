@@ -1,8 +1,8 @@
-from zope.interface import alsoProvides
+from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 from plone.app.testing import IntegrationTesting
 from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
-from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
+from zope.interface import alsoProvides
 
 
 def set_browserlayer(request):
