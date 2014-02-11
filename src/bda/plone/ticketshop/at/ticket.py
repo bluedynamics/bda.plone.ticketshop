@@ -6,18 +6,12 @@ from bda.plone.shop.interfaces import IBuyable
 from ..interfaces import ITicket
 from ..config import PROJECTNAME
 
-
-schema = atapi.Schema((
-))
-
-
-Ticket_schema = atapi.BaseFolderSchema.copy() + schema.copy()
+Ticket_schema = atapi.BaseFolderSchema.copy()
 
 
 @implementer(ITicket, IBuyable)
 class Ticket(atapi.BaseFolder, BrowserDefaultMixin):
     security = ClassSecurityInfo()
-    portal_type = 'Ticket'
     meta_type = 'Ticket'
     _at_rename_after_creation = True
     schema = Ticket_schema

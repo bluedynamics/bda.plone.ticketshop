@@ -11,21 +11,17 @@ from Products.CMFCore.utils import getToolByName
 from plone.event.interfaces import IRecurrenceSupport
 from plone.app.event.recurrence import Occurrence
 from bda.plone.cart.interfaces import ICartItemDataProvider
-from bda.plone.cart import (
-    readcookie,
-    extractitems,
-    aggregate_cart_item_count,
-    get_item_stock,
-    CartItemStateBase,
-)
-from .interfaces import (
-    IBuyableEvent,
-    ISharedStock,
-    ITicket,
-    ITicketOccurrence,
-    ISharedStockData,
-    ITicketOccurrenceData,
-)
+from bda.plone.cart import readcookie
+from bda.plone.cart import extractitems
+from bda.plone.cart import aggregate_cart_item_count
+from bda.plone.cart import get_item_stock
+from bda.plone.cart import CartItemStateBase
+from .interfaces import IBuyableEvent
+from .interfaces import ISharedStock
+from .interfaces import ITicket
+from .interfaces import ITicketOccurrence
+from .interfaces import ISharedStockData
+from .interfaces import ITicketOccurrenceData
 
 
 _ = MessageFactory('bda.plone.ticketshop')
@@ -120,8 +116,9 @@ class SharedStockData(object):
 
     @property
     def stock_data(self):
-        annotations = IAnnotations(self.shared_stock_context)
-        data = annotations.get(SHARED_STOCK_DATA_KEY, None)
+        annotations = IAnnotations(self.shared_stock_context, None)
+        data = annotations and annotations.get(SHARED_STOCK_DATA_KEY, None)\
+                or None
         if data is None:
             data = OOBTree()
             annotations[SHARED_STOCK_DATA_KEY] = data

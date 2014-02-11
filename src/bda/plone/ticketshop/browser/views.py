@@ -5,7 +5,7 @@ from plone.app.layout.viewlets.common import ViewletBase
 from plone.app.event.browser.event_view import EventView
 from bda.plone.cart import get_item_availability
 from bda.plone.shop.at import field_value
-from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
+from ..interfaces import ITicketOccurrenceData
 
 
 class TicketsViewlet(ViewletBase):

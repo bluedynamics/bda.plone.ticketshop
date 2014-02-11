@@ -2,16 +2,12 @@ from zope.component import adapter
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.interfaces.browser import IBrowserRequest
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from bda.plone.cart import (
-    extractitems,
-    readcookie,
-    get_item_state,
-)
+from bda.plone.cart import extractitems
+from bda.plone.cart import readcookie
+from bda.plone.cart import get_item_state
 from bda.plone.shop.browser.availability import CartItemAvailability
-from ..interfaces import (
-    ISharedStock,
-    ISharedStockData,
-)
+from ..interfaces import ISharedStock
+from ..interfaces import ISharedStockData
 
 
 _ = MessageFactory('bda.plone.ticketshop')

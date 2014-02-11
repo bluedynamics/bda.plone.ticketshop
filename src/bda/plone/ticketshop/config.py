@@ -5,15 +5,15 @@ PROJECTNAME = "bda.plone.ticketshop"
 
 
 ADD_PERMISSIONS = {
-    "Buyable Event": "bda.plone.ticketshop: Add Buyable Event",
+    "BuyableEvent": "bda.plone.ticketshop: Add Buyable Event",
     "Ticket": "bda.plone.ticketshop: Add Ticket",
-    "Ticket Occurrence": "bda.plone.ticketshop: Add Ticket Occurrence",
+    "TicketOccurrence": "bda.plone.ticketshop: Add Ticket Occurrence",
 }
 
 
-setDefaultRoles(ADD_PERMISSIONS['Buyable Event'], (
+setDefaultRoles(ADD_PERMISSIONS['BuyableEvent'], (
     'Contributor', 'Manager', 'Owner', 'Site Administrator'))
 setDefaultRoles(ADD_PERMISSIONS['Ticket'], (
     'Contributor', 'Manager', 'Owner', 'Site Administrator'))
-setDefaultRoles(ADD_PERMISSIONS['Ticket Occurrence'], (
+setDefaultRoles(ADD_PERMISSIONS['TicketOccurrence'], (
     'Contributor', 'Manager', 'Owner', 'Site Administrator'))
