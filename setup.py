@@ -43,6 +43,7 @@ setup(
             'plone.app.contenttypes',
             'Products.ATContentTypes',
             'bda.plone.ticketshop',
+            'interlude[ipython]>=1.3.1',
           ]
     },
     entry_points="""
