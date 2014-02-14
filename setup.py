@@ -33,7 +33,7 @@ setup(
     install_requires=[
         'setuptools',
         'Plone',
-        'plone.app.event[archetypes,ploneintegration]',
+        'plone.app.event[archetypes]',
         'collective.folderishtypes',
         'bda.plone.shop',
     ],
