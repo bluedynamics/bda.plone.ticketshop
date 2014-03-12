@@ -1,11 +1,11 @@
 from zope.interface import implementer
 from zope.component import adapter
 from zope.i18nmessageid import MessageFactory
-from archetypes.schemaextender.interfaces import IExtensionField
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
+from archetypes.schemaextender.interfaces import IExtensionField
 from Products.Archetypes.public import FloatField
-from bda.plone.shop.interfaces import IShopExtensionLayer
+from ..interfaces import ITicketShopExtensionLayer
 from ..interfaces import ITicketOccurrence
 from ..interfaces import ISharedStock
 from ..interfaces import ISharedStockData
@@ -32,7 +32,7 @@ class TicketOccurenceBuyableExtender(ExtenderBase):
     """Overwrite default buyable extender for ticket occurrences providing no
     fields.
     """
-    layer = IShopExtensionLayer
+    layer = ITicketShopExtensionLayer
     fields = []
 
 
@@ -40,6 +40,8 @@ class TicketOccurenceBuyableExtender(ExtenderBase):
 class SharedStockExtensionField(object):
 
     def set(self, instance, value, **kwargs):
+        # XXX: gets called twice per field, first time with correct value
+        #      second time with None.
         if value == '':
             value = None
         elif value is not None:
@@ -61,7 +63,8 @@ class SharedStockExtensionField(object):
 
     def getMutator(self, instance):
         def mutator(value, **kw):
-            ISharedStockData(instance).set(self.getName(), value)
+            self.set(instance, value, **kw)
+            #ISharedStockData(instance).set(self.getName(), value)
         return mutator
 
     def getIndexAccessor(self, instance):
@@ -76,22 +79,22 @@ class SharedStockExtensionField(object):
             return getattr(instance, name)
 
 
-class XFloatField(SharedStockExtensionField, FloatField):
+class XSharedStockFloatField(SharedStockExtensionField, FloatField):
     pass
 
 
 @adapter(ISharedStock)
 class SharedStockExtender(ExtenderBase):
-    layer = IShopExtensionLayer
+    layer = ITicketShopExtensionLayer
     fields = [
-        XFloatField(
+        XSharedStockFloatField(
             name='item_available',
             schemata='Shop',
             widget=FloatField._properties['widget'](
                 label=_(u'label_item_available', u'Item stock available'),
             ),
         ),
-        XFloatField(
+        XSharedStockFloatField(
             name='item_overbook',
             schemata='Shop',
             widget=FloatField._properties['widget'](
