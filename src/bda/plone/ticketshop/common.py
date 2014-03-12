@@ -117,6 +117,9 @@ class SharedStockData(object):
     @property
     def stock_data(self):
         annotations = IAnnotations(self.shared_stock_context, None)
+        if annotations is None:
+            # return dummy dict, prevents add form from raising an error
+            return dict()
         data = annotations \
             and annotations.get(SHARED_STOCK_DATA_KEY, None) \
             or None
