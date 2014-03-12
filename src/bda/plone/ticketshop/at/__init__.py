@@ -39,9 +39,14 @@ class TicketOccurenceBuyableExtender(ExtenderBase):
 @implementer(IExtensionField)
 class SharedStockExtensionField(object):
 
+    def get(self, instance, **kwargs):
+        __traceback_info__ = (self.getName(), instance, kwargs)
+        return ISharedStockData(instance).get(self.getName())
+
+    def getRaw(self, instance, **kwargs):
+        return self.get(instance, **kwargs)
+
     def set(self, instance, value, **kwargs):
-        # XXX: gets called twice per field, first time with correct value
-        #      second time with None.
         if value == '':
             value = None
         elif value is not None:
@@ -53,18 +58,17 @@ class SharedStockExtensionField(object):
 
     def getAccessor(self, instance):
         def accessor(**kw):
-            return ISharedStockData(instance).get(self.getName())
+            return self.get(instance, **kw)
         return accessor
 
     def getEditAccessor(self, instance):
         def edit_accessor(**kw):
-            return ISharedStockData(instance).get(self.getName())
+            return self.getRaw(instance, **kw)
         return edit_accessor
 
     def getMutator(self, instance):
         def mutator(value, **kw):
             self.set(instance, value, **kw)
-            #ISharedStockData(instance).set(self.getName(), value)
         return mutator
 
     def getIndexAccessor(self, instance):
