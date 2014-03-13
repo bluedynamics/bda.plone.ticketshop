@@ -1,28 +1,33 @@
+from Acquisition import aq_parent
+from BTrees.OOBTree import OOBTree
+from Products.CMFCore.utils import getToolByName
+from Products.CMFPlone.i18nl10n import ulocalized_time
+from bda.plone.cart import CartItemStateBase
+from bda.plone.cart import aggregate_cart_item_count
+from bda.plone.cart import extractitems
+from bda.plone.cart import get_item_stock
+from bda.plone.cart import readcookie
+from bda.plone.cart.interfaces import ICartItemDataProvider
+from bda.plone.orders.common import OrderCheckoutAdapter
 from persistent.dict import PersistentDict
-from zope.interface import implementer
-from zope.component import adapter
+from plone.app.event.base import DT
+from plone.app.event.recurrence import Occurrence
+from plone.event.interfaces import IEvent
+from plone.event.interfaces import IEventAccessor
+from plone.event.interfaces import IRecurrenceSupport
 from zope.annotation.interfaces import IAnnotations
+from zope.component import adapter
 from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
+from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-from BTrees.OOBTree import OOBTree
-from Acquisition import aq_parent
-from Products.CMFCore.utils import getToolByName
-from plone.event.interfaces import IRecurrenceSupport
-from plone.app.event.recurrence import Occurrence
-from bda.plone.cart.interfaces import ICartItemDataProvider
-from bda.plone.cart import readcookie
-from bda.plone.cart import extractitems
-from bda.plone.cart import aggregate_cart_item_count
-from bda.plone.cart import get_item_stock
-from bda.plone.cart import CartItemStateBase
+
 from .interfaces import IBuyableEvent
 from .interfaces import ISharedStock
+from .interfaces import ISharedStockData
 from .interfaces import ITicket
 from .interfaces import ITicketOccurrence
-from .interfaces import ISharedStockData
 from .interfaces import ITicketOccurrenceData
-
 
 _ = MessageFactory('bda.plone.ticketshop')
 
@@ -234,12 +239,35 @@ class TicketOccurrenceData(CatalogMixin):
                 ticket_occurrence.reindexObject()
 
 
-from bda.plone.orders.common import OrderCheckoutAdapter
 class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
+    """Custom ticket checkout adapter, which provides additional information on
+    the product/event which is booked. The ticket itself is not enough to
+    quickly identify it.
+    """
 
     def create_booking(self, *args, **kwargs):
         booking = super(TicketOrderCheckoutAdapter,
                         self).create_booking(*args, **kwargs)
-        import pdb; pdb.set_trace()
-        # booking.attrs['title'] = 
+        event = aq_parent(self.context)
+        if IEvent.providedBy(event):
+            acc = IEventAccessor(event)
+            lstart = ulocalized_time(
+                DT(acc.start),
+                long_format=True,
+                context=event
+            )
+            lend = ulocalized_time(
+                DT(acc.start),
+                long_format=True,
+                context=event
+            )
+            booking.attrs['title'] = '%s - %s (%s - %s)' % (
+                acc.title,
+                booking.attrs['title'],
+                lstart,
+                lend
+            )
+            booking.attrs['eventtitle'] = acc.title
+            booking.attrs['eventstart'] = acc.start
+            booking.attrs['eventend'] = acc.end
         return booking
