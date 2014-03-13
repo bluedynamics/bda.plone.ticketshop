@@ -1,10 +1,15 @@
 from Acquisition import aq_parent
 from Products.Five import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from plone.app.layout.viewlets.common import ViewletBase
-from plone.app.event.browser.event_view import EventView
+from bda.plone.cart import ascur
 from bda.plone.cart import get_item_availability
+from bda.plone.orders.browser import views
 from bda.plone.shop.at import field_value
+from plone.app.layout.viewlets.common import ViewletBase
+from plone.app.uuid.utils import uuidToObject
+from plone.event.interfaces import IEvent
+
+from ..interfaces import ITicket
 from ..interfaces import ITicketOccurrenceData
 
 
@@ -79,3 +84,43 @@ class TicketOccurrenceView(BrowserView):
     @property
     def overbook(self):
         return field_value(self.context, 'item_overbook')
+
+
+def _get_booking_url(booking):
+    import ipdb; ipdb.set_trace()
+    booking_obj = uuidToObject(booking.attrs['buyable_uid'])
+    url = booking_obj.absolute_url()
+    if ITicket.providedBy(booking_obj):
+        event = aq_parent(booking_obj)
+        if IEvent.providedBy(event):
+            url = event.absolute_url()
+    return url
+
+
+class OrderView(views.OrderView):
+
+    @property
+    def listing(self):
+        ret = list()
+        for booking in self.order_data.bookings:
+            url = _get_booking_url(booking)
+            ret.append({
+                'title': booking.attrs['title'],
+                'url': url,
+                'count': booking.attrs['buyable_count'],
+                'net': ascur(booking.attrs.get('net', 0.0)),
+                'vat': booking.attrs.get('vat', 0.0),
+                'exported': booking.attrs['exported'],
+                'comment': booking.attrs['buyable_comment'],
+                'quantity_unit': booking.attrs.get('quantity_unit'),
+                'currency': booking.attrs.get('currency'),
+            })
+        return ret
+
+
+class ExportOrdersForm(views.ExportOrdersForm):
+
+    def export_val(self, record, attr_name):
+        if attr_name == 'url':
+            return _get_booking_url(record)
+        super(ExportOrdersForm, self).export_val(record, attr_name)

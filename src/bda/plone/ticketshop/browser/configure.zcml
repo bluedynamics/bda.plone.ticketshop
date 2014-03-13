@@ -99,4 +99,22 @@
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
+  <configure package="bda.plone.orders.browser">
+    <browser:page
+      for="*"
+      name="order"
+      template="order.pt"
+      class="bda.plone.ticketshop.browser.views.OrderView"
+      permission="bda.plone.orders.ViewOrders"
+      layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
+  </configure>
+  <browser:page
+    for="*"
+    name="exportorders"
+    class="bda.plone.ticketshop.browser.views.ExportOrdersForm"
+    permission="bda.plone.orders.ViewOrders"
+    layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
+
+
+
 </configure>
