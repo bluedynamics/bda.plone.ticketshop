@@ -14,6 +14,7 @@ from plone.app.event.base import DT
 from plone.app.event.recurrence import Occurrence
 from plone.event.interfaces import IEvent
 from plone.event.interfaces import IEventAccessor
+from plone.event.interfaces import IOccurrence
 from plone.event.interfaces import IRecurrenceSupport
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
@@ -248,8 +249,13 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
     def create_booking(self, *args, **kwargs):
         booking = super(TicketOrderCheckoutAdapter,
                         self).create_booking(*args, **kwargs)
-        event = aq_parent(self.context)
-        if IEvent.providedBy(event):
+
+        event = self.context
+        if ITicketOccurrence.providedBy(event):
+            event = aq_parent(aq_parent(event))
+        elif ITicket.providedBy(event):
+            event = aq_parent(event)
+        if IEvent.providedBy(event) or IOccurrence.providedBy(event):
             acc = IEventAccessor(event)
             lstart = ulocalized_time(
                 DT(acc.start),

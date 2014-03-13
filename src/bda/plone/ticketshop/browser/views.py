@@ -10,6 +10,7 @@ from plone.app.uuid.utils import uuidToObject
 from plone.event.interfaces import IEvent
 
 from ..interfaces import ITicket
+from ..interfaces import ITicketOccurrence
 from ..interfaces import ITicketOccurrenceData
 
 
@@ -87,10 +88,20 @@ class TicketOccurrenceView(BrowserView):
 
 
 def _get_booking_url(booking):
-    import ipdb; ipdb.set_trace()
     booking_obj = uuidToObject(booking.attrs['buyable_uid'])
     url = booking_obj.absolute_url()
-    if ITicket.providedBy(booking_obj):
+    if ITicketOccurrence.providedBy(booking_obj):
+        # assumption1: ticketoccurrence id = occurrence id
+        # assumption2: ticketoccurrence parent = ticket
+        occurrence_id = booking_obj.id
+        event = aq_parent(aq_parent(booking_obj))
+        if IEvent.providedBy(event):
+            url = '%s/%s' % (
+                event.absolute_url(),
+                occurrence_id
+            )
+
+    elif ITicket.providedBy(booking_obj):
         event = aq_parent(booking_obj)
         if IEvent.providedBy(event):
             url = event.absolute_url()

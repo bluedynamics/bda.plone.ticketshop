@@ -16,15 +16,21 @@
   <include package=".browser" />
   <include file="profiles.zcml" />
 
-  <!-- register OrderCheckoutAdapter for event occurrences -->
-  <adapter
-    for="plone.event.interfaces.IOccurrence
-         zope.publisher.interfaces.browser.IBrowserRequest"
-    factory="bda.plone.orders.common.OrderCheckoutAdapter" />
-
   <!-- Custom checkout adapter for tickets -->
   <adapter
     for="bda.plone.ticketshop.interfaces.ITicket
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".common.TicketOrderCheckoutAdapter"/>
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicketOccurrence
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".common.TicketOrderCheckoutAdapter"/>
+  <adapter
+    for="plone.event.interfaces.IEvent
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".common.TicketOrderCheckoutAdapter"/>
+  <adapter
+    for="plone.event.interfaces.IOccurrence
          zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".common.TicketOrderCheckoutAdapter"/>
 
