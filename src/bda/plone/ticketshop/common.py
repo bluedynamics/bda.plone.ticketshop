@@ -232,3 +232,14 @@ class TicketOccurrenceData(CatalogMixin):
                 self._copy_field_value(
                     ticket, ticket_occurrence, 'item_overbook')
                 ticket_occurrence.reindexObject()
+
+
+from bda.plone.orders.common import OrderCheckoutAdapter
+class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
+
+    def create_booking(self, *args, **kwargs):
+        booking = super(TicketOrderCheckoutAdapter,
+                        self).create_booking(*args, **kwargs)
+        import pdb; pdb.set_trace()
+        # booking.attrs['title'] = 
+        return booking

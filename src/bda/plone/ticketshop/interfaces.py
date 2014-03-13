@@ -23,7 +23,7 @@ class ITicket(ISharedStock):
     """
 
 
-class ITicketOccurrence(ISharedStock):
+class ITicketOccurrence(ITicket):
     """Marker interfaces for ticket occurrence.
     """
 

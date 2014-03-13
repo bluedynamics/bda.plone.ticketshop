@@ -10,20 +10,23 @@
   <include package="bda.plone.shop" />
 
   <i18n:registerTranslations directory="locales" />
-
   <five:registerPackage package="." initialize=".initialize" />
 
-  <include file="profiles.zcml" />
-
   <include package=".at" />
-
   <include package=".browser" />
+  <include file="profiles.zcml" />
 
   <!-- register OrderCheckoutAdapter for event occurrences -->
   <adapter
     for="plone.event.interfaces.IOccurrence
          zope.publisher.interfaces.browser.IBrowserRequest"
     factory="bda.plone.orders.common.OrderCheckoutAdapter" />
+
+  <!-- Custom checkout adapter for tickets -->
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicket
+         zope.publisher.interfaces.browser.IBrowserRequest"
+    factory=".common.TicketOrderCheckoutAdapter"/>
 
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
