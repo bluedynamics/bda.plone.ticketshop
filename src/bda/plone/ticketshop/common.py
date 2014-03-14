@@ -22,13 +22,13 @@ from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-
 from .interfaces import IBuyableEvent
 from .interfaces import ISharedStock
 from .interfaces import ISharedStockData
 from .interfaces import ITicket
 from .interfaces import ITicketOccurrence
 from .interfaces import ITicketOccurrenceData
+
 
 _ = MessageFactory('bda.plone.ticketshop')
 
@@ -249,7 +249,6 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
     def create_booking(self, *args, **kwargs):
         booking = super(TicketOrderCheckoutAdapter,
                         self).create_booking(*args, **kwargs)
-
         event = self.context
         if ITicketOccurrence.providedBy(event):
             event = aq_parent(aq_parent(event))

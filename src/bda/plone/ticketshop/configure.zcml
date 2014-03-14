@@ -18,27 +18,21 @@
 
   <!-- Custom checkout adapter for tickets -->
   <adapter
-    for="bda.plone.ticketshop.interfaces.ITicket
-         zope.publisher.interfaces.browser.IBrowserRequest"
+    for="Products.CMFPlone.interfaces.IPloneSiteRoot
+         bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
     factory=".common.TicketOrderCheckoutAdapter"/>
+
   <adapter
-    for="bda.plone.ticketshop.interfaces.ITicketOccurrence
-         zope.publisher.interfaces.browser.IBrowserRequest"
-    factory=".common.TicketOrderCheckoutAdapter"/>
-  <adapter
-    for="plone.event.interfaces.IEvent
-         zope.publisher.interfaces.browser.IBrowserRequest"
-    factory=".common.TicketOrderCheckoutAdapter"/>
-  <adapter
-    for="plone.event.interfaces.IOccurrence
-         zope.publisher.interfaces.browser.IBrowserRequest"
-    factory=".common.TicketOrderCheckoutAdapter"/>
+    for="Products.Archetypes.interfaces.IBaseObject
+         bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
+    factory=".common.TicketOrderCheckoutAdapter" />
 
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
   <adapter factory=".common.TicketCartItemState" />
 
   <adapter factory=".common.TicketSharedStock" />
+
   <adapter factory=".common.TicketOccurrenceSharedStock" />
 
   <adapter factory=".common.TicketOccurrenceData" />
@@ -46,13 +40,11 @@
   <adapter
     for="plone.event.interfaces.IOccurrence"
     provides="bda.plone.orders.interfaces.IItemNotificationText"
-    factory="bda.plone.shop.notificationtext.BubbleItemNotificationText"
-    />
+    factory="bda.plone.shop.notificationtext.BubbleItemNotificationText" />
 
   <adapter
     for="plone.event.interfaces.IOccurrence"
     provides="bda.plone.orders.interfaces.IGlobalNotificationText"
-    factory="bda.plone.shop.notificationtext.BubbleGlobalNotificationText"
-    />
+    factory="bda.plone.shop.notificationtext.BubbleGlobalNotificationText" />
 
 </configure>
