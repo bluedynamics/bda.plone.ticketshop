@@ -38,6 +38,25 @@
     layer="..interfaces.ITicketShopExtensionLayer" />
 
 
+  <!-- ticket view -->
+  <browser:page
+    for="..interfaces.ITicket"
+    name="ticket_view"
+    template="ticket.pt"
+    class=".views.TicketView"
+    permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+
+  <!-- ticket occurrence view -->
+  <browser:page
+    for="..interfaces.ITicketOccurrence"
+    name="ticket_view"
+    template="ticket.pt"
+    class=".views.TicketOccurrenceView"
+    permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+
+
   <!-- VIEWLET -->
 
   <!-- buyable event tickets viewlet -->
@@ -84,25 +103,6 @@
     for="..interfaces.ISharedStock"
     class="bda.plone.shop.browser.buyable.BuyableControls"
     template="buyable_controls.pt"
-    permission="zope2.View"
-    layer="..interfaces.ITicketShopExtensionLayer" />
-
-
-  <!-- ticket view -->
-  <browser:page
-    for="..interfaces.ITicket"
-    name="ticket_view"
-    template="ticket.pt"
-    class=".views.TicketView"
-    permission="zope2.View"
-    layer="..interfaces.ITicketShopExtensionLayer" />
-
-  <!-- ticket occurrence view -->
-  <browser:page
-    for="..interfaces.ITicketOccurrence"
-    name="ticket_view"
-    template="ticket.pt"
-    class=".views.TicketOccurrenceView"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
