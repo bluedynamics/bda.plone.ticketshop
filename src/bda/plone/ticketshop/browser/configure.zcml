@@ -65,7 +65,7 @@
     manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
     permission="zope2.View"
     for="..interfaces.IBuyableEvent"
-    class=".views.TicketsViewlet"
+    class=".buyable.BuyableViewlet"
     template="buyable_viewlet.pt"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
@@ -75,7 +75,7 @@
     manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
     permission="zope2.View"
     for="plone.event.interfaces.IOccurrence"
-    class=".views.TicketsViewlet"
+    class=".buyable.BuyableViewlet"
     template="buyable_viewlet.pt"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
@@ -83,7 +83,7 @@
   <browser:page
     name="buyable_tickets"
     for="..interfaces.IBuyableEvent"
-    class=".views.BuyableEventTickets"
+    class=".buyable.BuyableEventTickets"
     template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
@@ -92,7 +92,7 @@
   <browser:page
     name="buyable_tickets"
     for="plone.event.interfaces.IOccurrence"
-    class=".views.BuyableEventOccurrenceTickets"
+    class=".buyable.BuyableEventOccurrenceTickets"
     template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
