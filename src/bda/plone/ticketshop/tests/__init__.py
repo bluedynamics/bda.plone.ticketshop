@@ -90,6 +90,7 @@ class TicketshopATLayer(TicketshopContentLayerBase):
     def setUpPloneSite(self, portal):
         if PLONE5:
             self.applyProfile(portal, 'Products.ATContentTypes:default')
+        self.applyProfile(portal, 'bda.plone.ticketshop.at:default')
         self.setup_content(portal)
 
 
