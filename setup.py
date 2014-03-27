@@ -39,12 +39,14 @@ setup(
     ],
     extras_require={
         'test': [
-            'plone.app.testing',
-            'plone.app.contenttypes',
             'Products.ATContentTypes',
             'bda.plone.ticketshop',
             'interlude[ipython]>=1.3.1',
-          ]
+            'plone.app.contenttypes',
+            'plone.app.dexterity',
+            'plone.app.robotframework [debug]',
+            'plone.app.testing [robot]',
+        ]
     },
     entry_points="""
     [z3c.autoinclude.plugin]
