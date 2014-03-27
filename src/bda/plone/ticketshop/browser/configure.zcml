@@ -19,6 +19,7 @@
   <!-- availability adapter -->
   <adapter factory=".availability.SharedCartItemAvailability" />
 
+
   <!-- occurrences action -->
   <browser:page
     for="*"
@@ -36,6 +37,9 @@
     permission="cmf.ModifyPortalContent"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
+
+  <!-- VIEWLET -->
+
   <!-- buyable event tickets viewlet -->
   <browser:viewlet
     name="bda.plone.ticketshop.tickets"
@@ -43,6 +47,7 @@
     permission="zope2.View"
     for="..interfaces.IBuyableEvent"
     class=".views.TicketsViewlet"
+    template="buyable_viewlet.pt"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
   <!-- buyable event occurrence tickets viewlet -->
@@ -52,6 +57,7 @@
     permission="zope2.View"
     for="plone.event.interfaces.IOccurrence"
     class=".views.TicketsViewlet"
+    template="buyable_viewlet.pt"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
   <!-- buyable event tickets -->
@@ -59,7 +65,7 @@
     name="buyable_tickets"
     for="..interfaces.IBuyableEvent"
     class=".views.BuyableEventTickets"
-    template="tickets.pt"
+    template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
@@ -68,7 +74,7 @@
     name="buyable_tickets"
     for="plone.event.interfaces.IOccurrence"
     class=".views.BuyableEventOccurrenceTickets"
-    template="tickets.pt"
+    template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
@@ -77,9 +83,10 @@
     name="buyable_controls"
     for="..interfaces.ISharedStock"
     class="bda.plone.shop.browser.buyable.BuyableControls"
-    template="buyable.pt"
+    template="buyable_controls.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
+
 
   <!-- ticket view -->
   <browser:page
@@ -99,6 +106,8 @@
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
+
+  <!-- display correct url in order views -->
   <configure package="bda.plone.orders.browser">
     <browser:page
       for="*"
@@ -108,13 +117,12 @@
       permission="bda.plone.orders.ViewOrders"
       layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
   </configure>
+
   <browser:page
     for="*"
     name="exportorders"
     class="bda.plone.ticketshop.browser.views.ExportOrdersForm"
     permission="bda.plone.orders.ViewOrders"
     layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
-
-
 
 </configure>

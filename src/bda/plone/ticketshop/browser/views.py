@@ -1,6 +1,5 @@
 from Acquisition import aq_parent
 from Products.Five import BrowserView
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bda.plone.cart import ascur
 from bda.plone.cart import get_item_availability
 from bda.plone.orders.browser import views
@@ -15,7 +14,7 @@ from ..interfaces import ITicketOccurrenceData
 
 
 class TicketsViewlet(ViewletBase):
-    index = ViewPageTemplateFile('tickets_viewlet.pt')
+    pass
 
 
 class SharedStockBuyables(BrowserView):
