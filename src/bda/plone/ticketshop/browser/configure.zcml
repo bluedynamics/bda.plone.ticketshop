@@ -59,27 +59,35 @@
 
   <!-- VIEWLET -->
 
-  <!-- buyable event tickets viewlet -->
+  <!-- viewlet for events -->
   <browser:viewlet
-    name="bda.plone.ticketshop.tickets"
-    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
-    permission="zope2.View"
+    name="bda.plone.shop.buyable"
     for="..interfaces.IBuyableEvent"
     class=".buyable.BuyableViewlet"
     template="buyable_viewlet.pt"
-    layer="..interfaces.ITicketShopExtensionLayer" />
-
-  <!-- buyable event occurrence tickets viewlet -->
-  <browser:viewlet
-    name="bda.plone.ticketshop.tickets"
-    manager="plone.app.layout.viewlets.interfaces.IBelowContentBody"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+  <!-- viewlet for occurrences -->
+  <browser:viewlet
+    name="bda.plone.shop.buyable"
     for="plone.event.interfaces.IOccurrence"
     class=".buyable.BuyableViewlet"
     template="buyable_viewlet.pt"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+    permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+  <!-- viewlet for tickets -->
+  <browser:viewlet
+    name="bda.plone.shop.buyable"
+    for="..interfaces.ITicket"
+    class=".buyable.BuyableViewlet"
+    template="buyable_viewlet.pt"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+    permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
-  <!-- buyable event tickets -->
+  <!-- buyable_tickets for events -->
   <browser:page
     name="buyable_tickets"
     for="..interfaces.IBuyableEvent"
@@ -87,12 +95,27 @@
     template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
-
-  <!-- buyable event occurrence tickets -->
+  <!-- buyable_events for occurrences -->
   <browser:page
     name="buyable_tickets"
     for="plone.event.interfaces.IOccurrence"
     class=".buyable.BuyableEventOccurrenceTickets"
+    template="buyable_tickets.pt"
+    permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+  <!-- buyable_events for tickets -->
+  <browser:page
+    name="buyable_tickets"
+    for="..interfaces.ITicket"
+    class=".buyable.BuyableTicketTickets"
+    template="buyable_tickets.pt"
+    permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+  <!-- buyable_events for ticket occurrences -->
+  <browser:page
+    name="buyable_tickets"
+    for="..interfaces.ITicketOccurrence"
+    class=".buyable.BuyableTicketOccurrenceTickets"
     template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
