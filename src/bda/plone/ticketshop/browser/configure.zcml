@@ -125,7 +125,7 @@
     name="buyable_controls"
     for="..interfaces.ISharedStock"
     class="bda.plone.shop.browser.buyable.BuyableControls"
-    template="buyable_controls.pt"
+    template="buyable.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
