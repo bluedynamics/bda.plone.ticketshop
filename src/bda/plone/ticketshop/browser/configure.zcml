@@ -64,7 +64,7 @@
     name="bda.plone.shop.buyable"
     for="..interfaces.IBuyableEvent"
     class=".buyable.BuyableViewlet"
-    template="buyable_viewlet.pt"
+    template="buyable_event_viewlet.pt"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
@@ -73,7 +73,7 @@
     name="bda.plone.shop.buyable"
     for="plone.event.interfaces.IOccurrence"
     class=".buyable.BuyableViewlet"
-    template="buyable_viewlet.pt"
+    template="buyable_event_viewlet.pt"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
@@ -82,7 +82,7 @@
     name="bda.plone.shop.buyable"
     for="..interfaces.ITicket"
     class=".buyable.BuyableViewlet"
-    template="buyable_viewlet.pt"
+    template="buyable_ticket_viewlet.pt"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
@@ -100,22 +100,6 @@
     name="buyable_tickets"
     for="plone.event.interfaces.IOccurrence"
     class=".buyable.BuyableEventOccurrenceTickets"
-    template="buyable_tickets.pt"
-    permission="zope2.View"
-    layer="..interfaces.ITicketShopExtensionLayer" />
-  <!-- buyable_events for tickets -->
-  <browser:page
-    name="buyable_tickets"
-    for="..interfaces.ITicket"
-    class=".buyable.BuyableTicketTickets"
-    template="buyable_tickets.pt"
-    permission="zope2.View"
-    layer="..interfaces.ITicketShopExtensionLayer" />
-  <!-- buyable_events for ticket occurrences -->
-  <browser:page
-    name="buyable_tickets"
-    for="..interfaces.ITicketOccurrence"
-    class=".buyable.BuyableTicketOccurrenceTickets"
     template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />

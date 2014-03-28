@@ -1,0 +1,1 @@
+<tal:buyable_tickets replace="structure context/@@buyable_controls" />

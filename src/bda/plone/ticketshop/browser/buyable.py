@@ -32,11 +32,6 @@ class SharedStockBuyables(BrowserView):
         return self._item_availability.details
 
     @property
-    def ticket_context(self):
-        raise NotImplementedError(u"Abstract SharedStockBuyableViewletBase "
-                                  u"does not implement ticket context")
-
-    @property
     def tickets(self):
         raise NotImplementedError(u"Abstract SharedStockBuyableViewletBase "
                                   u"does not implement tickets")
@@ -45,13 +40,9 @@ class SharedStockBuyables(BrowserView):
 class BuyableEventTickets(SharedStockBuyables):
 
     @property
-    def ticket_context(self):
-        return self.context
-
-    @property
     def tickets(self):
         if not hasattr(self.request, '_tickets'):
-            data = ITicketOccurrenceData(self.ticket_context)
+            data = ITicketOccurrenceData(self.context)
             self.request._tickets = data.tickets
         return self.request._tickets
 
@@ -66,20 +57,6 @@ class BuyableEventOccurrenceTickets(SharedStockBuyables):
     def tickets(self):
         if not hasattr(self.request, '_tickets'):
             occurrence_id = self.context.id
-            data = ITicketOccurrenceData(self.ticket_context)
+            data = ITicketOccurrenceData(aq_parent(self.context))
             self.request._tickets = data.ticket_occurrences(occurrence_id)
         return self.request._tickets
-
-
-class BuyableTicketTickets(BuyableEventTickets):
-
-    @property
-    def ticket_context(self):
-        return aq_parent(self.context)
-
-
-class BuyableTicketOccurrenceTickets(BuyableEventOccurrenceTickets):
-
-    @property
-    def ticket_context(self):
-        return aq_parent(aq_parent(self.context))
