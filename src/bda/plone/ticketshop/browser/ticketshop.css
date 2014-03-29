@@ -9,3 +9,5 @@ div.ticket {
     border-top:#ccc 1px solid;
     padding-top:1em;
 }
+
+.ticket.meta { float: left; }

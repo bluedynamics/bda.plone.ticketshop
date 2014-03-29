@@ -10,15 +10,22 @@
 
   <metal:content-core fill-slot="content-core">
     <metal:block define-macro="content-core">
+    <tal:def define="event_context view/event_context;
+                     event_data view/event_data">
 
-      <strong i18n:translate="item_available">Available</strong>
-      <span tal:content="view/available">0.0</span>
+      <div class="ticket meta">
+        <strong class="available" i18n:translate="item_available">Available</strong>
+        <span class="available" tal:content="view/available">0.0</span>
 
-      <br />
+        <br />
 
-      <strong i18n:translate="item_overbook">Overbook</strong>
-      <span tal:content="view/overbook">0.0</span>
+        <strong class="overbook" i18n:translate="item_overbook">Overbook</strong>
+        <span class="overbook" tal:content="view/overbook">0.0</span>
+      </div>
 
+      <tal:eventsummary replace="structure view/event_summary"/>
+
+    </tal:def>
     </metal:block>
   </metal:content-core>
 

@@ -5,9 +5,18 @@ from bda.plone.orders.browser import views
 from bda.plone.shop.at import field_value
 from plone.app.uuid.utils import uuidToObject
 from plone.event.interfaces import IEvent
+from plone.event.interfaces import IEventAccessor
+from plone.app.event.browser.event_summary import EventSummaryView
 
 from ..interfaces import ITicket
 from ..interfaces import ITicketOccurrence
+
+
+class EventTicketSummaryView(EventSummaryView):
+
+    def __init__(self, request, response):
+        super(EventSummaryView, self).__init__(request, response)
+        self.excludes = ['subjects', 'occurrences', 'ical']
 
 
 class TicketView(BrowserView):
@@ -20,16 +29,24 @@ class TicketView(BrowserView):
     def overbook(self):
         return field_value(self.context, 'item_overbook')
 
-
-class TicketOccurrenceView(BrowserView):
+    @property
+    def event_context(self):
+        return aq_parent(self.context)
 
     @property
-    def available(self):
-        return field_value(self.context, 'item_available')
+    def event_data(self):
+        return IEventAccessor(self.event_context)
+
+    def event_summary(self):
+        return self.event_context.restrictedTraverse(
+            '@@event_ticket_summary')()
+
+
+class TicketOccurrenceView(TicketView):
 
     @property
-    def overbook(self):
-        return field_value(self.context, 'item_overbook')
+    def event_context(self):
+        return aq_parent(aq_parent(self.context))
 
 
 def _get_booking_url(booking):

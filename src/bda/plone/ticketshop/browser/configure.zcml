@@ -56,6 +56,24 @@
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
+  <!-- custom event summary view -->
+  <configure package="plone.app.event.browser">
+    <browser:page
+        for="plone.event.interfaces.IEvent"
+        name="event_ticket_summary"
+        class="bda.plone.ticketshop.browser.views.EventTicketSummaryView"
+        template="event_summary.pt"
+        permission="zope2.View"
+        layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
+
+    <browser:page
+        for="plone.event.interfaces.IOccurrence"
+        name="event_ticket_summary"
+        class="bda.plone.ticketshop.browser.views.EventTicketSummaryView"
+        template="event_summary.pt"
+        permission="zope2.View"
+        layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
+  </configure>
 
   <!-- VIEWLET -->
 
