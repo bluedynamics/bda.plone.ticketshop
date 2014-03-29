@@ -33,10 +33,6 @@ class TicketView(BrowserView):
     def event_context(self):
         return aq_parent(self.context)
 
-    @property
-    def event_data(self):
-        return IEventAccessor(self.event_context)
-
     def event_summary(self):
         return self.event_context.restrictedTraverse(
             '@@event_ticket_summary')()

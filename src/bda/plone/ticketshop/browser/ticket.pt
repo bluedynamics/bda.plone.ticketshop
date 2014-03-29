@@ -10,8 +10,6 @@
 
   <metal:content-core fill-slot="content-core">
     <metal:block define-macro="content-core">
-    <tal:def define="event_context view/event_context;
-                     event_data view/event_data">
 
       <div class="ticket meta">
         <strong class="available" i18n:translate="item_available">Available</strong>
@@ -25,7 +23,6 @@
 
       <tal:eventsummary replace="structure view/event_summary"/>
 
-    </tal:def>
     </metal:block>
   </metal:content-core>
 
