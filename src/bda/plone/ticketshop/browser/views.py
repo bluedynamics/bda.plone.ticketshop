@@ -5,7 +5,6 @@ from bda.plone.orders.browser import views
 from bda.plone.shop.at import field_value
 from plone.app.uuid.utils import uuidToObject
 from plone.event.interfaces import IEvent
-from plone.event.interfaces import IEventAccessor
 from plone.app.event.browser.event_summary import EventSummaryView
 
 from ..interfaces import ITicket
@@ -15,7 +14,7 @@ from ..interfaces import ITicketOccurrence
 class EventTicketSummaryView(EventSummaryView):
 
     def __init__(self, request, response):
-        super(EventSummaryView, self).__init__(request, response)
+        super(EventTicketSummaryView, self).__init__(request, response)
         self.excludes = ['subjects', 'occurrences', 'ical']
 
 
