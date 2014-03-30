@@ -1,6 +1,6 @@
 from Products.CMFCore import utils
 from Products.Archetypes import atapi
-from . import config
+from bda.plone.ticketshop import config
 
 
 def initialize(context):

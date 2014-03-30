@@ -3,12 +3,11 @@ from Products.Five import BrowserView
 from bda.plone.cart import ascur
 from bda.plone.orders.browser import views
 from bda.plone.shop.at import field_value
+from bda.plone.ticketshop.interfaces import ITicket
+from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from plone.app.uuid.utils import uuidToObject
 from plone.event.interfaces import IEvent
 from plone.app.event.browser.event_summary import EventSummaryView
-
-from ..interfaces import ITicket
-from ..interfaces import ITicketOccurrence
 
 
 class EventTicketSummaryView(EventSummaryView):

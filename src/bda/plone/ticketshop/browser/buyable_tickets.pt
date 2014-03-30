@@ -6,18 +6,23 @@
                      ajax:action string:buyable_tickets:.tickets_wrapper:replace;
                      class string:tickets_wrapper ${view/listen_uid_css}"
      tal:condition="view/tickets">
-  <div class="availability"
-       i18n:domain="bda.plone.shop">
-    <strong i18n:translate="availability">Availability</strong>
-    <div class="signal green"
-         tal:attributes="class string:signal ${view/availability_signal}">
-      &nbsp;
+
+  <tal:info condition="view/can_view_buyable_info">
+
+    <div class="availability"
+         i18n:domain="bda.plone.shop">
+      <strong i18n:translate="availability">Availability</strong>
+      <div class="signal green"
+           tal:attributes="class string:signal ${view/availability_signal}">
+        &nbsp;
+      </div>
+      <div class="availability_details"
+           tal:content="structure view/availability_details">
+        deliverable until 1.1.2013
+      </div>
     </div>
-    <div class="availability_details"
-         tal:content="structure view/availability_details">
-      deliverable until 1.1.2013
-    </div>
-  </div>
+
+  </tal:info>
 
   <div class="tickets">
     <div class="ticket" tal:repeat="ticket view/tickets">

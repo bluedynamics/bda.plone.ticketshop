@@ -1,8 +1,8 @@
 import transaction
 from zExceptions import Redirect
 from Products.Five import BrowserView
-from ..interfaces import IBuyableEvent
-from ..interfaces import ITicketOccurrenceData
+from bda.plone.ticketshop.interfaces import IBuyableEvent
+from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 
 
 class TicketOccurrence(BrowserView):

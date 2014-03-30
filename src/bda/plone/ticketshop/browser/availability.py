@@ -6,8 +6,8 @@ from bda.plone.cart import extractitems
 from bda.plone.cart import readcookie
 from bda.plone.cart import get_item_state
 from bda.plone.shop.browser.availability import CartItemAvailability
-from ..interfaces import ISharedStock
-from ..interfaces import ISharedStockData
+from bda.plone.ticketshop.interfaces import ISharedStock
+from bda.plone.ticketshop.interfaces import ISharedStockData
 
 
 _ = MessageFactory('bda.plone.ticketshop')

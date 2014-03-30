@@ -19,7 +19,6 @@
   <!-- availability adapter -->
   <adapter factory=".availability.SharedCartItemAvailability" />
 
-
   <!-- occurrences action -->
   <browser:page
     for="*"
@@ -36,7 +35,6 @@
     attribute="create"
     permission="cmf.ModifyPortalContent"
     layer="..interfaces.ITicketShopExtensionLayer" />
-
 
   <!-- ticket view -->
   <browser:page
@@ -86,6 +84,7 @@
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
+
   <!-- viewlet for occurrences -->
   <browser:viewlet
     name="bda.plone.shop.buyable"
@@ -95,6 +94,7 @@
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
+
   <!-- viewlet for tickets -->
   <browser:viewlet
     name="bda.plone.shop.buyable"
@@ -113,6 +113,7 @@
     template="buyable_tickets.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
+
   <!-- buyable_events for occurrences -->
   <browser:page
     name="buyable_tickets"
@@ -130,7 +131,6 @@
     template="buyable.pt"
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
-
 
   <!-- display correct url in order views -->
   <configure package="bda.plone.orders.browser">

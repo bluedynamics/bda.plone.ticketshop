@@ -9,6 +9,12 @@ from bda.plone.cart import get_item_stock
 from bda.plone.cart import readcookie
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
+from bda.plone.ticketshop.interfaces import IBuyableEvent
+from bda.plone.ticketshop.interfaces import ISharedStock
+from bda.plone.ticketshop.interfaces import ISharedStockData
+from bda.plone.ticketshop.interfaces import ITicket
+from bda.plone.ticketshop.interfaces import ITicketOccurrence
+from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from persistent.dict import PersistentDict
 from plone.app.event.base import DT
 from plone.app.event.recurrence import Occurrence
@@ -22,12 +28,6 @@ from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
-from .interfaces import IBuyableEvent
-from .interfaces import ISharedStock
-from .interfaces import ISharedStockData
-from .interfaces import ITicket
-from .interfaces import ITicketOccurrence
-from .interfaces import ITicketOccurrenceData
 
 
 _ = MessageFactory('bda.plone.ticketshop')

@@ -1,9 +1,10 @@
+import plone.api
 from Acquisition import aq_parent
 from Products.Five import BrowserView
 from bda.plone.cart import get_item_availability
+from bda.plone.shop import permissions
+from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from plone.app.layout.viewlets.common import ViewletBase
-
-from ..interfaces import ITicketOccurrenceData
 
 
 class BuyableViewlet(ViewletBase):
@@ -13,15 +14,20 @@ class BuyableViewlet(ViewletBase):
 class SharedStockBuyables(BrowserView):
 
     @property
+    def _item_availability(self):
+        return get_item_availability(self.tickets[0], self.request)
+
+    @property
+    def can_view_buyable_info(self):
+        user = plone.api.user.get_current()
+        return user.checkPermission(permissions.ViewBuyableInfo, self.context)
+
+    @property
     def listen_uid_css(self):
         classes = list()
         for ticket in self.tickets:
             classes.append('cart_item_%s' % ticket.UID())
         return ' '.join(classes)
-
-    @property
-    def _item_availability(self):
-        return get_item_availability(self.tickets[0], self.request)
 
     @property
     def availability_signal(self):
