@@ -8,7 +8,7 @@ from bda.plone.shop.browser.buyable import BuyableControls as _BuyableControls
 
 
 class BuyableControls(_BuyableControls):
-    include_available = True
+    show_available = True
 
 
 class SharedStockBuyables(BrowserView):
