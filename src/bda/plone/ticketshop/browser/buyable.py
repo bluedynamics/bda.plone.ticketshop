@@ -4,11 +4,6 @@ from Products.Five import BrowserView
 from bda.plone.cart import get_item_availability
 from bda.plone.shop import permissions
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
-from plone.app.layout.viewlets.common import ViewletBase
-
-
-class BuyableViewlet(ViewletBase):
-    pass
 
 
 class SharedStockBuyables(BrowserView):

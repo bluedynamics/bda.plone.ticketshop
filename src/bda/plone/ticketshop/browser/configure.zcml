@@ -79,7 +79,7 @@
   <browser:viewlet
     name="bda.plone.shop.buyable"
     for="..interfaces.IBuyableEvent"
-    class=".buyable.BuyableViewlet"
+    class="plone.app.layout.viewlets.common.ViewletBase"
     template="buyable_event_viewlet.pt"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
@@ -89,7 +89,7 @@
   <browser:viewlet
     name="bda.plone.shop.buyable"
     for="plone.event.interfaces.IOccurrence"
-    class=".buyable.BuyableViewlet"
+    class="plone.app.layout.viewlets.common.ViewletBase"
     template="buyable_event_viewlet.pt"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
@@ -99,7 +99,7 @@
   <browser:viewlet
     name="bda.plone.shop.buyable"
     for="..interfaces.ITicket"
-    class=".buyable.BuyableViewlet"
+    class="plone.app.layout.viewlets.common.ViewletBase"
     template="buyable_ticket_viewlet.pt"
     manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
     permission="zope2.View"
