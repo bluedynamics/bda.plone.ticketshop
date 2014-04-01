@@ -4,6 +4,11 @@ from Products.Five import BrowserView
 from bda.plone.cart import get_item_availability
 from bda.plone.shop import permissions
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
+from bda.plone.shop.browser.buyable import BuyableControls as _BuyableControls
+
+
+class BuyableControls(_BuyableControls):
+    include_available = True
 
 
 class SharedStockBuyables(BrowserView):

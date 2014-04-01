@@ -124,13 +124,15 @@
     layer="..interfaces.ITicketShopExtensionLayer" />
 
   <!-- buyable controls -->
+  <configure package="bda.plone.shop.browser">
   <browser:page
     name="buyable_controls"
-    for="..interfaces.ISharedStock"
-    class="bda.plone.shop.browser.buyable.BuyableControls"
+    for="bda.plone.ticketshop.interfaces.ISharedStock"
+    class="bda.plone.ticketshop.browser.buyable.BuyableControls"
     template="buyable.pt"
     permission="zope2.View"
-    layer="..interfaces.ITicketShopExtensionLayer" />
+    layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
+  </configure>
 
   <!-- display correct url in order views -->
   <configure package="bda.plone.orders.browser">

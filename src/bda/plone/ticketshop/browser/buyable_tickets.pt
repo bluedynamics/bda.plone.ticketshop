@@ -7,6 +7,7 @@
                      class string:tickets_wrapper ${view/listen_uid_css}"
      tal:condition="view/tickets">
 
+  <tal:out condition="nothing">
   <tal:info condition="view/can_view_buyable_info">
 
     <div class="availability"
@@ -23,6 +24,7 @@
     </div>
 
   </tal:info>
+  </tal:out>
 
   <div class="tickets">
     <div class="ticket" tal:repeat="ticket view/tickets">
