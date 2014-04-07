@@ -13,4 +13,8 @@
     factory=".SharedStockExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
 
+  <adapter
+    name="item_display_stock"
+    factory=".default_item_display_stock" />
+
 </configure>

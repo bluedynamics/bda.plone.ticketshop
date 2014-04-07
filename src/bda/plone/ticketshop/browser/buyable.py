@@ -3,12 +3,17 @@ from Acquisition import aq_parent
 from Products.Five import BrowserView
 from bda.plone.cart import get_item_availability
 from bda.plone.shop import permissions
+from bda.plone.ticketshop.interfaces import ITicket
+from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from bda.plone.shop.browser.buyable import BuyableControls as _BuyableControls
 
 
 class BuyableControls(_BuyableControls):
-    show_available = False
+
+    @property
+    def show_available(self):
+        return False
 
 
 class SharedStockBuyables(BrowserView):
@@ -28,6 +33,10 @@ class SharedStockBuyables(BrowserView):
         for ticket in self.tickets:
             classes.append('cart_item_%s' % ticket.UID())
         return ' '.join(classes)
+
+    @property
+    def show_available(self):
+        return self._item_availability.display
 
     @property
     def availability_signal(self):

@@ -5,6 +5,8 @@ from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import IExtensionField
 from Products.Archetypes.public import FloatField
+from Products.Archetypes.public import BooleanField
+from Products.Archetypes.interfaces import IFieldDefaultProvider
 from ..interfaces import ITicketShopExtensionLayer
 from ..interfaces import ITicketOccurrence
 from ..interfaces import ISharedStock
@@ -83,14 +85,28 @@ class SharedStockExtensionField(object):
             return getattr(instance, name)
 
 
-class XSharedStockFloatField(SharedStockExtensionField, FloatField):
-    pass
+class XSharedStockFloatField(SharedStockExtensionField, FloatField): pass
+class XSharedStockBooleanField(SharedStockExtensionField, BooleanField): pass
+
+
+@implementer(IFieldDefaultProvider)
+@adapter(ISharedStock)
+def default_item_display_stock(context):
+    # XXX: field default provider gets called but value is ignored.
+    return lambda: True
 
 
 @adapter(ISharedStock)
 class SharedStockExtender(ExtenderBase):
     layer = ITicketShopExtensionLayer
     fields = [
+        XSharedStockBooleanField(
+            name='item_display_stock',
+            schemata='Shop',
+            widget=BooleanField._properties['widget'](
+                label=_(u'label_item_display_stock', u'Display item stock'),
+            ),
+        ),
         XSharedStockFloatField(
             name='item_available',
             schemata='Shop',

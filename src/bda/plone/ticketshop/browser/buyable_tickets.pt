@@ -10,6 +10,7 @@
   <tal:info condition="view/can_view_buyable_info">
 
     <div class="availability"
+         tal:condition="view/show_available"
          i18n:domain="bda.plone.shop">
       <strong i18n:translate="availability">Availability</strong>
       <div class="signal green"
