@@ -2,6 +2,7 @@ from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
+from Products.CMFPlone.utils import safe_unicode
 from bda.plone.cart import CartItemStateBase
 from bda.plone.cart import aggregate_cart_item_count
 from bda.plone.cart import extractitems
@@ -266,9 +267,9 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
                 long_format=True,
                 context=event
             )
-            booking.attrs['title'] = '%s - %s (%s - %s)' % (
-                acc.title,
-                booking.attrs['title'],
+            booking.attrs['title'] = u'%s - %s (%s - %s)' % (
+                safe_unicode(acc.title),
+                safe_unicode(booking.attrs['title']),
                 lstart,
                 lend
             )
