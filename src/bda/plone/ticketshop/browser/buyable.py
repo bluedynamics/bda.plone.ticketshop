@@ -1,4 +1,4 @@
-import plone.api
+from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from Products.Five import BrowserView
 from bda.plone.cart import get_item_availability
@@ -22,8 +22,8 @@ class SharedStockBuyables(BrowserView):
 
     @property
     def can_view_buyable_info(self):
-        user = plone.api.user.get_current()
-        return user.checkPermission(permissions.ViewBuyableInfo, self.context)
+        sm = getSecurityManager()
+        return sm.checkPermission(permissions.ViewBuyableInfo, self.context)
 
     @property
     def listen_uid_css(self):
