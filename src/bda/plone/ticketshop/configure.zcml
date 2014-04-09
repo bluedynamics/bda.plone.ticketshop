@@ -21,11 +21,10 @@
     for="Products.Archetypes.interfaces.IBaseObject
          bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
     factory=".common.TicketOrderCheckoutAdapter" />
-  <!-- TODO: don't know, why we'd need a ticket checkout adapter for site root -->
-  <!--adapter
+  <adapter
     for="Products.CMFPlone.interfaces.IPloneSiteRoot
          bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
-    factory=".common.TicketOrderCheckoutAdapter"/-->
+    factory=".common.TicketOrderCheckoutAdapter"/>
 
 
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
