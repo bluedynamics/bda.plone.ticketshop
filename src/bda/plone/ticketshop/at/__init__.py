@@ -16,7 +16,7 @@ from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
 
 
-_ = MessageFactory('bda.plone.shop')
+_ = MessageFactory('bda.plone.ticketshop')
 
 
 def field_value(obj, field_name):

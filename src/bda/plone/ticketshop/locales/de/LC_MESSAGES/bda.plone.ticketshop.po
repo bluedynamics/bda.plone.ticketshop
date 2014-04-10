@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2013-06-22 07:56+0000\n"
+"POT-Creation-Date: 2014-04-10 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,42 +43,57 @@ msgid "Ticket Occurrence"
 msgstr "Ticket Wiederholung"
 
 #. Default: "Ticket is no longer available, please remove from cart"
-#: ./common.py:54
+#: ./common.py:122
 msgid "alert_ticket_no_longer_available"
 msgstr "Keine Tickets mehr verfügbar. Bitte entfernen Sie dieses Ticket aus dem Warenkorb."
 
 #. Default: "Limit exceed by ${exceed} tickets"
-#: ./common.py:60
+#: ./common.py:128
 msgid "alert_ticket_number_exceed"
 msgstr "Anzahl Tickets um ${exceed} überschritten. Bitte passen Sie die Anzahl dieses Tickets im Warenkorb an."
 
 #. Default: "${reserved} tickets reserved"
-#: ./common.py:66
+#: ./common.py:134
 msgid "alert_ticket_number_reserved"
 msgstr "${reserved} Tickets als Vorbestellung"
 
+#. Default: "Limit of tickets for this event reached"
+#: ./common.py:79
+msgid "event_tickets_limit_reached"
+msgstr "Maximal erlaubte Anzahl an Tickets für diese Veranstaltung erreicht"
+
 #. Default: "Available"
-#: ./browser/ticket.pt:14
+#: ./browser/ticket.pt:15
 msgid "item_available"
-msgstr "Verfügbar"
+msgstr "Verfügbare Tickets"
 
 #. Default: "Overbook"
-#: ./browser/ticket.pt:19
+#: ./browser/ticket.pt:20
 msgid "item_overbook"
-msgstr "Überbuchen"
+msgstr "Erlaubte Vorreservierungen"
 
 #. Default: "Item stock available"
-#: ./at/__init__.py:85
+#: ./at/__init__.py:157
 msgid "label_item_available"
-msgstr "Verfügbar"
+msgstr "Anzahl verfügbare Tickets"
+
+#. Default: "Max count of this item in cart"
+#: ./at/__init__.py:54
+msgid "label_item_cart_count_limit"
+msgstr "Maximal erlaubte Anzahl an Tickets für diese Veranstaltung im Warenkorb"
+
+#. Default: "Display item stock"
+#: ./at/__init__.py:150
+msgid "label_item_display_stock"
+msgstr "Zeige Ticket Verfügbarkeit"
 
 #. Default: "Item stock overbook"
-#: ./at/__init__.py:92
+#: ./at/__init__.py:164
 msgid "label_item_overbook"
-msgstr "Überbuchen"
+msgstr "Anzahl erlaubte Vorreservierungen"
 
 #. Default: "Just ${available} tickets(s) left."
-#: ./browser/availability.py:51
+#: ./browser/availability.py:47
 msgid "ticket_critical_available_message"
 msgstr "Nur noch ${available} Ticket(s) verfügbar."
 
@@ -88,7 +103,7 @@ msgid "ticket_critical_available_title"
 msgstr "Wenige Tickets verfügbar."
 
 #. Default: "${available} tickets(s) available."
-#: ./browser/availability.py:44
+#: ./browser/availability.py:40
 msgid "ticket_full_available_message"
 msgstr "${available} Tickets verfügbar."
 
@@ -96,6 +111,11 @@ msgstr "${available} Tickets verfügbar."
 #: ./browser/availability_details.pt:14
 msgid "ticket_full_available_title"
 msgstr "Tickets verfügbar"
+
+#. Default: "Limit for this ticket reached"
+#: ./common.py:87
+msgid "ticket_limit_reached"
+msgstr "Maximal erlaubte Anzahl dieses Tickets im Warenkorb erreicht"
 
 #. Default: "Tickets are sold out."
 #: ./browser/availability_details.pt:8
@@ -108,7 +128,7 @@ msgid "ticket_not_available_title"
 msgstr "Für diese Veranstaltung sind keine Tickets mehr verfügbar."
 
 #. Default: "Tickets are sold out. You can add ${reservable} tickets on a reservations list. If some tickets gets refused, you'll get informed."
-#: ./browser/availability.py:64
+#: ./browser/availability.py:60
 msgid "ticket_overbook_available_message"
 msgstr "Tickets sind ausverkauft. Sie können bis zu ${reservable} Tickets vorbestellen. Sollte ein Platz frei werden, erhalten Sie die Option dennoch an der Veranstaltung teil zu nehmen."
 
@@ -116,4 +136,9 @@ msgstr "Tickets sind ausverkauft. Sie können bis zu ${reservable} Tickets vorbe
 #: ./browser/availability_details.pt:32
 msgid "ticket_overbook_available_title"
 msgstr "Ticket Vorbestellungen verfügbar."
+
+#. Default: "Not enough tickets available, abort."
+#: ./common.py:96
+msgid "trying_to_add_more_tickets_than_available"
+msgstr "Nicht mehr genügend Tickets verfügbar. Abbruch."
 
