@@ -64,6 +64,9 @@ class ATBuyableEventData(object):
     """Accessor Interface
     """
 
+    def __init__(self, context):
+        self.context = context
+
     @property
     def cart_count_limit(self):
         return field_value(self.context, 'item_cart_count_limit')

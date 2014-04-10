@@ -72,8 +72,8 @@ class TicketShopCartDataProvider(CartDataProvider):
                 # we already have count for item to validate
                 if uid == ticket_uid:
                     continue
-                aggregated_count += aggregate_cart_item_count(
-                    ticket_uid, items)
+                aggregated_count += float(
+                    aggregate_cart_item_count(ticket_uid, items))
             if aggregated_count > buyable_event_data.cart_count_limit:
                 message = translate(
                     _('event_tickets_limit_reached',

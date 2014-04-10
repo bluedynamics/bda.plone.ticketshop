@@ -18,15 +18,18 @@
 
   <!-- Custom cart data provider -->
   <adapter
-    for="bda.plone.ticketshop.interfaces.IBuyableEvent"
+    for="bda.plone.ticketshop.interfaces.IBuyableEvent
+         zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".common.TicketShopCartDataProvider" />
 
   <adapter
-    for="bda.plone.ticketshop.interfaces.ITicket"
+    for="bda.plone.ticketshop.interfaces.ITicket
+         zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".common.TicketShopCartDataProvider" />
 
   <adapter
-    for="bda.plone.ticketshop.interfaces.ITicketOccurrence"
+    for="bda.plone.ticketshop.interfaces.ITicketOccurrence
+         zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".common.TicketShopCartDataProvider" />
 
   <!-- Custom checkout adapter for tickets -->

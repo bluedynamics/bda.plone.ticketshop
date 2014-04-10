@@ -8,6 +8,8 @@
     factory=".BuyableEventExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
 
+  <adapter factory=".ATBuyableEventData" />
+
   <adapter
     name="bda.plone.shop.buyable"
     factory=".TicketOccurenceBuyableExtender"
