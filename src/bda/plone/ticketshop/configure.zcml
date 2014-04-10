@@ -31,9 +31,15 @@
 
   <adapter factory=".common.TicketCartItemState" />
 
-  <adapter factory=".common.TicketSharedStock" />
+  <adapter factory=".common.EventTickets" />
 
-  <adapter factory=".common.TicketOccurrenceSharedStock" />
+  <adapter factory=".common.EventTicketOccurrences" />
+
+  <adapter factory=".common.TicketSharedStock"
+           provides=".interfaces.ISharedStockData" />
+
+  <adapter factory=".common.TicketOccurrenceSharedStock"
+           provides=".interfaces.ISharedStockData" />
 
   <adapter factory=".common.TicketOccurrenceData" />
 

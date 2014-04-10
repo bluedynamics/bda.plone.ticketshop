@@ -7,10 +7,12 @@ from archetypes.schemaextender.interfaces import IExtensionField
 from Products.Archetypes.public import FloatField
 from Products.Archetypes.public import BooleanField
 from Products.Archetypes.interfaces import IFieldDefaultProvider
+from bda.plone.shop.at import ATCartItemDataProvider
 from ..interfaces import ITicketShopExtensionLayer
 from ..interfaces import ITicketOccurrence
 from ..interfaces import ISharedStock
 from ..interfaces import ISharedStockData
+from ..common import TicketShopCartDataProviderBase
 
 
 _ = MessageFactory('bda.plone.shop')
@@ -122,3 +124,12 @@ class SharedStockExtender(ExtenderBase):
             ),
         ),
     ]
+
+
+#@adapter(IBuyableEvent)
+#@adapter(ITicket)
+#@adapter(ITicketOccurrence)
+class ATTicketShopCartDataProvider(TicketShopCartDataProviderBase,
+                                   ATCartItemDataProvider):
+    """XXX
+    """

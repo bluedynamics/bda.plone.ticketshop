@@ -28,16 +28,20 @@ class ITicketOccurrence(ITicket):
     """
 
 
-class ISharedStockData(Interface):
+class IEventTickets(Interface):
+    """Interface for providing ticket related information.
+    """
+
+    related_key = Attribute(u"Related tickets key.")
+
+    related_uids = Attribute(u"List of uids of related tickets.")
+
+
+class ISharedStockData(IEventTickets):
     """Interface for accessing shared stock data.
     """
 
     shared_stock_context = Attribute(u"Context which holds shared stock data.")
-
-    shared_stock_key = Attribute(u"Shared stock key.")
-
-    related_uids = Attribute(u"List of uids sharing stock data related to "
-                             u"adapted context.")
 
     def get(field_name):
         """Get shared stock value for field name.

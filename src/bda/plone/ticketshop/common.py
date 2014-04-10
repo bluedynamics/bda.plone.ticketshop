@@ -3,14 +3,17 @@ from BTrees.OOBTree import OOBTree
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
+from bda.plone.cart import CartDataProviderBase
 from bda.plone.cart import CartItemStateBase
 from bda.plone.cart import aggregate_cart_item_count
 from bda.plone.cart import extractitems
 from bda.plone.cart import get_item_stock
 from bda.plone.cart import readcookie
+from bda.plone.cart import get_object_by_uid
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
 from bda.plone.ticketshop.interfaces import IBuyableEvent
+from bda.plone.ticketshop.interfaces import IEventTickets
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
 from bda.plone.ticketshop.interfaces import ITicket
@@ -32,6 +35,31 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 _ = MessageFactory('bda.plone.ticketshop')
+
+
+class TicketShopCartDataProviderBase(CartDataProviderBase):
+
+    def acquire_event(self, context):
+        while not IBuyableEvent.providedBy(context):
+            context = aq_parent(context)
+        return context
+
+    def related_tickets(self, ticket):
+        pass
+
+    def validate_count(self, uid, count):
+        """Validate setting cart item count for uid.
+
+        uid - Is the cart item UID.
+        count - If count is 0, it means that a cart item is going to be
+        deleted, which is always allowed. If count is > 0, it's the aggregated
+        item count in cart.
+        """
+        count = float(count)
+        if not count:
+            return {'success': True, 'error': ''}
+        cart_item = get_object_by_uid(self.context, uid)
+        return {'success': True, 'error': ''}
 
 
 @implementer(ICartItemDataProvider)
@@ -97,29 +125,68 @@ class CatalogMixin(object):
         return getToolByName(self.context, 'portal_catalog')
 
 
-SHARED_STOCK_DATA_KEY = 'bda.plone.ticketshop.shared_stock'
-
-
-@implementer(ISharedStockData)
-class SharedStockData(object):
+@implementer(IEventTickets)
+class EventTicketsBase(object):
 
     def __init__(self, context):
         self.context = context
 
     @property
-    def shared_stock_context(self):
-        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
-                                  u"implement ``shared_stock_context``")
-
-    @property
-    def shared_stock_key(self):
-        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
-                                  u"implement ``shared_stock_key``")
+    def related_key(self):
+        raise NotImplementedError(u"Abstract ``TicketData`` does not "
+                                  u"implement ``related_key``")
 
     @property
     def related_uids(self):
-        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
+        raise NotImplementedError(u"Abstract ``TicketData`` does not "
                                   u"implement ``related_uids``")
+
+
+@adapter(ITicket)
+class EventTickets(EventTicketsBase, CatalogMixin):
+
+    @property
+    def related_key(self):
+        return 'canonical_tickets'
+
+    @property
+    def related_uids(self):
+        event = aq_parent(self.context)
+        brains = self.catalog(**{
+            'portal_type': 'Ticket',
+            'path': '/'.join(event.getPhysicalPath()),
+        })
+        return [brain.UID for brain in brains]
+
+
+@adapter(ITicketOccurrence)
+class EventTicketOccurrences(EventTicketsBase, CatalogMixin):
+
+    @property
+    def related_key(self):
+        return self.context.id
+
+    @property
+    def related_uids(self):
+        event = aq_parent(aq_parent(self.context))
+        brains = self.catalog(**{
+            'portal_type': 'Ticket Occurrence',
+            'path': '/'.join(event.getPhysicalPath()),
+            'id': self.related_key,
+        })
+        return [brain.UID for brain in brains]
+
+
+SHARED_STOCK_DATA_KEY = 'bda.plone.ticketshop.shared_stock'
+
+
+@implementer(ISharedStockData)
+class SharedStockData(EventTicketsBase):
+
+    @property
+    def shared_stock_context(self):
+        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
+                                  u"implement ``shared_stock_context``")
 
     @property
     def stock_data(self):
@@ -136,11 +203,11 @@ class SharedStockData(object):
         return data
 
     def get(self, field_name):
-        return self.stock_data.get(self.shared_stock_key, {}).get(field_name)
+        return self.stock_data.get(self.related_key, {}).get(field_name)
 
     def set(self, field_name, value):
         stock_data = self.stock_data
-        data = stock_data.setdefault(self.shared_stock_key, PersistentDict())
+        data = stock_data.setdefault(self.related_key, PersistentDict())
         if not value:
             data[field_name] = None
         else:
@@ -148,46 +215,19 @@ class SharedStockData(object):
 
 
 @adapter(ITicket)
-class TicketSharedStock(SharedStockData, CatalogMixin):
+class TicketSharedStock(EventTickets, SharedStockData):
 
     @property
     def shared_stock_context(self):
         return aq_parent(self.context)
 
-    @property
-    def shared_stock_key(self):
-        return 'canonical_tickets'
-
-    @property
-    def related_uids(self):
-        event = aq_parent(self.context)
-        brains = self.catalog(**{
-            'portal_type': 'Ticket',
-            'path': '/'.join(event.getPhysicalPath()),
-        })
-        return [brain.UID for brain in brains]
-
 
 @adapter(ITicketOccurrence)
-class TicketOccurrenceSharedStock(SharedStockData, CatalogMixin):
+class TicketOccurrenceSharedStock(EventTicketOccurrences, SharedStockData):
 
     @property
     def shared_stock_context(self):
         return aq_parent(aq_parent(self.context))
-
-    @property
-    def shared_stock_key(self):
-        return self.context.id
-
-    @property
-    def related_uids(self):
-        event = aq_parent(aq_parent(self.context))
-        brains = self.catalog(**{
-            'portal_type': 'Ticket Occurrence',
-            'path': '/'.join(event.getPhysicalPath()),
-            'id': self.shared_stock_key,
-        })
-        return [brain.UID for brain in brains]
 
 
 @implementer(ITicketOccurrenceData)
@@ -267,12 +307,14 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
                 long_format=True,
                 context=event
             )
+            # XXX: no unicode, store as utf-8 encoded string instead
             booking.attrs['title'] = u'%s - %s (%s - %s)' % (
                 safe_unicode(acc.title),
                 safe_unicode(booking.attrs['title']),
                 lstart,
                 lend
             )
+            # XXX: no unicode, store as utf-8 encoded string instead
             booking.attrs['eventtitle'] = acc.title
             booking.attrs['eventstart'] = acc.start
             booking.attrs['eventend'] = acc.end
