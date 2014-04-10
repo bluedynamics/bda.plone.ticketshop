@@ -3,16 +3,19 @@ from BTrees.OOBTree import OOBTree
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
-from bda.plone.cart import CartDataProviderBase
 from bda.plone.cart import CartItemStateBase
 from bda.plone.cart import aggregate_cart_item_count
 from bda.plone.cart import extractitems
 from bda.plone.cart import get_item_stock
+from bda.plone.cart import get_item_state
+from bda.plone.cart import get_item_data_provider
 from bda.plone.cart import readcookie
 from bda.plone.cart import get_object_by_uid
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
+from bda.plone.shop.cartdata import CartDataProvider
 from bda.plone.ticketshop.interfaces import IBuyableEvent
+from bda.plone.ticketshop.interfaces import IBuyableEventData
 from bda.plone.ticketshop.interfaces import IEventTickets
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
@@ -37,15 +40,12 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 _ = MessageFactory('bda.plone.ticketshop')
 
 
-class TicketShopCartDataProviderBase(CartDataProviderBase):
+class TicketShopCartDataProvider(CartDataProvider):
 
     def acquire_event(self, context):
         while not IBuyableEvent.providedBy(context):
             context = aq_parent(context)
         return context
-
-    def related_tickets(self, ticket):
-        pass
 
     def validate_count(self, uid, count):
         """Validate setting cart item count for uid.
@@ -56,10 +56,47 @@ class TicketShopCartDataProviderBase(CartDataProviderBase):
         item count in cart.
         """
         count = float(count)
+        # count is 0, return
         if not count:
             return {'success': True, 'error': ''}
         cart_item = get_object_by_uid(self.context, uid)
-        return {'success': True, 'error': ''}
+        item_data = get_item_data_provider(cart_item)
+        buyable_event = self.acquire_event(cart_item)
+        buyable_event_data = IBuyableEventData(buyable_event)
+        # cart count limit is set for all event tickets
+        if buyable_event_data.cart_count_limit:
+            related_uids = IEventTickets(cart_item).related_uids
+            aggregated_count = count
+            items = extractitems(readcookie(self.request))
+            for ticket_uid in related_uids:
+                # we already have count for item to validate
+                if uid == ticket_uid:
+                    continue
+                aggregated_count += aggregate_cart_item_count(
+                    ticket_uid, items)
+            if aggregated_count > buyable_event_data.cart_count_limit:
+                message = translate(
+                    _('event_tickets_limit_reached',
+                      default="Limit of tickets for this event reached"),
+                    context=self.request)
+                return {'success': False, 'error': message}
+        # cart count limit is set for ticket
+        elif item_data.cart_count_limit:
+            if count > item_data.cart_count_limit:
+                message = translate(
+                    _('ticket_limit_reached',
+                      default="Limit for this ticket reached"),
+                    context=self.request)
+                return {'success': False, 'error': message}
+        # stock check
+        item_state = get_item_state(cart_item, self.request)
+        if item_state.validate_count(count):
+            return {'success': True, 'error': ''}
+        # out of stock
+        message = translate(_('trying_to_add_more_tickets_than_available',
+                              default="Not enough tickets available, abort."),
+                            context=self.request)
+        return {'success': False, 'error': message}
 
 
 @implementer(ICartItemDataProvider)

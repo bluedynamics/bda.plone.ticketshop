@@ -16,6 +16,19 @@
   <include package=".browser" />
   <include file="profiles.zcml" />
 
+  <!-- Custom cart data provider -->
+  <adapter
+    for="bda.plone.ticketshop.interfaces.IBuyableEvent"
+    factory=".common.TicketShopCartDataProvider" />
+
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicket"
+    factory=".common.TicketShopCartDataProvider" />
+
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicketOccurrence"
+    factory=".common.TicketShopCartDataProvider" />
+
   <!-- Custom checkout adapter for tickets -->
   <adapter
     for="Products.CMFPlone.interfaces.IPloneSiteRoot

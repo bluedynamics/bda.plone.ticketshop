@@ -28,6 +28,13 @@ class ITicketOccurrence(ITicket):
     """
 
 
+class IBuyableEventData(Interface):
+    """Provide information relevant for being buyable event.
+    """
+
+    cart_count_limit = Attribute(u"Max count of tickets of this event in cart")
+
+
 class IEventTickets(Interface):
     """Interface for providing ticket related information.
     """

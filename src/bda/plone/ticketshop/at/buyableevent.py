@@ -2,8 +2,8 @@ from AccessControl import ClassSecurityInfo
 from zope.interface import implementer
 from Products.Archetypes import atapi
 from collective.folderishtypes.content.folderish_event import FolderishEvent
-from ..interfaces import IBuyableEvent
-from ..config import PROJECTNAME
+from bda.plone.ticketshop.interfaces import IBuyableEvent
+from bda.plone.ticketshop.config import PROJECTNAME
 
 BuyableEvent_schema = FolderishEvent.schema.copy()
 

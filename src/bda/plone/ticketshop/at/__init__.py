@@ -4,18 +4,27 @@ from zope.i18nmessageid import MessageFactory
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import IExtensionField
+from archetypes.schemaextender.field import ExtensionField
 from Products.Archetypes.public import FloatField
 from Products.Archetypes.public import BooleanField
 from Products.Archetypes.interfaces import IFieldDefaultProvider
-from bda.plone.shop.at import ATCartItemDataProvider
-from ..interfaces import ITicketShopExtensionLayer
-from ..interfaces import ITicketOccurrence
-from ..interfaces import ISharedStock
-from ..interfaces import ISharedStockData
-from ..common import TicketShopCartDataProviderBase
+from bda.plone.ticketshop.interfaces import IBuyableEvent
+from bda.plone.ticketshop.interfaces import IBuyableEventData
+from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
+from bda.plone.ticketshop.interfaces import ITicketOccurrence
+from bda.plone.ticketshop.interfaces import ISharedStock
+from bda.plone.ticketshop.interfaces import ISharedStockData
 
 
 _ = MessageFactory('bda.plone.shop')
+
+
+def field_value(obj, field_name):
+    try:
+        acc = obj.getField(field_name).getAccessor(obj)
+        return acc()
+    except (KeyError, TypeError):
+        raise AttributeError
 
 
 @implementer(IOrderableSchemaExtender, IBrowserLayerAwareExtender)
@@ -29,6 +38,35 @@ class ExtenderBase(object):
 
     def getOrder(self, original):
         return original
+
+
+class XFloatField(ExtensionField, FloatField): pass
+
+
+@adapter(IBuyableEvent)
+class BuyableEventExtender(ExtenderBase):
+    layer = ITicketShopExtensionLayer
+    fields = [
+        XFloatField(
+            name='item_cart_count_limit',
+            schemata='Shop',
+            widget=FloatField._properties['widget'](
+                label=_(u'label_item_cart_count_limit',
+                        default=u'Max count of this item in cart'),
+            ),
+        ),
+    ]
+
+
+@implementer(IBuyableEventData)
+@adapter(IBuyableEvent)
+class ATBuyableEventData(object):
+    """Accessor Interface
+    """
+
+    @property
+    def cart_count_limit(self):
+        return field_value(self.context, 'item_cart_count_limit')
 
 
 @adapter(ITicketOccurrence)
@@ -124,12 +162,3 @@ class SharedStockExtender(ExtenderBase):
             ),
         ),
     ]
-
-
-#@adapter(IBuyableEvent)
-#@adapter(ITicket)
-#@adapter(ITicketOccurrence)
-class ATTicketShopCartDataProvider(TicketShopCartDataProviderBase,
-                                   ATCartItemDataProvider):
-    """XXX
-    """

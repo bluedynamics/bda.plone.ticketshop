@@ -4,6 +4,11 @@
            xmlns:i18n="http://namespaces.zope.org/i18n">
 
   <adapter
+    name="bda.plone.ticketshop.event"
+    factory=".BuyableEventExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+
+  <adapter
     name="bda.plone.shop.buyable"
     factory=".TicketOccurenceBuyableExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
