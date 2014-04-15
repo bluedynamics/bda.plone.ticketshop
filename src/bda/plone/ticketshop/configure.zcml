@@ -41,7 +41,10 @@
     for="Products.CMFPlone.interfaces.IPloneSiteRoot
          bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
     factory=".common.TicketOrderCheckoutAdapter"/>
-
+  <adapter
+    for="plone.event.interfaces.IOccurrence
+         bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
+    factory=".common.TicketOrderCheckoutAdapter"/>
 
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
