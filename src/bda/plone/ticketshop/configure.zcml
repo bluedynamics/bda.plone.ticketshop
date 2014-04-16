@@ -27,24 +27,11 @@
          zope.publisher.interfaces.browser.IBrowserRequest"
     factory=".common.TicketShopCartDataProvider" />
 
-  <adapter
-    for="bda.plone.ticketshop.interfaces.ITicketOccurrence
-         zope.publisher.interfaces.browser.IBrowserRequest"
-    factory=".common.TicketShopCartDataProvider" />
-
   <!-- Custom checkout adapter for tickets -->
   <adapter
-    for="Products.Archetypes.interfaces.IBaseObject
+    for="*
          bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
     factory=".common.TicketOrderCheckoutAdapter" />
-  <adapter
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot
-         bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
-    factory=".common.TicketOrderCheckoutAdapter"/>
-  <adapter
-    for="plone.event.interfaces.IOccurrence
-         bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
-    factory=".common.TicketOrderCheckoutAdapter"/>
 
   <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
