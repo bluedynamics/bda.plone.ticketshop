@@ -46,7 +46,13 @@
          bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
     factory=".common.TicketOrderCheckoutAdapter"/>
 
-  <adapter factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicket"
+    factory=".common.ATTicketCartItemDataProvider" />
+
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicketOccurrence"
+    factory=".common.TicketOccurrenceCartItemDataProviderProxy" />
 
   <adapter factory=".common.TicketCartItemState" />
 

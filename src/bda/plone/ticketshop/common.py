@@ -13,6 +13,7 @@ from bda.plone.cart import readcookie
 from bda.plone.cart import get_object_by_uid
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
+from bda.plone.shop.at import ATCartItemDataProvider
 from bda.plone.shop.cartdata import CartDataProvider
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
@@ -38,6 +39,45 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 _ = MessageFactory('bda.plone.ticketshop')
+
+
+def ticket_title_generator(obj):
+    """Generate a title for the ticket, also using event information.
+    """
+
+    event = obj
+    ret = {
+        'title': obj.title, 'eventtitle': '', 'eventstart': '', 'eventend': ''
+    }
+    if ITicketOccurrence.providedBy(event):
+        event = aq_parent(aq_parent(event))
+    elif ITicket.providedBy(event):
+        event = aq_parent(event)
+    if IEvent.providedBy(event) or IOccurrence.providedBy(event):
+        acc = IEventAccessor(event)
+        lstart = ulocalized_time(
+            DT(acc.start),
+            long_format=True,
+            context=event
+        )
+        lend = ulocalized_time(
+            DT(acc.start),
+            long_format=True,
+            context=event
+        )
+        # XXX: no unicode, store as utf-8 encoded string instead
+        ret = dict(
+            title=u'%s - %s (%s - %s)' % (
+                safe_unicode(acc.title),
+                safe_unicode(obj.title),
+                lstart,
+                lend,
+            ),
+            eventtitle=acc.title,
+            eventstart=acc.start,
+            eventend=acc.end,
+        )
+    return ret
 
 
 class TicketShopCartDataProvider(CartDataProvider):
@@ -99,8 +139,17 @@ class TicketShopCartDataProvider(CartDataProvider):
         return {'success': False, 'error': message}
 
 
+class ATTicketCartItemDataProvider(ATCartItemDataProvider):
+    """Custom CartItemDataProvider for Archetypes Tickets, providing a custom
+    title.
+    """
+
+    @property
+    def title(self):
+        return ticket_title_generator(self.context)['title']
+
+
 @implementer(ICartItemDataProvider)
-@adapter(ITicketOccurrence)
 def TicketOccurrenceCartItemDataProviderProxy(context):
     return ICartItemDataProvider(aq_parent(context))
 
@@ -327,32 +376,14 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
     def create_booking(self, *args, **kwargs):
         booking = super(TicketOrderCheckoutAdapter,
                         self).create_booking(*args, **kwargs)
-        event = self.context
-        if ITicketOccurrence.providedBy(event):
-            event = aq_parent(aq_parent(event))
-        elif ITicket.providedBy(event):
-            event = aq_parent(event)
-        if IEvent.providedBy(event) or IOccurrence.providedBy(event):
-            acc = IEventAccessor(event)
-            lstart = ulocalized_time(
-                DT(acc.start),
-                long_format=True,
-                context=event
-            )
-            lend = ulocalized_time(
-                DT(acc.start),
-                long_format=True,
-                context=event
-            )
-            # XXX: no unicode, store as utf-8 encoded string instead
-            booking.attrs['title'] = u'%s - %s (%s - %s)' % (
-                safe_unicode(acc.title),
-                safe_unicode(booking.attrs['title']),
-                lstart,
-                lend
-            )
-            # XXX: no unicode, store as utf-8 encoded string instead
-            booking.attrs['eventtitle'] = acc.title
-            booking.attrs['eventstart'] = acc.start
-            booking.attrs['eventend'] = acc.end
+
+        titledict = ticket_title_generator(self.context)
+
+        booking.attrs['title'] = titledict['title']
+        if titledict['eventtitle']:
+            booking.attrs['eventtitle'] = titledict['eventtitle']
+        if titledict['eventstart']:
+            booking.attrs['eventstart'] = titledict['eventstart']
+        if titledict['eventend']:
+            booking.attrs['eventend'] = titledict['eventend']
         return booking
