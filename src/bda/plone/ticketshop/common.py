@@ -1,16 +1,18 @@
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
+from Products.Archetypes.interfaces import IBaseObject
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
 from bda.plone.cart import CartItemStateBase
 from bda.plone.cart import aggregate_cart_item_count
 from bda.plone.cart import extractitems
-from bda.plone.cart import get_item_stock
-from bda.plone.cart import get_item_state
+from bda.plone.cart import get_catalog_brain
 from bda.plone.cart import get_item_data_provider
-from bda.plone.cart import readcookie
+from bda.plone.cart import get_item_state
+from bda.plone.cart import get_item_stock
 from bda.plone.cart import get_object_by_uid
+from bda.plone.cart import readcookie
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
 from bda.plone.shop.at import ATCartItemDataProvider
@@ -24,6 +26,7 @@ from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from persistent.dict import PersistentDict
+from plone.app.event.at.traverser import OccurrenceTraverser as OccTravAT
 from plone.app.event.base import DT
 from plone.app.event.recurrence import Occurrence
 from plone.event.interfaces import IEvent
@@ -32,6 +35,7 @@ from plone.event.interfaces import IOccurrence
 from plone.event.interfaces import IRecurrenceSupport
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
+from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implementer
@@ -49,10 +53,22 @@ def ticket_title_generator(obj):
     ret = {
         'title': obj.title, 'eventtitle': '', 'eventstart': '', 'eventend': ''
     }
+
     if ITicketOccurrence.providedBy(event):
         event = aq_parent(aq_parent(event))
+        # Traverse to the Occurrence object
+        if IBaseObject.providedBy(event):
+            # get the request out of thin air to be able to publishTraverse to
+            # the transient Occurrence object.
+            traverser = OccTravAT(event, getRequest())
+        else:
+            # TODO
+            traverser = None
+        event = traverser.publishTraverse(getRequest(), obj.id)
+
     elif ITicket.providedBy(event):
         event = aq_parent(event)
+
     if IEvent.providedBy(event) or IOccurrence.providedBy(event):
         acc = IEventAccessor(event)
         lstart = ulocalized_time(
@@ -150,8 +166,34 @@ class ATTicketCartItemDataProvider(ATCartItemDataProvider):
 
 
 @implementer(ICartItemDataProvider)
-def TicketOccurrenceCartItemDataProviderProxy(context):
-    return ICartItemDataProvider(aq_parent(context))
+@adapter(ITicketOccurrence)
+class TicketOccurrenceDataProvider(object):
+
+    def __init__(self, context):
+        object.__setattr__(self, 'context', context)
+
+        own_attr = ['id', 'title', ]
+        object.__setattr__(self, '_own_attr', own_attr)
+
+    def _get_context(self, name):
+        oa = self._own_attr
+        if name in oa:
+            return self.context
+        else:
+            return ICartItemDataProvider(aq_parent(self.context))
+
+    def __getattr__(self, name):
+        return getattr(self._get_context(name), name, None)
+
+    def __setattr__(self, name, value):
+        return setattr(self._get_context(name), name, value)
+
+    def __delattr__(self, name):
+        delattr(self._get_context(name), name)
+
+    @property
+    def title(self):
+        return ticket_title_generator(self.context)['title']
 
 
 @adapter(ISharedStock, IBrowserRequest)
@@ -373,11 +415,16 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
     quickly identify it.
     """
 
-    def create_booking(self, *args, **kwargs):
-        booking = super(TicketOrderCheckoutAdapter,
-                        self).create_booking(*args, **kwargs)
+    def create_booking(self, order, cart_data, uid, count, comment):
+        booking = super(TicketOrderCheckoutAdapter, self).create_booking(
+            order, cart_data, uid, count, comment
+        )
 
-        titledict = ticket_title_generator(self.context)
+        brain = get_catalog_brain(self.context, uid)
+        if not brain:
+            return
+        buyable = brain.getObject()
+        titledict = ticket_title_generator(buyable)
 
         booking.attrs['title'] = titledict['title']
         if titledict['eventtitle']:
