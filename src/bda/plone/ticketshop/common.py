@@ -167,7 +167,7 @@ class ATTicketCartItemDataProvider(ATCartItemDataProvider):
 
 @implementer(ICartItemDataProvider)
 @adapter(ITicketOccurrence)
-class TicketOccurrenceDataProvider(object):
+class TicketOccurrenceCartItemDataProvider(object):
 
     def __init__(self, context):
         object.__setattr__(self, 'context', context)
