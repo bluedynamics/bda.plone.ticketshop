@@ -1,18 +1,21 @@
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
+from Products.Archetypes.interfaces import IBaseObject
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
 from bda.plone.cart import CartItemStateBase
 from bda.plone.cart import aggregate_cart_item_count
 from bda.plone.cart import extractitems
-from bda.plone.cart import get_item_stock
-from bda.plone.cart import get_item_state
+from bda.plone.cart import get_catalog_brain
 from bda.plone.cart import get_item_data_provider
-from bda.plone.cart import readcookie
+from bda.plone.cart import get_item_state
+from bda.plone.cart import get_item_stock
 from bda.plone.cart import get_object_by_uid
+from bda.plone.cart import readcookie
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
+from bda.plone.shop.at import ATCartItemDataProvider
 from bda.plone.shop.cartdata import CartDataProvider
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
@@ -23,6 +26,7 @@ from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from persistent.dict import PersistentDict
+from plone.app.event.at.traverser import OccurrenceTraverser as OccTravAT
 from plone.app.event.base import DT
 from plone.app.event.recurrence import Occurrence
 from plone.event.interfaces import IEvent
@@ -31,6 +35,7 @@ from plone.event.interfaces import IOccurrence
 from plone.event.interfaces import IRecurrenceSupport
 from zope.annotation.interfaces import IAnnotations
 from zope.component import adapter
+from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
 from zope.interface import implementer
@@ -38,6 +43,57 @@ from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 _ = MessageFactory('bda.plone.ticketshop')
+
+
+def ticket_title_generator(obj):
+    """Generate a title for the ticket, also using event information.
+    """
+
+    event = obj
+    ret = {
+        'title': obj.title, 'eventtitle': '', 'eventstart': '', 'eventend': ''
+    }
+
+    if ITicketOccurrence.providedBy(event):
+        event = aq_parent(aq_parent(event))
+        # Traverse to the Occurrence object
+        if IBaseObject.providedBy(event):
+            # get the request out of thin air to be able to publishTraverse to
+            # the transient Occurrence object.
+            traverser = OccTravAT(event, getRequest())
+        else:
+            # TODO
+            traverser = None
+        event = traverser.publishTraverse(getRequest(), obj.id)
+
+    elif ITicket.providedBy(event):
+        event = aq_parent(event)
+
+    if IEvent.providedBy(event) or IOccurrence.providedBy(event):
+        acc = IEventAccessor(event)
+        lstart = ulocalized_time(
+            DT(acc.start),
+            long_format=True,
+            context=event
+        )
+        lend = ulocalized_time(
+            DT(acc.start),
+            long_format=True,
+            context=event
+        )
+        # XXX: no unicode, store as utf-8 encoded string instead
+        ret = dict(
+            title=u'%s - %s (%s - %s)' % (
+                safe_unicode(acc.title),
+                safe_unicode(obj.title),
+                lstart,
+                lend,
+            ),
+            eventtitle=acc.title,
+            eventstart=acc.start,
+            eventend=acc.end,
+        )
+    return ret
 
 
 class TicketShopCartDataProvider(CartDataProvider):
@@ -99,10 +155,45 @@ class TicketShopCartDataProvider(CartDataProvider):
         return {'success': False, 'error': message}
 
 
+class ATTicketCartItemDataProvider(ATCartItemDataProvider):
+    """Custom CartItemDataProvider for Archetypes Tickets, providing a custom
+    title.
+    """
+
+    @property
+    def title(self):
+        return ticket_title_generator(self.context)['title']
+
+
 @implementer(ICartItemDataProvider)
 @adapter(ITicketOccurrence)
-def TicketOccurrenceCartItemDataProviderProxy(context):
-    return ICartItemDataProvider(aq_parent(context))
+class TicketOccurrenceCartItemDataProvider(object):
+
+    def __init__(self, context):
+        object.__setattr__(self, 'context', context)
+
+        own_attr = ['id', 'title', ]
+        object.__setattr__(self, '_own_attr', own_attr)
+
+    def _get_context(self, name):
+        oa = self._own_attr
+        if name in oa:
+            return self.context
+        else:
+            return ICartItemDataProvider(aq_parent(self.context))
+
+    def __getattr__(self, name):
+        return getattr(self._get_context(name), name, None)
+
+    def __setattr__(self, name, value):
+        return setattr(self._get_context(name), name, value)
+
+    def __delattr__(self, name):
+        delattr(self._get_context(name), name)
+
+    @property
+    def title(self):
+        return ticket_title_generator(self.context)['title']
 
 
 @adapter(ISharedStock, IBrowserRequest)
@@ -324,35 +415,22 @@ class TicketOrderCheckoutAdapter(OrderCheckoutAdapter):
     quickly identify it.
     """
 
-    def create_booking(self, *args, **kwargs):
-        booking = super(TicketOrderCheckoutAdapter,
-                        self).create_booking(*args, **kwargs)
-        event = self.context
-        if ITicketOccurrence.providedBy(event):
-            event = aq_parent(aq_parent(event))
-        elif ITicket.providedBy(event):
-            event = aq_parent(event)
-        if IEvent.providedBy(event) or IOccurrence.providedBy(event):
-            acc = IEventAccessor(event)
-            lstart = ulocalized_time(
-                DT(acc.start),
-                long_format=True,
-                context=event
-            )
-            lend = ulocalized_time(
-                DT(acc.start),
-                long_format=True,
-                context=event
-            )
-            # XXX: no unicode, store as utf-8 encoded string instead
-            booking.attrs['title'] = u'%s - %s (%s - %s)' % (
-                safe_unicode(acc.title),
-                safe_unicode(booking.attrs['title']),
-                lstart,
-                lend
-            )
-            # XXX: no unicode, store as utf-8 encoded string instead
-            booking.attrs['eventtitle'] = acc.title
-            booking.attrs['eventstart'] = acc.start
-            booking.attrs['eventend'] = acc.end
+    def create_booking(self, order, cart_data, uid, count, comment):
+        booking = super(TicketOrderCheckoutAdapter, self).create_booking(
+            order, cart_data, uid, count, comment
+        )
+
+        brain = get_catalog_brain(self.context, uid)
+        if not brain:
+            return
+        buyable = brain.getObject()
+        titledict = ticket_title_generator(buyable)
+
+        booking.attrs['title'] = titledict['title']
+        if titledict['eventtitle']:
+            booking.attrs['eventtitle'] = titledict['eventtitle']
+        if titledict['eventstart']:
+            booking.attrs['eventstart'] = titledict['eventstart']
+        if titledict['eventend']:
+            booking.attrs['eventend'] = titledict['eventend']
         return booking

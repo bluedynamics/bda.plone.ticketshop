@@ -5,6 +5,14 @@ bda.plone.ticketshop
 Shop for selling Tickets to Events based on ``plone.app.event`` and
 ``bda.plone.shop``.
 
+TODO
+====
+
+- TicketOccurrence proxies it's properties from it's parent, the Ticket. but it
+  implements IBuyable and thus it gets extended by the BuyableExtender, etc.
+  We have to make sure, none of these attributes are used or remove the
+  IBuyable interface.
+
 
 Userstory
 =========
