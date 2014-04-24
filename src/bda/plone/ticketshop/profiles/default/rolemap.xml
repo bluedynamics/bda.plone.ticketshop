@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="bda.plone.ticketshop: Add Buyable Event" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Contributor"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="bda.plone.ticketshop: Add Ticket" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Contributor"/>
+      <role name="Site Administrator"/>
+    </permission>
+    <permission name="bda.plone.ticketshop: Add Ticket Occurrence" acquire="True">
+      <role name="Manager"/>
+      <role name="Owner"/>
+      <role name="Contributor"/>
+      <role name="Site Administrator"/>
+    </permission>
+  </permissions>
+</rolemap>
+

@@ -6,7 +6,7 @@
   <property name="title" i18n:translate="">Ticket Occurrence</property>
   <property name="description"
     i18n:translate="">Occurrence of Ticket</property>
-  <property name="content_meta_type">TicketOccurrence</property>
+  <property name="content_meta_type">Ticket Occurrence</property>
   <property name="icon_expr">string:${portal_url}/++resource++bda.plone.ticketshop.images/ticket_occurrence.png</property>
   <property name="product">bda.plone.ticketshop</property>
   <property name="factory">addTicketOccurrence</property>

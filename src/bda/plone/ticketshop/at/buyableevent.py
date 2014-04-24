@@ -11,7 +11,7 @@ BuyableEvent_schema = FolderishEvent.schema.copy()
 @implementer(IBuyableEvent)
 class BuyableEvent(FolderishEvent):
     security = ClassSecurityInfo()
-    meta_type = 'BuyableEvent'
+    meta_type = 'Buyable Event'
     _at_rename_after_creation = True
     schema = BuyableEvent_schema
     exclude_from_nav = False

@@ -12,7 +12,7 @@ TicketOccurrence_schema = atapi.BaseSchema.copy()
 @implementer(ITicketOccurrence, IBuyable)
 class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     security = ClassSecurityInfo()
-    meta_type = 'TicketOccurrence'
+    meta_type = 'Ticket Occurrence'
     _at_rename_after_creation = True
     schema = TicketOccurrence_schema
     exclude_from_nav = True

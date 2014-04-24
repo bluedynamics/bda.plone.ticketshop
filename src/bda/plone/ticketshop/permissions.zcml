@@ -1,0 +1,11 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+  <permission
+    id="bda.plone.ticketshop.AddBuyableEvent"
+    title="bda.plone.ticketshop: Add Buyable Event" />
+  <permission
+    id="bda.plone.ticketshop.AddTicket"
+    title="bda.plone.ticketshop: Add Ticket" />
+  <permission
+    id="bda.plone.ticketshop.AddTicketOccurrence"
+    title="bda.plone.ticketshop: Add Ticket Occurrence" />
+</configure>

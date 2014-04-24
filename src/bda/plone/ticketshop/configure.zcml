@@ -12,9 +12,11 @@
   <i18n:registerTranslations directory="locales" />
   <five:registerPackage package="." initialize=".initialize" />
 
+  <include file="profiles.zcml" />
+  <include file="permissions.zcml" />
   <include package=".at" />
   <include package=".browser" />
-  <include file="profiles.zcml" />
+
 
   <!-- Custom cart data provider -->
   <adapter
