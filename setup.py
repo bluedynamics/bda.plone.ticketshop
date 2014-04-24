@@ -44,8 +44,6 @@ setup(
         ],
         'test': [
             'Products.ATContentTypes',
-            'bda.plone.ticketshop',
-            'interlude[ipython]>=1.3.1',
             'plone.app.contenttypes',
             'plone.app.dexterity',
             'plone.app.robotframework [debug]',
