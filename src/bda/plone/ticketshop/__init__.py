@@ -1,21 +1,5 @@
-from Products.CMFCore import utils
-from Products.Archetypes import atapi
-from bda.plone.ticketshop import config
+from bda.plone.ticketshop import permissions  # nopep8
+from zope.i18nmessageid import MessageFactory
 
 
-def initialize(context):
-    """Initializer called when used as a Zope 2 product.
-    """
-    from .at import buyableevent  # nopep8
-    from .at import ticket  # nopep8
-    from .at import ticketoccurrence  # nopep8
-    content_types, constructors, ftis = atapi.process_types(
-        atapi.listTypes(config.PROJECTNAME),
-        config.PROJECTNAME)
-    for atype, constructor in zip(content_types, constructors):
-        utils.ContentInit(
-            "%s: %s" % (config.PROJECTNAME, atype.meta_type),
-            content_types=(atype,),
-            permission=config.ADD_PERMISSIONS[atype.meta_type],
-            extra_constructors=(constructor,),
-        ).initialize(context)
+messageFactory = MessageFactory('bda.plone.ticketshop')  # nopep8

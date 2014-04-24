@@ -1,22 +1,42 @@
-from zope.interface import implementer
-from zope.component import adapter
-from zope.i18nmessageid import MessageFactory
-from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from Products.Archetypes import atapi
+from Products.Archetypes.interfaces import IFieldDefaultProvider
+from Products.Archetypes.public import BooleanField
+from Products.Archetypes.public import FloatField
+from Products.CMFCore import utils
+from archetypes.schemaextender.field import ExtensionField
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import IExtensionField
-from archetypes.schemaextender.field import ExtensionField
-from Products.Archetypes.public import FloatField
-from Products.Archetypes.public import BooleanField
-from Products.Archetypes.interfaces import IFieldDefaultProvider
+from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from bda.plone.ticketshop import messageFactory as _
+from bda.plone.ticketshop import permissions
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
-from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
-from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
+from bda.plone.ticketshop.interfaces import ITicketOccurrence
+from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
+from zope.component import adapter
+from zope.interface import implementer
 
 
-_ = MessageFactory('bda.plone.ticketshop')
+PROJECTNAME = "bda.plone.ticketshop.at"
+
+
+def initialize(context):
+    """Initializer called when used as a Zope 2 product.
+    """
+    from bda.plone.ticketshop.at import buyableevent  # nopep8
+    from bda.plone.ticketshop.at import ticket  # nopep8
+    from bda.plone.ticketshop.at import ticketoccurrence  # nopep8
+    content_types, constructors, ftis = atapi.process_types(
+        atapi.listTypes(PROJECTNAME), PROJECTNAME)
+    for atype, constructor in zip(content_types, constructors):
+        utils.ContentInit(
+            "%s: %s" % (PROJECTNAME, atype.meta_type),
+            content_types=(atype,),
+            permission=permissions.ADD_PERMISSIONS[atype.meta_type],
+            extra_constructors=(constructor,),
+        ).initialize(context)
 
 
 def field_value(obj, field_name):
@@ -40,7 +60,8 @@ class ExtenderBase(object):
         return original
 
 
-class XFloatField(ExtensionField, FloatField): pass
+class XFloatField(ExtensionField, FloatField):
+    pass
 
 
 @adapter(IBuyableEvent)
@@ -128,8 +149,12 @@ class SharedStockExtensionField(object):
             return getattr(instance, name)
 
 
-class XSharedStockFloatField(SharedStockExtensionField, FloatField): pass
-class XSharedStockBooleanField(SharedStockExtensionField, BooleanField): pass
+class XSharedStockFloatField(SharedStockExtensionField, FloatField):
+    pass
+
+
+class XSharedStockBooleanField(SharedStockExtensionField, BooleanField):
+    pass
 
 
 @implementer(IFieldDefaultProvider)

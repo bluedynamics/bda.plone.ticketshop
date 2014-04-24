@@ -3,7 +3,7 @@ from zope.interface import implementer
 from Products.Archetypes import atapi
 from collective.folderishtypes.content.folderish_event import FolderishEvent
 from bda.plone.ticketshop.interfaces import IBuyableEvent
-from bda.plone.ticketshop.config import PROJECTNAME
+from bda.plone.ticketshop.at import PROJECTNAME
 
 BuyableEvent_schema = FolderishEvent.schema.copy()
 

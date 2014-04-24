@@ -1,9 +1,6 @@
 from Products.CMFCore.permissions import setDefaultRoles
 
 
-PROJECTNAME = "bda.plone.ticketshop"
-
-
 ADD_PERMISSIONS = {
     "Buyable Event": "bda.plone.ticketshop: Add Buyable Event",
     "Ticket": "bda.plone.ticketshop: Add Ticket",
