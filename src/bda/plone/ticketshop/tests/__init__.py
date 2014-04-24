@@ -37,7 +37,6 @@ class TicketshopLayer(PloneSandboxLayer):
         import bda.plone.ticketshop
         self.loadZCML(package=bda.plone.ticketshop,
                       context=configurationContext)
-        z2.installProduct(app, 'bda.plone.ticketshop')
 
     def setUpPloneSite(self, portal):
         self.applyProfile(portal, 'bda.plone.ticketshop:default')
@@ -78,10 +77,12 @@ class TicketshopATLayer(TicketshopContentLayerBase):
         self.loadZCML(package=bda.plone.ticketshop.at,
                       context=configurationContext)
 
+        z2.installProduct(app, 'bda.plone.ticketshop.at')
+
     def setUpPloneSite(self, portal):
         if PLONE5:
             self.applyProfile(portal, 'Products.ATContentTypes:default')
-        self.applyProfile(portal, 'bda.plone.ticketshop:at')
+        self.applyProfile(portal, 'bda.plone.ticketshop.at:default')
         self.setup_content(portal)
         setRoles(portal, TEST_USER_ID, ['Manager'])
 

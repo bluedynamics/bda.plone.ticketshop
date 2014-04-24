@@ -4,6 +4,10 @@
            xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
            xmlns:i18n="http://namespaces.zope.org/i18n">
 
+  <five:registerPackage package="." initialize=".initialize" />
+
+  <include package="collective.folderishtypes" />
+
   <adapter
     name="bda.plone.ticketshop.event"
     factory=".BuyableEventExtender"
