@@ -1,5 +1,6 @@
 from Products.CMFPlone.utils import getFSVersionTuple
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
+from plone.app.event.testing import PAEvent_FIXTURE
 from plone.app.robotframework.testing import MOCK_MAILHOST_FIXTURE
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
@@ -36,6 +37,7 @@ class TicketshopLayer(PloneSandboxLayer):
         import bda.plone.ticketshop
         self.loadZCML(package=bda.plone.ticketshop,
                       context=configurationContext)
+        z2.installProduct(app, 'bda.plone.ticketshop')
 
     def setUpPloneSite(self, portal):
         self.applyProfile(portal, 'bda.plone.ticketshop:default')
@@ -57,20 +59,6 @@ class TicketshopContentLayerBase(PloneSandboxLayer):
 
         setRoles(portal, TEST_USER_ID, ['Manager'])
 
-        # Create test content
-        crc = plone.api.content.create
-        crc(container=portal, type='Folder', id='folder_1')
-        crc(container=portal['folder_1'], type='Document', id='item_11',
-            title="item_11")
-        crc(container=portal['folder_1'], type='Document', id='item_12',
-            title="item_12")
-
-        crc(container=portal, type='Folder', id='folder_2')
-        crc(container=portal['folder_2'], type='Document', id='item_21',
-            title="item_21")
-        crc(container=portal['folder_2'], type='Document', id='item_22',
-            title="item_22")
-
         # Create test users
         cru = plone.api.user.create
         cru(email="c1@test.com", username="customer1", password="customer1")
@@ -80,18 +68,37 @@ class TicketshopContentLayerBase(PloneSandboxLayer):
 
 
 class TicketshopATLayer(TicketshopContentLayerBase):
-    defaultBases = (Ticketshop_FIXTURE,)
+    defaultBases = (Ticketshop_FIXTURE, PAEvent_FIXTURE)
 
     def setUpZope(self, app, configurationContext):
         import Products.ATContentTypes
         self.loadZCML(package=Products.ATContentTypes,
                       context=configurationContext)
+        import bda.plone.ticketshop.at
+        self.loadZCML(package=bda.plone.ticketshop.at,
+                      context=configurationContext)
 
     def setUpPloneSite(self, portal):
         if PLONE5:
             self.applyProfile(portal, 'Products.ATContentTypes:default')
-        self.applyProfile(portal, 'bda.plone.ticketshop.at:default')
+        self.applyProfile(portal, 'bda.plone.ticketshop:at')
         self.setup_content(portal)
+        setRoles(portal, TEST_USER_ID, ['Manager'])
+
+        # Create test content
+        crc = plone.api.content.create
+        import pdb; pdb.set_trace()
+        crc(container=portal, type='Buyable Event', id='folder_1')
+        crc(container=portal['folder_1'], type='Ticket', id='item_11',
+            title="item_11")
+        crc(container=portal['folder_1'], type='Ticket', id='item_12',
+            title="item_12")
+
+        crc(container=portal, type='Buyable Event', id='folder_2')
+        crc(container=portal['folder_2'], type='Ticket', id='item_21',
+            title="item_21")
+        crc(container=portal['folder_2'], type='Ticket', id='item_22',
+            title="item_22")
 
 
 TicketshopAT_FIXTURE = TicketshopATLayer()
@@ -105,29 +112,3 @@ TicketshopAT_ROBOT_TESTING = FunctionalTesting(
         z2.ZSERVER_FIXTURE
     ),
     name="TicketshopAT:Robot")
-
-
-class TicketshopDXLayer(TicketshopContentLayerBase):
-    defaultBases = (Ticketshop_FIXTURE,)
-
-    def setUpZope(self, app, configurationContext):
-        import plone.app.dexterity
-        self.loadZCML(package=plone.app.dexterity,
-                      context=configurationContext)
-
-    def setUpPloneSite(self, portal):
-        self.applyProfile(portal, 'plone.app.dexterity:default')
-        self.applyProfile(portal, 'plone.app.contenttypes:default')
-        self.setup_content(portal)
-
-TicketshopDX_FIXTURE = TicketshopDXLayer()
-TicketshopDX_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(TicketshopDX_FIXTURE,),
-    name="TicketshopDX:Integration")
-TicketshopDX_ROBOT_TESTING = FunctionalTesting(
-    bases=(
-        MOCK_MAILHOST_FIXTURE,
-        TicketshopDX_FIXTURE,
-        z2.ZSERVER_FIXTURE
-    ),
-    name="TicketshopDX:Robot")
