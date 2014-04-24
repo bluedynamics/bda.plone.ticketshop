@@ -1,10 +1,9 @@
 from Products.CMFPlone.utils import getFSVersionTuple
+from bda.plone.shop.tests import Shop_FIXTURE
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
-from plone.app.event.testing import PAEvent_FIXTURE
 from plone.app.robotframework.testing import MOCK_MAILHOST_FIXTURE
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
-from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
@@ -31,18 +30,22 @@ def set_browserlayer(request):
 
 
 class TicketshopLayer(PloneSandboxLayer):
-    defaultBases = (PLONE_FIXTURE,)
+    defaultBases = (Shop_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         import bda.plone.ticketshop
         self.loadZCML(package=bda.plone.ticketshop,
                       context=configurationContext)
 
+        # Install products that use an old-style initialize() function
+        z2.installProduct(app, 'Products.DateRecurringIndex')
+
     def setUpPloneSite(self, portal):
         self.applyProfile(portal, 'bda.plone.ticketshop:default')
 
     def tearDownZope(self, app):
-        pass
+        # Uninstall old-style Products
+        z2.uninstallProduct(app, 'Products.DateRecurringIndex')
 
 
 Ticketshop_FIXTURE = TicketshopLayer()
@@ -51,23 +54,8 @@ Ticketshop_INTEGRATION_TESTING = IntegrationTesting(
     name="Ticketshop:Integration")
 
 
-class TicketshopContentLayerBase(PloneSandboxLayer):
-
-    def setup_content(self, portal):
-        portal.portal_workflow.setDefaultChain("one_state_workflow")
-
-        setRoles(portal, TEST_USER_ID, ['Manager'])
-
-        # Create test users
-        cru = plone.api.user.create
-        cru(email="c1@test.com", username="customer1", password="customer1")
-        cru(email="c2@test.com", username="customer2", password="customer2")
-        cru(email="v1@test.com", username="vendor1", password="vendor1")
-        cru(email="vendor2@test.com", username="vendor2", password="vendor2")
-
-
-class TicketshopATLayer(TicketshopContentLayerBase):
-    defaultBases = (Ticketshop_FIXTURE, PAEvent_FIXTURE)
+class TicketshopATLayer(PloneSandboxLayer):
+    defaultBases = (Ticketshop_FIXTURE, )
 
     def setUpZope(self, app, configurationContext):
         import Products.ATContentTypes
@@ -83,12 +71,20 @@ class TicketshopATLayer(TicketshopContentLayerBase):
         if PLONE5:
             self.applyProfile(portal, 'Products.ATContentTypes:default')
         self.applyProfile(portal, 'bda.plone.ticketshop.at:default')
-        self.setup_content(portal)
+
+        portal.portal_workflow.setDefaultChain("one_state_workflow")
         setRoles(portal, TEST_USER_ID, ['Manager'])
+
+        # Create test users
+        cru = plone.api.user.create
+        cru(email="c1@test.com", username="customer1", password="customer1")
+        cru(email="c2@test.com", username="customer2", password="customer2")
+        cru(email="v1@test.com", username="vendor1", password="vendor1")
+        cru(email="vendor2@test.com", username="vendor2", password="vendor2")
 
         # Create test content
         crc = plone.api.content.create
-        import pdb; pdb.set_trace()
+
         crc(container=portal, type='Buyable Event', id='folder_1')
         crc(container=portal['folder_1'], type='Ticket', id='item_11',
             title="item_11")
