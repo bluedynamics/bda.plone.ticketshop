@@ -41,3 +41,28 @@ Content Structure
         * Ticket Occurrence (Buyable)
             - Ticket occurrence information equates event occurrence
               information
+
+
+Running tests
+-------------
+
+If you have run the buildout, you can run all tests like so::
+
+    ./bin/test -s bda.plone.ticketshop
+
+The -t switch allows you to run a specific test file or method. The
+``--list-tests`` lists all available tests.
+
+To run the robot tests do::
+
+    ./bin/test --all -s bda.plone.ticketshop -t robot
+
+For development, it might be more convenient to start a test server and run
+robot tests individually, like so (-d to start Zope in DEBUG-MODE)::
+
+    ./bin/robot-server bda.plone.ticketshop.tests.TicketshopAT_ROBOT_TESTING -d
+    ./bin/robot src/bda/plone/ticketshop/tests/robot/test_shop_orderprocess.robot 
+
+To automatically land in the debug shell on test-failure, use::
+    
+    ./bin/robot-debug src/bda/plone/shop/tests/robot/test_shop_orderprocess.robot
