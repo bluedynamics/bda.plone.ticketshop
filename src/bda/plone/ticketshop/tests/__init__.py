@@ -1,4 +1,5 @@
 from Products.CMFPlone.utils import getFSVersionTuple
+from plone.app.testing import PLONE_FIXTURE
 from bda.plone.shop.tests import Shop_FIXTURE
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 from plone.app.robotframework.testing import MOCK_MAILHOST_FIXTURE
@@ -30,7 +31,7 @@ def set_browserlayer(request):
 
 
 class TicketshopLayer(PloneSandboxLayer):
-    defaultBases = (Shop_FIXTURE,)
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         import bda.plone.ticketshop
@@ -55,15 +56,19 @@ Ticketshop_INTEGRATION_TESTING = IntegrationTesting(
 
 
 class TicketshopATLayer(PloneSandboxLayer):
-    defaultBases = (Ticketshop_FIXTURE, )
+    defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
         import Products.ATContentTypes
         self.loadZCML(package=Products.ATContentTypes,
                       context=configurationContext)
-        import bda.plone.ticketshop.at
-        self.loadZCML(package=bda.plone.ticketshop.at,
+
+        import bda.plone.ticketshop
+        self.loadZCML(package=bda.plone.ticketshop,
                       context=configurationContext)
+
+        # Install products that use an old-style initialize() function
+        z2.installProduct(app, 'Products.DateRecurringIndex')
 
         z2.installProduct(app, 'bda.plone.ticketshop.at')
 
