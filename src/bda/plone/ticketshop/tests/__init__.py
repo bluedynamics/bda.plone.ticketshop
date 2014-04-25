@@ -1,6 +1,5 @@
 from Products.CMFPlone.utils import getFSVersionTuple
 from plone.app.testing import PLONE_FIXTURE
-from bda.plone.shop.tests import Shop_FIXTURE
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 from plone.app.robotframework.testing import MOCK_MAILHOST_FIXTURE
 from plone.app.testing import FunctionalTesting
