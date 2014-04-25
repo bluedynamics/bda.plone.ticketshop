@@ -55,6 +55,9 @@ Ticketshop_INTEGRATION_TESTING = IntegrationTesting(
 
 
 class TicketshopATLayer(PloneSandboxLayer):
+    # don't use shop fixture here. looks like, test layers use differen ZODB
+    # connections and c.z.datagriedfield fails with a ZODB object reference
+    # error.
     defaultBases = (PLONE_FIXTURE,)
 
     def setUpZope(self, app, configurationContext):
