@@ -8,7 +8,7 @@
     i18n:translate="">Ticket</property>
   <property name="content_meta_type">Ticket</property>
   <property name="icon_expr">string:${portal_url}/++resource++bda.plone.ticketshop.images/ticket.png</property>
-  <property name="product">bda.plone.ticketshop</property>
+  <property name="product">bda.plone.ticketshop.at</property>
   <property name="factory">addTicket</property>
   <property name="immediate_view">ticket_view</property>
   <property name="global_allow">False</property>

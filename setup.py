@@ -33,15 +33,17 @@ setup(
     install_requires=[
         'setuptools',
         'Plone',
-        'plone.app.event[archetypes]',
-        'collective.folderishtypes',
         'bda.plone.shop',
+        'plone.app.event',
     ],
     extras_require={
+        'archetypes': [
+            'Products.ATContentTypes',
+            'collective.folderishtypes',
+            'plone.app.event [archetypes]',
+        ],
         'test': [
             'Products.ATContentTypes',
-            'bda.plone.ticketshop',
-            'interlude[ipython]>=1.3.1',
             'plone.app.contenttypes',
             'plone.app.dexterity',
             'plone.app.robotframework [debug]',

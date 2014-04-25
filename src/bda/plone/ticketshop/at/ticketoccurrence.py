@@ -4,7 +4,7 @@ from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from bda.plone.shop.interfaces import IBuyable
 from zope.interface import implementer
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
-from bda.plone.ticketshop.config import PROJECTNAME
+from bda.plone.ticketshop.at import PROJECTNAME
 
 TicketOccurrence_schema = atapi.BaseSchema.copy()
 
@@ -12,7 +12,7 @@ TicketOccurrence_schema = atapi.BaseSchema.copy()
 @implementer(ITicketOccurrence, IBuyable)
 class TicketOccurrence(atapi.BaseContent, BrowserDefaultMixin):
     security = ClassSecurityInfo()
-    meta_type = 'TicketOccurrence'
+    meta_type = 'Ticket Occurrence'
     _at_rename_after_creation = True
     schema = TicketOccurrence_schema
     exclude_from_nav = True

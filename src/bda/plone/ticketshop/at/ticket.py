@@ -4,7 +4,7 @@ from Products.Archetypes import atapi
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from bda.plone.shop.interfaces import IBuyable
 from bda.plone.ticketshop.interfaces import ITicket
-from bda.plone.ticketshop.config import PROJECTNAME
+from bda.plone.ticketshop.at import PROJECTNAME
 
 Ticket_schema = atapi.BaseFolderSchema.copy()
 

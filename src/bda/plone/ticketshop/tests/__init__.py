@@ -1,9 +1,9 @@
 from Products.CMFPlone.utils import getFSVersionTuple
+from plone.app.testing import PLONE_FIXTURE
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 from plone.app.robotframework.testing import MOCK_MAILHOST_FIXTURE
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
-from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
@@ -37,11 +37,15 @@ class TicketshopLayer(PloneSandboxLayer):
         self.loadZCML(package=bda.plone.ticketshop,
                       context=configurationContext)
 
+        # Install products that use an old-style initialize() function
+        z2.installProduct(app, 'Products.DateRecurringIndex')
+
     def setUpPloneSite(self, portal):
         self.applyProfile(portal, 'bda.plone.ticketshop:default')
 
     def tearDownZope(self, app):
-        pass
+        # Uninstall old-style Products
+        z2.uninstallProduct(app, 'Products.DateRecurringIndex')
 
 
 Ticketshop_FIXTURE = TicketshopLayer()
@@ -50,26 +54,33 @@ Ticketshop_INTEGRATION_TESTING = IntegrationTesting(
     name="Ticketshop:Integration")
 
 
-class TicketshopContentLayerBase(PloneSandboxLayer):
+class TicketshopATLayer(PloneSandboxLayer):
+    # don't use shop fixture here. looks like, test layers use differen ZODB
+    # connections and c.z.datagriedfield fails with a ZODB object reference
+    # error.
+    defaultBases = (PLONE_FIXTURE,)
 
-    def setup_content(self, portal):
+    def setUpZope(self, app, configurationContext):
+        import Products.ATContentTypes
+        self.loadZCML(package=Products.ATContentTypes,
+                      context=configurationContext)
+
+        import bda.plone.ticketshop
+        self.loadZCML(package=bda.plone.ticketshop,
+                      context=configurationContext)
+
+        # Install products that use an old-style initialize() function
+        z2.installProduct(app, 'Products.DateRecurringIndex')
+
+        z2.installProduct(app, 'bda.plone.ticketshop.at')
+
+    def setUpPloneSite(self, portal):
+        if PLONE5:
+            self.applyProfile(portal, 'Products.ATContentTypes:default')
+        self.applyProfile(portal, 'bda.plone.ticketshop.at:default')
+
         portal.portal_workflow.setDefaultChain("one_state_workflow")
-
         setRoles(portal, TEST_USER_ID, ['Manager'])
-
-        # Create test content
-        crc = plone.api.content.create
-        crc(container=portal, type='Folder', id='folder_1')
-        crc(container=portal['folder_1'], type='Document', id='item_11',
-            title="item_11")
-        crc(container=portal['folder_1'], type='Document', id='item_12',
-            title="item_12")
-
-        crc(container=portal, type='Folder', id='folder_2')
-        crc(container=portal['folder_2'], type='Document', id='item_21',
-            title="item_21")
-        crc(container=portal['folder_2'], type='Document', id='item_22',
-            title="item_22")
 
         # Create test users
         cru = plone.api.user.create
@@ -78,20 +89,20 @@ class TicketshopContentLayerBase(PloneSandboxLayer):
         cru(email="v1@test.com", username="vendor1", password="vendor1")
         cru(email="vendor2@test.com", username="vendor2", password="vendor2")
 
+        # Create test content
+        crc = plone.api.content.create
 
-class TicketshopATLayer(TicketshopContentLayerBase):
-    defaultBases = (Ticketshop_FIXTURE,)
+        crc(container=portal, type='Buyable Event', id='folder_1')
+        crc(container=portal['folder_1'], type='Ticket', id='item_11',
+            title="item_11")
+        crc(container=portal['folder_1'], type='Ticket', id='item_12',
+            title="item_12")
 
-    def setUpZope(self, app, configurationContext):
-        import Products.ATContentTypes
-        self.loadZCML(package=Products.ATContentTypes,
-                      context=configurationContext)
-
-    def setUpPloneSite(self, portal):
-        if PLONE5:
-            self.applyProfile(portal, 'Products.ATContentTypes:default')
-        self.applyProfile(portal, 'bda.plone.ticketshop.at:default')
-        self.setup_content(portal)
+        crc(container=portal, type='Buyable Event', id='folder_2')
+        crc(container=portal['folder_2'], type='Ticket', id='item_21',
+            title="item_21")
+        crc(container=portal['folder_2'], type='Ticket', id='item_22',
+            title="item_22")
 
 
 TicketshopAT_FIXTURE = TicketshopATLayer()
@@ -105,29 +116,3 @@ TicketshopAT_ROBOT_TESTING = FunctionalTesting(
         z2.ZSERVER_FIXTURE
     ),
     name="TicketshopAT:Robot")
-
-
-class TicketshopDXLayer(TicketshopContentLayerBase):
-    defaultBases = (Ticketshop_FIXTURE,)
-
-    def setUpZope(self, app, configurationContext):
-        import plone.app.dexterity
-        self.loadZCML(package=plone.app.dexterity,
-                      context=configurationContext)
-
-    def setUpPloneSite(self, portal):
-        self.applyProfile(portal, 'plone.app.dexterity:default')
-        self.applyProfile(portal, 'plone.app.contenttypes:default')
-        self.setup_content(portal)
-
-TicketshopDX_FIXTURE = TicketshopDXLayer()
-TicketshopDX_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(TicketshopDX_FIXTURE,),
-    name="TicketshopDX:Integration")
-TicketshopDX_ROBOT_TESTING = FunctionalTesting(
-    bases=(
-        MOCK_MAILHOST_FIXTURE,
-        TicketshopDX_FIXTURE,
-        z2.ZSERVER_FIXTURE
-    ),
-    name="TicketshopDX:Robot")
