@@ -57,11 +57,11 @@
   <adapter
     for="plone.event.interfaces.IOccurrence"
     provides="bda.plone.orders.interfaces.IItemNotificationText"
-    factory="bda.plone.shop.notificationtext.BubbleItemNotificationText" />
+    factory="bda.plone.shop.mailnotify.BubbleItemNotificationText" />
 
   <adapter
     for="plone.event.interfaces.IOccurrence"
     provides="bda.plone.orders.interfaces.IGlobalNotificationText"
-    factory="bda.plone.shop.notificationtext.BubbleGlobalNotificationText" />
+    factory="bda.plone.shop.mailnotify.BubbleGlobalNotificationText" />
 
 </configure>
