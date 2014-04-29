@@ -17,6 +17,8 @@
 
   <include zcml:condition="installed Products.ATContentTypes" package=".at" />
 
+  <subscriber handler=".subscribers.ticket_wf_changed" />
+
   <!-- Custom cart data provider -->
   <adapter
     for="bda.plone.ticketshop.interfaces.IBuyableEvent

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2014-04-10 10:59+0000\n"
+"POT-Creation-Date: 2014-04-29 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI +ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Preferred-Encodings: utf-8 latin1\n"
 "Domain: DOMAIN\n"
 
-#: ./profiles/at/types/Buyable_Event.xml
+#: ./at/profiles/default/types/Buyable_Event.xml
 msgid "Buyable Event"
 msgstr ""
 
@@ -26,39 +26,39 @@ msgstr ""
 msgid "Create ticket occurrences for all existing event occurrences"
 msgstr ""
 
-#: ./profiles/at/types/Buyable_Event.xml
+#: ./at/profiles/default/types/Buyable_Event.xml
 msgid "Information about an upcoming event, which can be sold."
 msgstr ""
 
-#: ./profiles/at/types/Ticket_Occurrence.xml
+#: ./at/profiles/default/types/Ticket_Occurrence.xml
 msgid "Occurrence of Ticket"
 msgstr ""
 
-#: ./profiles/at/types/Ticket.xml
+#: ./at/profiles/default/types/Ticket.xml
 msgid "Ticket"
 msgstr ""
 
-#: ./profiles/at/types/Ticket_Occurrence.xml
+#: ./at/profiles/default/types/Ticket_Occurrence.xml
 msgid "Ticket Occurrence"
 msgstr ""
 
 #. Default: "Ticket is no longer available, please remove from cart"
-#: ./common.py:122
+#: ./common.py:213
 msgid "alert_ticket_no_longer_available"
 msgstr ""
 
 #. Default: "Limit exceed by ${exceed} tickets"
-#: ./common.py:128
+#: ./common.py:219
 msgid "alert_ticket_number_exceed"
 msgstr ""
 
 #. Default: "${reserved} tickets reserved"
-#: ./common.py:134
+#: ./common.py:225
 msgid "alert_ticket_number_reserved"
 msgstr ""
 
 #. Default: "Limit of tickets for this event reached"
-#: ./common.py:79
+#: ./common.py:135
 msgid "event_tickets_limit_reached"
 msgstr ""
 
@@ -73,23 +73,33 @@ msgid "item_overbook"
 msgstr ""
 
 #. Default: "Item stock available"
-#: ./at/__init__.py:157
+#: ./at/__init__.py:182
 msgid "label_item_available"
 msgstr ""
 
 #. Default: "Max count of this item in cart"
-#: ./at/__init__.py:54
+#: ./at/__init__.py:75
 msgid "label_item_cart_count_limit"
 msgstr ""
 
 #. Default: "Display item stock"
-#: ./at/__init__.py:150
+#: ./at/__init__.py:175
 msgid "label_item_display_stock"
 msgstr ""
 
 #. Default: "Item stock overbook"
-#: ./at/__init__.py:164
+#: ./at/__init__.py:189
 msgid "label_item_overbook"
+msgstr ""
+
+#. Default: "Set the workflow to ${state} for these Ticket Occurrences: ${items}."
+#: ./subscribers.py:34
+msgid "msg_changed_ticketoccurrence_workflow"
+msgstr ""
+
+#. Default: "Failed to set the workflow to ${state} for these Ticket Occurrences: ${items}."
+#: ./subscribers.py:47
+msgid "msg_failed_ticketoccurrence_workflow"
 msgstr ""
 
 #. Default: "Just ${available} tickets(s) left."
@@ -113,7 +123,7 @@ msgid "ticket_full_available_title"
 msgstr ""
 
 #. Default: "Limit for this ticket reached"
-#: ./common.py:87
+#: ./common.py:143
 msgid "ticket_limit_reached"
 msgstr ""
 
@@ -138,7 +148,7 @@ msgid "ticket_overbook_available_title"
 msgstr ""
 
 #. Default: "Not enough tickets available, abort."
-#: ./common.py:96
+#: ./common.py:152
 msgid "trying_to_add_more_tickets_than_available"
 msgstr ""
 
