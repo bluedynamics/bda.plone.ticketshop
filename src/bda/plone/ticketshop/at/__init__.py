@@ -7,15 +7,18 @@ from archetypes.schemaextender.field import ExtensionField
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import IExtensionField
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from bda.plone.shipping.interfaces import IShippingItem
 from bda.plone.ticketshop import messageFactory as _
 from bda.plone.ticketshop import permissions
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
+from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 from zope.component import adapter
+from zope.component import queryAdapter
 from zope.interface import implementer
 
 
@@ -93,6 +96,12 @@ class ATBuyableEventData(object):
         return field_value(self.context, 'item_cart_count_limit')
 
 
+# Overwrite schema extenders for ITicketOccurrence to not display fields not
+# intendent to be changed on a ticket occurrence
+
+# TODO: these overwrites should better go away. The schema extenders should
+# instead better be registered for more specific interfaces.
+
 @adapter(ITicketOccurrence)
 class TicketOccurenceBuyableExtender(ExtenderBase):
     """Overwrite default buyable extender for ticket occurrences providing no
@@ -100,6 +109,38 @@ class TicketOccurenceBuyableExtender(ExtenderBase):
     """
     layer = ITicketShopExtensionLayer
     fields = []
+
+
+@adapter(ITicketOccurrence)
+class TicketOccurenceShippingExtender(ExtenderBase):
+    """Overwrite default shipping extender for ticket occurrences providing no
+    fields.
+    """
+    layer = ITicketShopExtensionLayer
+    fields = []
+
+
+@implementer(IShippingItem)
+@adapter(ITicket)
+class ATTicketShippingItem(object):
+    """Custom IShippingItem data provider, returning 0 for weight and the
+    default shippable setting from the control panel.
+    """
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def shippable(self):
+        return queryAdapter(
+            self.context,
+            IFieldDefaultProvider,
+            'shipping_item_shippable',
+            default=lambda: False)()
+
+    @property
+    def weight(self):
+        return 0
 
 
 @implementer(IExtensionField)

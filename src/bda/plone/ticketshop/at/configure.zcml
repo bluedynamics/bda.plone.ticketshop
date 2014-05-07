@@ -15,10 +15,17 @@
 
   <adapter factory=".ATBuyableEventData" />
 
+  <!-- TODO: both adapter overwrites should be removed. see README/TODO -->
   <adapter
     name="bda.plone.shop.buyable"
     factory=".TicketOccurenceBuyableExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+  <adapter
+    name="bda.plone.shop.shipping"
+    factory=".TicketOccurenceShippingExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+  <!-- custom ticket data provider for shipping item -->
+  <adapter factory=".ATTicketShippingItem" />
 
   <adapter
     name="bda.plone.shop.stock"
