@@ -5,6 +5,10 @@ Changelog
 1.0dev
 ------
 
+- Also register ItemNotificationTextExtender also for IBuyableEvent, making
+  these fields available on the event itself.
+  [thet]
+
 - Add TicketOccurrenceShippingExtender alongside
   TicketOccurrenceBuyableExtender, which returns an empty field list to hide
   shipping and buyable fields from ITicketOccurrence objects. Add a

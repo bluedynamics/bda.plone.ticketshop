@@ -12,8 +12,22 @@
     name="bda.plone.ticketshop.event"
     factory=".BuyableEventExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
-
   <adapter factory=".ATBuyableEventData" />
+
+  <adapter
+    name="bda.plone.shop.stock"
+    factory=".SharedStockExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+  <adapter
+    name="item_display_stock"
+    factory=".default_item_display_stock" />
+
+  <!-- Also register ItemNotificationTextExtender for IBuyableEvent -->
+  <adapter
+    name="bda.plone.shop.itemnotificationtext"
+    for="bda.plone.ticketshop.interfaces.IBuyableEvent"
+    factory="bda.plone.shop.at.ItemNotificationTextExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
 
   <!-- TODO: both adapter overwrites should be removed. see README/TODO -->
   <adapter
@@ -26,15 +40,6 @@
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
   <!-- custom ticket data provider for shipping item -->
   <adapter factory=".ATTicketShippingItem" />
-
-  <adapter
-    name="bda.plone.shop.stock"
-    factory=".SharedStockExtender"
-    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
-
-  <adapter
-    name="item_display_stock"
-    factory=".default_item_display_stock" />
 
   <genericsetup:registerProfile
     name="default"
