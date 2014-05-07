@@ -170,30 +170,22 @@ class ATTicketCartItemDataProvider(ATCartItemDataProvider):
 class TicketOccurrenceCartItemDataProvider(object):
 
     def __init__(self, context):
+        # Have to set this on object, otherwise they are masqued by __getattr__
         object.__setattr__(self, 'context', context)
-
-        own_attr = ['id', 'title', ]
-        object.__setattr__(self, '_own_attr', own_attr)
-
-    def _get_context(self, name):
-        oa = self._own_attr
-        if name in oa:
-            return self.context
-        else:
-            return ICartItemDataProvider(aq_parent(self.context))
-
-    def __getattr__(self, name):
-        return getattr(self._get_context(name), name, None)
-
-    def __setattr__(self, name, value):
-        return setattr(self._get_context(name), name, value)
-
-    def __delattr__(self, name):
-        delattr(self._get_context(name), name)
+        parent_context = ICartItemDataProvider(aq_parent(context))
+        object.__setattr__(self, 'parent_context', parent_context)
+        own_attr = ['title', ]
+        object.__setattr__(self, 'own_attr', own_attr)
 
     @property
     def title(self):
         return ticket_title_generator(self.context)['title']
+
+    def __getattr__(self, name):
+        if name in self.own_attr:
+            return getattr(self.context, name)
+        else:
+            return getattr(self.parent_context, name)
 
 
 @adapter(ISharedStock, IBrowserRequest)
