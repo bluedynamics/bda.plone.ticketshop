@@ -7,6 +7,7 @@ from archetypes.schemaextender.field import ExtensionField
 from archetypes.schemaextender.interfaces import IBrowserLayerAwareExtender
 from archetypes.schemaextender.interfaces import IExtensionField
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
+from bda.plone.orders.interfaces import ITrading
 from bda.plone.shipping.interfaces import IShippingItem
 from bda.plone.ticketshop import messageFactory as _
 from bda.plone.ticketshop import permissions
@@ -96,11 +97,31 @@ class ATBuyableEventData(object):
         return field_value(self.context, 'item_cart_count_limit')
 
 
-# Overwrite schema extenders for ITicketOccurrence to not display fields not
-# intendent to be changed on a ticket occurrence
+# Overwrite schema extenders for ITicket and/or ITicketOccurrence to not
+# display fields not intendent to be changed on these objects
 
 # TODO: these overwrites should better go away. The schema extenders should
 # instead better be registered for more specific interfaces.
+
+@adapter(ITicket)
+class TicketTradingExtender(ExtenderBase):
+    """Overwrite default trading for tickets providing no fields.
+    """
+    layer = ITicketShopExtensionLayer
+    fields = []
+
+
+@implementer(ITrading)
+@adapter(ITicket)
+class TicketTrading(object):
+    """Custom Accessor Interface
+    """
+
+    def __init__(self, context):
+        self.context = context
+        self.item_number = None
+        self.gtin = None
+
 
 @adapter(ITicketOccurrence)
 class TicketOccurenceBuyableExtender(ExtenderBase):
@@ -122,7 +143,7 @@ class TicketOccurenceShippingExtender(ExtenderBase):
 
 @implementer(IShippingItem)
 @adapter(ITicket)
-class ATTicketShippingItem(object):
+class TicketShippingItem(object):
     """Custom IShippingItem data provider, returning 0 for weight and the
     default shippable setting from the control panel.
     """

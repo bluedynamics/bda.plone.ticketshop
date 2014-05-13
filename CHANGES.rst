@@ -5,6 +5,10 @@ Changelog
 1.0dev
 ------
 
+- Add ITrading based extender and DataProvider for ITickets, providing no
+  fields and returning None to exclude the trading feature.
+  [thet]
+
 - Also register ItemNotificationTextExtender also for IBuyableEvent, making
   these fields available on the event itself.
   [thet]

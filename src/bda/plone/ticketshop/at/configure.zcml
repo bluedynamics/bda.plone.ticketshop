@@ -29,7 +29,12 @@
     factory="bda.plone.shop.at.ItemNotificationTextExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
 
-  <!-- TODO: both adapter overwrites should be removed. see README/TODO -->
+  <!-- TODO: these adapter overwrites should be removed. see README/TODO -->
+  <adapter
+    name="bda.plone.shop.trading"
+    factory=".TicketTradingExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+  <adapter factory=".TicketTrading" />
   <adapter
     name="bda.plone.shop.buyable"
     factory=".TicketOccurenceBuyableExtender"
@@ -39,7 +44,7 @@
     factory=".TicketOccurenceShippingExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
   <!-- custom ticket data provider for shipping item -->
-  <adapter factory=".ATTicketShippingItem" />
+  <adapter factory=".TicketShippingItem" />
 
   <genericsetup:registerProfile
     name="default"
