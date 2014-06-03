@@ -64,25 +64,35 @@ def _get_booking_url(booking):
     return url
 
 
-class OrderView(views.OrderView):
+def _order_listing(order_data):
+    # Customized order listing with correct url to booking
+    ret = list()
+    for booking in order_data.bookings:
+        url = _get_booking_url(booking)
+        ret.append({
+            'title': booking.attrs['title'],
+            'url': url,
+            'count': booking.attrs['buyable_count'],
+            'net': ascur(booking.attrs.get('net', 0.0)),
+            'vat': booking.attrs.get('vat', 0.0),
+            'exported': booking.attrs['exported'],
+            'comment': booking.attrs['buyable_comment'],
+            'quantity_unit': booking.attrs.get('quantity_unit'),
+            'currency': booking.attrs.get('currency'),
+        })
+    return ret
 
+
+class OrderView(views.OrderView):
     @property
     def listing(self):
-        ret = list()
-        for booking in self.order_data.bookings:
-            url = _get_booking_url(booking)
-            ret.append({
-                'title': booking.attrs['title'],
-                'url': url,
-                'count': booking.attrs['buyable_count'],
-                'net': ascur(booking.attrs.get('net', 0.0)),
-                'vat': booking.attrs.get('vat', 0.0),
-                'exported': booking.attrs['exported'],
-                'comment': booking.attrs['buyable_comment'],
-                'quantity_unit': booking.attrs.get('quantity_unit'),
-                'currency': booking.attrs.get('currency'),
-            })
-        return ret
+        return _order_listing(self.order_data)
+
+
+class MyOrderView(views.MyOrderView):
+    @property
+    def listing(self):
+        return _order_listing(self.order_data)
 
 
 class ExportOrdersForm(views.ExportOrdersForm):

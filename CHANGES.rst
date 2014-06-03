@@ -5,6 +5,10 @@ Changelog
 1.0dev
 ------
 
+- Fix link to booking in ``@@myorder`` view, like in ``@@order`` view and
+  protect the ``@@myorder`` view with ``bda.plone.orders.ViewOwnOrders``.
+  [thet]
+
 - Add ITrading based extender and DataProvider for ITickets, providing no
   fields and returning None to exclude the trading feature.
   [thet]
