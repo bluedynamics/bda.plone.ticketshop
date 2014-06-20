@@ -4,6 +4,10 @@ Changelog
 
 1.0dev
 ------
+- Instead of ``plone.app.uuid.utils.uuidToObject`` use
+  ``bda.plone.cart.get_object_by_uid``, which does the same but can handle
+  ``uuid.UUID`` and string objects.
+  [thet]
 
 - Fix link to booking in ``@@myorder`` view, like in ``@@order`` view and
   protect the ``@@myorder`` view with ``bda.plone.orders.ViewOwnOrders``.
