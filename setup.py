@@ -44,8 +44,6 @@ setup(
         ],
         'test': [
             'Products.ATContentTypes',
-            'plone.app.contenttypes',
-            'plone.app.dexterity',
             'plone.app.robotframework [debug]',
             'plone.app.testing [robot]',
         ]
