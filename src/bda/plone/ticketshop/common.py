@@ -328,7 +328,7 @@ class SharedStockData(EventTicketsBase):
     def set(self, field_name, value):
         stock_data = self.stock_data
         data = stock_data.setdefault(self.related_key, PersistentDict())
-        if not value:
+        if value is None:
             data[field_name] = None
         else:
             data[field_name] = float(value)
