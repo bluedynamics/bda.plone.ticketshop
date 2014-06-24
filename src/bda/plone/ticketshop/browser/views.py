@@ -1,14 +1,8 @@
 from Acquisition import aq_parent
 from Products.Five import BrowserView
-from bda.plone.cart import ascur
-from bda.plone.cart import get_object_by_uid
-from bda.plone.orders.browser import views
 from bda.plone.shop.at import field_value
-from bda.plone.ticketshop.interfaces import ITicket
-from bda.plone.ticketshop.interfaces import ITicketOccurrence
-from plone.event.interfaces import IEvent
 from plone.app.event.browser.event_summary import EventSummaryView
-from zope.component.hooks import getSite
+
 
 class EventTicketSummaryView(EventSummaryView):
 
