@@ -134,32 +134,4 @@
     layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
   </configure>
 
-  <!-- display correct url in order views -->
-  <configure package="bda.plone.orders.browser">
-
-    <browser:page
-      for="*"
-      name="order"
-      template="order.pt"
-      class="bda.plone.ticketshop.browser.views.OrderView"
-      permission="bda.plone.orders.ViewOrders"
-      layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
-
-    <browser:page
-      for="*"
-      name="myorder"
-      template="order.pt"
-      class="bda.plone.ticketshop.browser.views.MyOrderView"
-      permission="bda.plone.orders.ViewOwnOrders"
-      layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
-
-  </configure>
-
-  <browser:page
-    for="*"
-    name="exportorders"
-    class="bda.plone.ticketshop.browser.views.ExportOrdersForm"
-    permission="bda.plone.orders.ExportOrders"
-    layer="bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer" />
-
 </configure>

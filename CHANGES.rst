@@ -4,13 +4,15 @@ Changelog
 
 1.0dev
 ------
+
+- Remove booking url customizations. We now link to the ticket and not to the
+  event, which is the default behavior from bda.plone.orders. The ticket itself
+  links to the event.
+  [thet]
+
 - Instead of ``plone.app.uuid.utils.uuidToObject`` use
   ``bda.plone.cart.get_object_by_uid``, which does the same but can handle
   ``uuid.UUID`` and string objects.
-  [thet]
-
-- Fix link to booking in ``@@myorder`` view, like in ``@@order`` view and
-  protect the ``@@myorder`` view with ``bda.plone.orders.ViewOwnOrders``.
   [thet]
 
 - Add ITrading based extender and DataProvider for ITickets, providing no
