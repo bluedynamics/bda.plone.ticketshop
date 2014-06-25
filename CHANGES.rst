@@ -5,6 +5,10 @@ Changelog
 1.0dev
 ------
 
+- Add the URL to the event or event occurrence for a ticket or ticket
+  occurrence in CSV exports.
+  [thet]
+
 - Remove booking url customizations. We now link to the ticket and not to the
   event, which is the default behavior from bda.plone.orders. The ticket itself
   links to the event.
