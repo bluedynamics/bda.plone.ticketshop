@@ -55,7 +55,7 @@ msgstr "Anzahl Tickets um ${exceed} überschritten. Bitte passen Sie die Anzahl 
 #. Default: "${reserved} tickets reserved"
 #: ./common.py:225
 msgid "alert_ticket_number_reserved"
-msgstr "${reserved} Tickets als Vorbestellung"
+msgstr "${reserved} Ticket(s) als Vorbestellung"
 
 #. Default: "Limit of tickets for this event reached"
 #: ./common.py:135
