@@ -15,6 +15,7 @@ from bda.plone.cart import get_object_by_uid
 from bda.plone.cart import readcookie
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
+from bda.plone.shop import message_factory as bps_
 from bda.plone.shop.at import ATCartItemDataProvider
 from bda.plone.shop.cartdata import CartDataProvider
 from bda.plone.ticketshop.interfaces import IBuyableEvent
@@ -207,6 +208,12 @@ class TicketCartItemState(CartItemStateBase):
                             u'remove from cart')
         return translate(message, context=self.request)
 
+    @property
+    def some_reservations_alert(self):
+        message = bps_(u'alert_item_some_reserved',
+                       default=u'Partly reserved')
+        return translate(message, context=self.request)
+
     def partly_exceeded_alert(self, exceed):
         message = _(u'alert_ticket_number_exceed',
                     default=u'Limit exceed by ${exceed} tickets',
@@ -234,7 +241,10 @@ class TicketCartItemState(CartItemStateBase):
                 return self.partly_exceeded_alert(exceed)
             return self.completely_exceeded_alert
         if reserved:
-            return self.number_reservations_alert(reserved)
+            # XXX: cart item state needs love how to display item
+            #      warnings
+            return self.some_reservations_alert
+            #return self.number_reservations_alert(reserved)
         return ''
 
 

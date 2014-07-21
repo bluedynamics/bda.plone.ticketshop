@@ -5,6 +5,9 @@ Changelog
 1.0dev
 ------
 
+- Return "Partly reserved" message in cart item state.
+  [rnix]
+
 - Add the URL to the event or event occurrence for a ticket or ticket
   occurrence in CSV exports.
   [thet]
