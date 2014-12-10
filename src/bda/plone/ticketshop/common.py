@@ -21,8 +21,10 @@ from bda.plone.shop.cartdata import CartDataProvider
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
 from bda.plone.ticketshop.interfaces import IEventTickets
+from bda.plone.ticketshop.interfaces import ISharedData
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
+from bda.plone.ticketshop.interfaces import ISharedBuyablePeriodData
 from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
@@ -307,48 +309,61 @@ class EventTicketOccurrences(EventTicketsBase, CatalogMixin):
         return [brain.UID for brain in brains]
 
 
-SHARED_STOCK_DATA_KEY = 'bda.plone.ticketshop.shared_stock'
-
-
-@implementer(ISharedStockData)
-class SharedStockData(EventTicketsBase):
+@implementer(ISharedData)
+class SharedData(EventTicketsBase):
 
     @property
-    def shared_stock_context(self):
-        raise NotImplementedError(u"Abstract ``SharedStockData`` does not "
-                                  u"implement ``shared_stock_context``")
+    def shared_data_key(self):
+        raise NotImplementedError(u"Abstract ``SharedData`` does not "
+                                  u"implement ``shared_data_key``")
 
     @property
-    def stock_data(self):
-        annotations = IAnnotations(self.shared_stock_context, None)
+    def shared_data_context(self):
+        raise NotImplementedError(u"Abstract ``SharedData`` does not "
+                                  u"implement ``shared_data_context``")
+
+    @property
+    def shared_data(self):
+        annotations = IAnnotations(self.shared_data_context, None)
         if annotations is None:
             # return dummy dict, prevents add form from raising an error
             return dict()
         data = annotations \
-            and annotations.get(SHARED_STOCK_DATA_KEY, None) \
+            and annotations.get(self.shared_data_key, None) \
             or None
         if data is None:
             data = OOBTree()
-            annotations[SHARED_STOCK_DATA_KEY] = data
+            annotations[self.shared_data_key] = data
         return data
 
     def get(self, field_name):
-        return self.stock_data.get(self.related_key, {}).get(field_name)
+        return self.shared_data.get(self.related_key, {}).get(field_name)
 
     def set(self, field_name, value):
-        stock_data = self.stock_data
-        data = stock_data.setdefault(self.related_key, PersistentDict())
+        shared_data = self.shared_data
+        data = shared_data.setdefault(self.related_key, PersistentDict())
         if value is None:
             data[field_name] = None
         else:
             data[field_name] = float(value)
 
 
+SHARED_STOCK_DATA_KEY = 'bda.plone.ticketshop.shared_stock'
+
+
+@implementer(ISharedStockData)
+class SharedStockData(SharedData):
+
+    @property
+    def shared_data_key(self):
+        return SHARED_STOCK_DATA_KEY
+
+
 @adapter(ITicket)
 class TicketSharedStock(EventTickets, SharedStockData):
 
     @property
-    def shared_stock_context(self):
+    def shared_data_context(self):
         return aq_parent(self.context)
 
 
@@ -356,7 +371,35 @@ class TicketSharedStock(EventTickets, SharedStockData):
 class TicketOccurrenceSharedStock(EventTicketOccurrences, SharedStockData):
 
     @property
-    def shared_stock_context(self):
+    def shared_data_context(self):
+        return aq_parent(aq_parent(self.context))
+
+
+SHARED_BUYABLE_PERIOD_DATA_KEY = 'bda.plone.ticketshop.shared_buyable_period'
+
+
+@implementer(ISharedBuyablePeriodData)
+class SharedBuyablePeriodData(SharedData):
+
+    @property
+    def shared_data_key(self):
+        return SHARED_BUYABLE_PERIOD_DATA_KEY
+
+
+@adapter(ITicket)
+class TicketSharedBuyablePeriod(EventTickets, SharedBuyablePeriodData):
+
+    @property
+    def shared_data_context(self):
+        return aq_parent(self.context)
+
+
+@adapter(ITicketOccurrence)
+class TicketOccurrenceSharedBuyablePeriod(EventTicketOccurrences,
+                                          SharedBuyablePeriodData):
+
+    @property
+    def shared_data_context(self):
         return aq_parent(aq_parent(self.context))
 
 

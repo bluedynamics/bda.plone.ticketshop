@@ -1,9 +1,14 @@
 Changelog
 =========
 
+1.0 (unreleased)
+----------------
 
-1.0dev
-------
+- Buyable period is shared among tickets now.
+  [rnix]
+
+- Adopt custom availability details to consider buyable period.
+  [rnix]
 
 - Return "Partly reserved" message in cart item state.
   [rnix]

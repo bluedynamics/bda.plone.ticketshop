@@ -54,6 +54,12 @@
   <adapter factory=".common.TicketOccurrenceSharedStock"
            provides=".interfaces.ISharedStockData" />
 
+  <adapter factory=".common.TicketSharedBuyablePeriod"
+           provides=".interfaces.ISharedBuyablePeriodData" />
+
+  <adapter factory=".common.TicketOccurrenceSharedBuyablePeriod"
+           provides=".interfaces.ISharedBuyablePeriodData" />
+
   <adapter factory=".common.TicketOccurrenceData" />
 
   <adapter

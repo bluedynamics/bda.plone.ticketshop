@@ -18,7 +18,12 @@ class ISharedStock(Interface):
     """
 
 
-class ITicket(ISharedStock):
+class ISharedBuyablePeriod(Interface):
+    """Marker for items providing shared buyable period.
+    """
+
+
+class ITicket(ISharedStock, ISharedBuyablePeriod):
     """Marker interfaces for ticket.
     """
 
@@ -44,19 +49,31 @@ class IEventTickets(Interface):
     related_uids = Attribute(u"List of uids of related tickets.")
 
 
-class ISharedStockData(IEventTickets):
-    """Interface for accessing shared stock data.
+class ISharedData(IEventTickets):
+    """Interface for accessing shared data.
     """
 
-    shared_stock_context = Attribute(u"Context which holds shared stock data.")
+    shared_data_key = Attribute(u"Annotation key for shared data.")
+
+    shared_data_context = Attribute(u"Context which holds shared data.")
 
     def get(field_name):
-        """Get shared stock value for field name.
+        """Get shared data value for field name.
         """
 
     def set(field_name, value):
-        """Set shared stock value for field name.
+        """Set shared data value for field name.
         """
+
+
+class ISharedStockData(ISharedData):
+    """Interface for accessing shared stock data.
+    """
+
+
+class ISharedBuyablePeriodData(ISharedData):
+    """Interface for accessing shared buyable period data.
+    """
 
 
 class ITicketOccurrenceData(Interface):

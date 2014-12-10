@@ -22,6 +22,17 @@
     name="item_display_stock"
     factory=".default_item_display_stock" />
 
+  <adapter
+    name="bda.plone.shop.buyableperiod"
+    factory=".SharedBuyablePeriodExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+  <adapter
+    for="bda.plone.ticketshop.interfaces.IBuyableEvent"
+    factory=".ATSharedBuyablePeriod" />
+  <adapter
+    for="bda.plone.ticketshop.interfaces.ITicket"
+    factory=".ATSharedBuyablePeriod" />
+
   <!-- Also register ItemNotificationTextExtender for IBuyableEvent -->
   <adapter
     name="bda.plone.shop.itemnotificationtext"
@@ -43,6 +54,7 @@
     name="bda.plone.shop.shipping"
     factory=".TicketOccurenceShippingExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+
   <!-- custom ticket data provider for shipping item -->
   <adapter factory=".TicketShippingItem" />
 

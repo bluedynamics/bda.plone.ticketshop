@@ -1,13 +1,16 @@
-from zope.component import adapter
-from zope.i18nmessageid import MessageFactory
-from zope.publisher.interfaces.browser import IBrowserRequest
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bda.plone.cart import extractitems
 from bda.plone.cart import readcookie
 from bda.plone.cart import get_item_state
 from bda.plone.shop.browser.availability import CartItemAvailability
+from bda.plone.shop.interfaces import IBuyablePeriod
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
+from Products.CMFPlone.i18nl10n import ulocalized_time
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.component import adapter
+from zope.component import queryAdapter
+from zope.i18nmessageid import MessageFactory
+from zope.publisher.interfaces.browser import IBrowserRequest
 
 
 _ = MessageFactory('bda.plone.ticketshop')
@@ -62,4 +65,30 @@ class SharedCartItemAvailability(CartItemAvailability):
                             u'tickets on a reservations list. If some tickets '
                             u'gets refused, you\'ll get informed.',
                     mapping={'reservable': reservable})
+        return message
+
+    @property
+    def purchasable_until_message(self):
+        date = ulocalized_time(
+            queryAdapter(self.context, IBuyablePeriod).expires,
+            long_format=1,
+            context=self.context,
+            request=self.request,
+        )
+        message = _(u'ticket_purchasable_until_message',
+                    default=u'Tickets are purchasable until ${date}',
+                    mapping={'date': date})
+        return message
+
+    @property
+    def purchasable_as_of_message(self):
+        date = ulocalized_time(
+            queryAdapter(self.context, IBuyablePeriod).effective,
+            long_format=1,
+            context=self.context,
+            request=self.request,
+        )
+        message = _(u'ticket_purchasable_as_of_message',
+                    default=u'Tickets are purchasable as of ${date}',
+                    mapping={'date': date})
         return message
