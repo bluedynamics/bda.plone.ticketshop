@@ -114,6 +114,15 @@
     permission="zope2.View"
     layer="..interfaces.ITicketShopExtensionLayer" />
 
+  <!-- buyable_availability for event listing -->
+  <browser:page
+    name="buyable_availability"
+    for="..interfaces.IBuyableEvent"
+    class=".buyable.BuyableEventTickets"
+    template="buyable_availability.pt"
+    permission="zope2.View"
+    layer="..interfaces.ITicketShopExtensionLayer" />
+
   <!-- buyable_events for occurrences -->
   <browser:page
     name="buyable_tickets"
