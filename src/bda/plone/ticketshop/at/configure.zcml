@@ -15,6 +15,10 @@
   <adapter factory=".ATBuyableEventData" />
 
   <adapter
+    for="bda.plone.ticketshop.interfaces.ITicket"
+    factory=".common.ATTicketCartItemDataProvider" />
+
+  <adapter
     name="bda.plone.shop.stock"
     factory=".SharedStockExtender"
     provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />

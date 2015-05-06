@@ -42,6 +42,10 @@ setup(
             'collective.folderishtypes',
             'plone.app.event [archetypes]',
         ],
+        'dexterity': [
+            'collective.folderishtypes',
+            'plone.app.event [dexterity]',
+        ],
         'test': [
             'Products.ATContentTypes',
             'plone.app.robotframework [debug]',

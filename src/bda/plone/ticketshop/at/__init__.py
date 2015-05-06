@@ -1,4 +1,3 @@
-from datetime import datetime
 from DateTime import DateTime
 from DateTime.DateTime import safelocaltime
 from DateTime.interfaces import DateTimeError
@@ -13,18 +12,21 @@ from archetypes.schemaextender.interfaces import IExtensionField
 from archetypes.schemaextender.interfaces import IOrderableSchemaExtender
 from bda.plone.orders.interfaces import ITrading
 from bda.plone.shipping.interfaces import IShippingItem
+from bda.plone.shop.at import ATCartItemDataProvider
 from bda.plone.shop.interfaces import IBuyablePeriod
 from bda.plone.ticketshop import messageFactory as _
 from bda.plone.ticketshop import permissions
+from bda.plone.ticketshop.common import ticket_title_generator
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
-from bda.plone.ticketshop.interfaces import ISharedStock
-from bda.plone.ticketshop.interfaces import ISharedStockData
 from bda.plone.ticketshop.interfaces import ISharedBuyablePeriod
 from bda.plone.ticketshop.interfaces import ISharedBuyablePeriodData
+from bda.plone.ticketshop.interfaces import ISharedStock
+from bda.plone.ticketshop.interfaces import ISharedStockData
 from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
+from datetime import datetime
 from zope.component import adapter
 from zope.component import queryAdapter
 from zope.interface import implementer
@@ -102,6 +104,16 @@ class ATBuyableEventData(object):
     @property
     def cart_count_limit(self):
         return field_value(self.context, 'item_cart_count_limit')
+
+
+class ATTicketCartItemDataProvider(ATCartItemDataProvider):
+    """Custom CartItemDataProvider for Archetypes Tickets, providing a custom
+    title.
+    """
+
+    @property
+    def title(self):
+        return ticket_title_generator(self.context)['title']
 
 
 # Overwrite schema extenders for ITicket and/or ITicketOccurrence to not
