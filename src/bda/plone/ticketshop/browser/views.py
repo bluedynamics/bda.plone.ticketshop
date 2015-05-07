@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from Products.Five import BrowserView
 from bda.plone.cart import get_object_by_uid
