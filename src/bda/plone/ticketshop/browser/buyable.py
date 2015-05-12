@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from AccessControl import getSecurityManager
 from Acquisition import aq_parent
 from Products.Five import BrowserView
 from bda.plone.cart import get_item_availability
 from bda.plone.shop import permissions
-from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from bda.plone.shop.browser.buyable import BuyableControls as _BuyableControls
+from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from plone.uuid.interfaces import IUUID
 
 

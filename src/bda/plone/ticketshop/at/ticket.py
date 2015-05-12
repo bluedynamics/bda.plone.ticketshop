@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 from AccessControl import ClassSecurityInfo
-from zope.interface import implementer
 from Products.Archetypes import atapi
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
-from bda.plone.shop.interfaces import IBuyable
-from bda.plone.ticketshop.interfaces import ITicket
+from bda.plone.orders.interfaces import IBuyable
 from bda.plone.ticketshop.at import PROJECTNAME
+from bda.plone.ticketshop.interfaces import ITicket
+from zope.interface import implementer
 
 Ticket_schema = atapi.BaseFolderSchema.copy()
 

@@ -1,5 +1,4 @@
-import transaction
-from zExceptions import Redirect
+# -*- coding: utf-8 -*-
 from Products.Five import BrowserView
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
@@ -12,5 +11,4 @@ class TicketOccurrence(BrowserView):
 
     def create(self):
         ITicketOccurrenceData(self.context).create_ticket_occurrences()
-        transaction.commit()
-        raise Redirect(self.context.absolute_url())
+        self.request.response.redirect(self.context.absolute_url())

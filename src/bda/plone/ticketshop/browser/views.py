@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 from Acquisition import aq_parent
 from Products.Five import BrowserView
 from bda.plone.cart import get_object_by_uid
-from bda.plone.orders.browser.views import COMPUTED_BOOKING_EXPORT_ATTRS
+from bda.plone.orders.browser.export import COMPUTED_BOOKING_EXPORT_ATTRS
 from bda.plone.shop.at import field_value
 from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
