@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Ticketshop support for Dexterity based events. Tickets and TicketOccurrences
+  are still Archetype objects, though.
+  [thet]
+
 - Buyable period is shared among tickets now.
   [rnix]
 

@@ -355,6 +355,7 @@ class SharedBuyablePeriodExtender(ExtenderBase):
 
 @implementer(IBuyablePeriod)
 class ATSharedBuyablePeriod(object):
+    # TODO: not used at all?
 
     def __init__(self, context):
         self.context = context

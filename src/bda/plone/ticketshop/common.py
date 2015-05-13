@@ -1,6 +1,5 @@
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
-from Products.Archetypes.interfaces import IBaseObject
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode

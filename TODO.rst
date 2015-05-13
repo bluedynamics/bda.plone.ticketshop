@@ -1,6 +1,28 @@
 TODO
 ====
 
+- DX support, pt 1:
+
+
+  <adapter
+    name="bda.plone.ticketshop.event"
+    factory=".BuyableEventExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+  <adapter
+    for="bda.plone.ticketshop.interfaces.IBuyableEvent"
+    factory=".ATSharedBuyablePeriod" />
+
+
+
+  <adapter
+    name="bda.plone.shop.itemnotificationtext"
+    for="bda.plone.ticketshop.interfaces.IBuyableEvent"
+    factory="bda.plone.shop.at.ItemNotificationTextExtender"
+    provides="archetypes.schemaextender.interfaces.IOrderableSchemaExtender" />
+
+
+
+
 - Buyable and shipping schema extender overwrites for Ticketoccurrence should
   be removed. The schema extenders should instead better be registered for more
   specific interfaces.
