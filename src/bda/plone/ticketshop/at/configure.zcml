@@ -16,7 +16,7 @@
 
   <adapter
     for="bda.plone.ticketshop.interfaces.ITicket"
-    factory=".common.ATTicketCartItemDataProvider" />
+    factory=".ATTicketCartItemDataProvider" />
 
   <adapter
     name="bda.plone.shop.stock"
