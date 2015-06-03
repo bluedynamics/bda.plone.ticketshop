@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Don't let the buyable_availability view break, if there are no tickets
+  available.
+  [thet]
+
 - Ticketshop support for Dexterity based events. Tickets and TicketOccurrences
   are still Archetype objects, though.
   [thet]

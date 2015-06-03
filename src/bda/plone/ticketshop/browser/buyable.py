@@ -20,7 +20,18 @@ class SharedStockBuyables(BrowserView):
 
     @property
     def _item_availability(self):
-        return get_item_availability(self.tickets[0], self.request)
+        ret = None
+        if self.tickets:
+            # tickets might be empty
+            ret = get_item_availability(self.tickets[0], self.request)
+        else:
+            # Dummy object
+            ret = type('obj', (object,), {
+                'display': False,
+                'signal': 'red',
+                'details': ''
+            })
+        return ret
 
     @property
     def can_view_buyable_info(self):
