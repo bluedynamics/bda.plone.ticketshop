@@ -67,10 +67,8 @@ class BuyableEventTickets(SharedStockBuyables):
 
     @property
     def tickets(self):
-        if not hasattr(self.request, '_tickets'):
-            data = ITicketOccurrenceData(self.context)
-            self.request._tickets = data.tickets
-        return self.request._tickets
+        data = ITicketOccurrenceData(self.context)
+        return data.tickets
 
 
 class BuyableEventOccurrenceTickets(SharedStockBuyables):
@@ -81,8 +79,6 @@ class BuyableEventOccurrenceTickets(SharedStockBuyables):
 
     @property
     def tickets(self):
-        if not hasattr(self.request, '_tickets'):
-            occurrence_id = self.context.id
-            data = ITicketOccurrenceData(aq_parent(self.context))
-            self.request._tickets = data.ticket_occurrences(occurrence_id)
-        return self.request._tickets
+        occurrence_id = self.context.id
+        data = ITicketOccurrenceData(aq_parent(self.context))
+        return data.ticket_occurrences(occurrence_id)

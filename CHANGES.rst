@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Don't cache _tickets on the request. This doesn't work, if the buyable
+  viewlet is shown multiple times on one page, e.g. for event_listing.
+  [thet]
+
 - Don't let the buyable_availability view break, if there are no tickets
   available.
   [thet]
