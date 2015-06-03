@@ -8,6 +8,9 @@ Changelog
   available.
   [thet]
 
+- Make buyable_availability view for display in event_listing.
+  [bennyboy, thet]
+
 - Ticketshop support for Dexterity based events. Tickets and TicketOccurrences
   are still Archetype objects, though.
   [thet]

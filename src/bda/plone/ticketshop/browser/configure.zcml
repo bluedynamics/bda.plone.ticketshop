@@ -121,6 +121,13 @@
       template="buyable_availability.pt"
       permission="zope2.View"
       layer="..interfaces.ITicketShopExtensionLayer" />
+  <browser:page
+      name="buyable_availability"
+      for="plone.event.interfaces.IOccurrence"
+      class=".buyable.BuyableEventOccurrenceTickets"
+      template="buyable_availability.pt"
+      permission="zope2.View"
+      layer="..interfaces.ITicketShopExtensionLayer" />
 
   <!-- buyable controls -->
   <configure package="bda.plone.shop.browser">
