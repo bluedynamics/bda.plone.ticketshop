@@ -1,6 +1,5 @@
 from Acquisition import aq_parent
 from BTrees.OOBTree import OOBTree
-from Products.Archetypes.interfaces import IBaseObject
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone.i18nl10n import ulocalized_time
 from Products.CMFPlone.utils import safe_unicode
@@ -16,20 +15,18 @@ from bda.plone.cart import readcookie
 from bda.plone.cart.interfaces import ICartItemDataProvider
 from bda.plone.orders.common import OrderCheckoutAdapter
 from bda.plone.shop import message_factory as bps_
-from bda.plone.shop.at import ATCartItemDataProvider
 from bda.plone.shop.cartdata import CartDataProvider
 from bda.plone.ticketshop.interfaces import IBuyableEvent
 from bda.plone.ticketshop.interfaces import IBuyableEventData
 from bda.plone.ticketshop.interfaces import IEventTickets
+from bda.plone.ticketshop.interfaces import ISharedBuyablePeriodData
 from bda.plone.ticketshop.interfaces import ISharedData
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
-from bda.plone.ticketshop.interfaces import ISharedBuyablePeriodData
 from bda.plone.ticketshop.interfaces import ITicket
 from bda.plone.ticketshop.interfaces import ITicketOccurrence
 from bda.plone.ticketshop.interfaces import ITicketOccurrenceData
 from persistent.dict import PersistentDict
-from plone.app.event.at.traverser import OccurrenceTraverser as OccTravAT
 from plone.app.event.base import DT
 from plone.app.event.recurrence import Occurrence
 from plone.event.interfaces import IEvent
@@ -41,8 +38,20 @@ from zope.component import adapter
 from zope.globalrequest import getRequest
 from zope.i18n import translate
 from zope.i18nmessageid import MessageFactory
+from zope.interface import Interface
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
+
+
+try:
+    # pae's AT branch is optional and gone in pae 2.0
+    from plone.app.event.at.traverser import OccurrenceTraverser as OccTravAT
+    from plone.app.event.at.interfaces import IATEvent
+except ImportError:
+    class IATEvent(Interface):
+        pass
+from plone.app.event.dx.interfaces import IDXEvent
+from plone.app.event.dx.traverser import OccurrenceTraverser as OccTravDX
 
 
 _ = MessageFactory('bda.plone.ticketshop')
@@ -60,13 +69,18 @@ def ticket_title_generator(obj):
     if ITicketOccurrence.providedBy(event):
         event = aq_parent(aq_parent(event))
         # Traverse to the Occurrence object
-        if IBaseObject.providedBy(event):
+        if IATEvent.providedBy(event):
             # get the request out of thin air to be able to publishTraverse to
             # the transient Occurrence object.
             traverser = OccTravAT(event, getRequest())
-        else:
+        elif IDXEvent.providedBy(event):
             # TODO
-            traverser = None
+            traverser = OccTravDX(event, getRequest())
+        else:
+            raise NotImplementedError(
+                u"There is no event occurrence traverser implementation for "
+                u"this kind of object."
+            )
         event = traverser.publishTraverse(getRequest(), obj.id)
 
     elif ITicket.providedBy(event):
@@ -158,16 +172,6 @@ class TicketShopCartDataProvider(CartDataProvider):
         return {'success': False, 'error': message}
 
 
-class ATTicketCartItemDataProvider(ATCartItemDataProvider):
-    """Custom CartItemDataProvider for Archetypes Tickets, providing a custom
-    title.
-    """
-
-    @property
-    def title(self):
-        return ticket_title_generator(self.context)['title']
-
-
 @implementer(ICartItemDataProvider)
 @adapter(ITicketOccurrence)
 class TicketOccurrenceCartItemDataProvider(object):
@@ -246,7 +250,7 @@ class TicketCartItemState(CartItemStateBase):
             # XXX: cart item state needs love how to display item
             #      warnings
             return self.some_reservations_alert
-            #return self.number_reservations_alert(reserved)
+            # return self.number_reservations_alert(reserved)
         return ''
 
 

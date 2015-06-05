@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configure
   xmlns="http://namespaces.zope.org/zope"
-  xmlns:five="http://namespaces.zope.org/five"
   xmlns:i18n="http://namespaces.zope.org/i18n"
   xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="bda.plone.ticketshop">
@@ -16,8 +15,28 @@
   <include package=".browser" />
 
   <include zcml:condition="installed Products.ATContentTypes" package=".at" />
+  <include zcml:condition="installed plone.dexterity" package=".dx" />
 
   <subscriber handler=".subscribers.ticket_wf_changed" />
+
+  <adapter factory=".common.EventTickets" />
+  <adapter factory=".common.EventTicketOccurrences" />
+
+  <adapter factory=".common.TicketSharedStock"
+           provides="bda.plone.ticketshop.interfaces.ISharedStockData" />
+  <adapter factory=".common.TicketOccurrenceSharedStock"
+           provides="bda.plone.ticketshop.interfaces.ISharedStockData" />
+
+  <adapter factory=".common.TicketSharedBuyablePeriod"
+           provides="bda.plone.ticketshop.interfaces.ISharedBuyablePeriodData" />
+  <adapter factory=".common.TicketOccurrenceSharedBuyablePeriod"
+           provides="bda.plone.ticketshop.interfaces.ISharedBuyablePeriodData" />
+
+  <adapter factory=".common.TicketOccurrenceData" />
+
+  <adapter factory=".common.TicketOccurrenceCartItemDataProvider" />
+  <adapter factory=".common.TicketCartItemState" />
+
 
   <!-- Custom cart data provider -->
   <adapter
@@ -36,32 +55,8 @@
          bda.plone.ticketshop.interfaces.ITicketShopExtensionLayer"
     factory=".common.TicketOrderCheckoutAdapter" />
 
-  <adapter
-    for="bda.plone.ticketshop.interfaces.ITicket"
-    factory=".common.ATTicketCartItemDataProvider" />
 
-  <adapter factory=".common.TicketOccurrenceCartItemDataProvider" />
-
-  <adapter factory=".common.TicketCartItemState" />
-
-  <adapter factory=".common.EventTickets" />
-
-  <adapter factory=".common.EventTicketOccurrences" />
-
-  <adapter factory=".common.TicketSharedStock"
-           provides=".interfaces.ISharedStockData" />
-
-  <adapter factory=".common.TicketOccurrenceSharedStock"
-           provides=".interfaces.ISharedStockData" />
-
-  <adapter factory=".common.TicketSharedBuyablePeriod"
-           provides=".interfaces.ISharedBuyablePeriodData" />
-
-  <adapter factory=".common.TicketOccurrenceSharedBuyablePeriod"
-           provides=".interfaces.ISharedBuyablePeriodData" />
-
-  <adapter factory=".common.TicketOccurrenceData" />
-
+  <!-- custom notification text adapters -->
   <adapter
     for="plone.event.interfaces.IOccurrence"
     provides="bda.plone.orders.interfaces.IItemNotificationText"

@@ -4,6 +4,21 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Don't cache _tickets on the request. This doesn't work, if the buyable
+  viewlet is shown multiple times on one page, e.g. for event_listing.
+  [thet]
+
+- Don't let the buyable_availability view break, if there are no tickets
+  available.
+  [thet]
+
+- Make buyable_availability view for display in event_listing.
+  [bennyboy, thet]
+
+- Ticketshop support for Dexterity based events. Tickets and TicketOccurrences
+  are still Archetype objects, though.
+  [thet]
+
 - Buyable period is shared among tickets now.
   [rnix]
 
