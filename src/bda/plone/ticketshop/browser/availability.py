@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 from bda.plone.cart import extractitems
-from bda.plone.cart import readcookie
 from bda.plone.cart import get_item_state
+from bda.plone.cart import readcookie
 from bda.plone.shop.browser.availability import CartItemAvailability
 from bda.plone.shop.interfaces import IBuyablePeriod
 from bda.plone.ticketshop.interfaces import ISharedStock
@@ -11,7 +12,6 @@ from zope.component import adapter
 from zope.component import queryAdapter
 from zope.i18nmessageid import MessageFactory
 from zope.publisher.interfaces.browser import IBrowserRequest
-
 
 _ = MessageFactory('bda.plone.ticketshop')
 
