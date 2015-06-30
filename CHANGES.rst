@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Configure Ticket and TicketOccurrence to use the ``plone.content.itemView``
+  caching rule, if z3c.caching is available.
+  [thet]
+
 - Don't cache _tickets on the request. This doesn't work, if the buyable
   viewlet is shown multiple times on one page, e.g. for event_listing.
   [thet]

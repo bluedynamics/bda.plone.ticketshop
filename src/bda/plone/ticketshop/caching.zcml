@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:cache="http://namespaces.zope.org/cache">
+
+  <include package="z3c.caching" />
+  <cache:ruleset
+      ruleset="plone.content.itemView"
+      for="bda.plone.ticketshop.interfaces.ITicket"
+      />
+  <cache:ruleset
+      ruleset="plone.content.itemView"
+      for="bda.plone.ticketshop.interfaces.ITicketOccurrence"
+      />
+
+</configure>
