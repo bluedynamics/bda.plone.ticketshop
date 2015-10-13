@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from Products.CMFPlone.i18nl10n import ulocalized_time
+from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from bda.plone.cart import extractitems
 from bda.plone.cart import get_item_state
 from bda.plone.cart import readcookie
@@ -6,8 +8,6 @@ from bda.plone.shop.browser.availability import CartItemAvailability
 from bda.plone.shop.interfaces import IBuyablePeriod
 from bda.plone.ticketshop.interfaces import ISharedStock
 from bda.plone.ticketshop.interfaces import ISharedStockData
-from Products.CMFPlone.i18nl10n import ulocalized_time
-from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from zope.component import adapter
 from zope.component import queryAdapter
 from zope.i18nmessageid import MessageFactory

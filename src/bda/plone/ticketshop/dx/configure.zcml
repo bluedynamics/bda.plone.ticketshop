@@ -5,12 +5,11 @@
 
   <!-- DX behaviors -->
   <plone:behavior
-      title="Shop: Buyable Event Behavior"
-      description="Makes an event buyable via Tickets."
-      provides=".behaviors.IBuyableEventBehavior"
-      for="plone.app.event.dx.interfaces.IDXEvent"
-      />
-  
+    title="Shop: Buyable Event Behavior"
+    description="Makes an event buyable via Tickets."
+    provides=".behaviors.IBuyableEventBehavior"
+    for="plone.app.event.dx.interfaces.IDXEvent" />
+
   <adapter factory=".behaviors.BuyableEventDataProvider" />
 
 </configure>

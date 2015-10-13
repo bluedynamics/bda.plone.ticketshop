@@ -1,18 +1,15 @@
 from Products.CMFPlone.utils import getFSVersionTuple
-from plone.app.testing import PLONE_FIXTURE
 from bda.plone.ticketshop.interfaces import ITicketShopExtensionLayer
 from plone.app.robotframework.testing import MOCK_MAILHOST_FIXTURE
 from plone.app.testing import FunctionalTesting
 from plone.app.testing import IntegrationTesting
+from plone.app.testing import PLONE_FIXTURE
 from plone.app.testing import PloneSandboxLayer
 from plone.app.testing import TEST_USER_ID
 from plone.app.testing import setRoles
 from plone.testing import z2
 from zope.interface import alsoProvides
-
-
 import plone.api
-
 
 if getFSVersionTuple()[0] >= 5:
     PLONE5 = 1

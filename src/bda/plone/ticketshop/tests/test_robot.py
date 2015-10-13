@@ -1,6 +1,5 @@
 from bda.plone.ticketshop.tests import TicketshopAT_ROBOT_TESTING
 from plone.testing import layered
-
 import robotsuite
 import unittest
 

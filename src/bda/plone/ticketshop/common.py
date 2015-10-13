@@ -42,14 +42,14 @@ from zope.interface import Interface
 from zope.interface import implementer
 from zope.publisher.interfaces.browser import IBrowserRequest
 
-
 try:
     # pae's AT branch is optional and gone in pae 2.0
-    from plone.app.event.at.traverser import OccurrenceTraverser as OccTravAT
     from plone.app.event.at.interfaces import IATEvent
+    from plone.app.event.at.traverser import OccurrenceTraverser as OccTravAT
 except ImportError:
     class IATEvent(Interface):
         pass
+
 from plone.app.event.dx.interfaces import IDXEvent
 from plone.app.event.dx.traverser import OccurrenceTraverser as OccTravDX
 

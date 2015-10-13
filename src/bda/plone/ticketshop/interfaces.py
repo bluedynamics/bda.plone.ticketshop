@@ -1,6 +1,6 @@
-from zope.interface import Interface
-from zope.interface import Attribute
 from bda.plone.shop.interfaces import IShopExtensionLayer
+from zope.interface import Attribute
+from zope.interface import Interface
 
 
 class ITicketShopExtensionLayer(IShopExtensionLayer):
