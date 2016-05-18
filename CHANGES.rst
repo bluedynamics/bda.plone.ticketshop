@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Use ``bda.plone.orders.mailnotify.BOOKING_CANCELLED_TITLE_ATTRIBUTE``
+  to set ``eventtitle`` as booking cancelled notification title.
+  [rnix]
+
 - Configure Ticket and TicketOccurrence to use the ``plone.content.itemView``
   caching rule, if z3c.caching is available.
   [thet]
