@@ -300,6 +300,14 @@ class SharedStockExtender(ExtenderBase):
                 label=_(u'label_item_overbook', u'Item stock overbook'),
             ),
         ),
+        XFloatField(
+            name='item_stock_warning_threshold',
+            schemata='Shop',
+            widget=FloatField._properties['widget'](
+                label=_(u'label_stock_warning_threshold',
+                        default=u'Item stock warning threshold.'),
+            ),
+        ),
     ]
 
 

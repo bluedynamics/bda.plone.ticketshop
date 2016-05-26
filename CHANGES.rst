@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Add ``item_stock_warning_threshold``, like in ``bda.plone.shop.at.SharedStockExtender``.
+  Refs: https://github.com/bluedynamics/bda.plone.shop/pull/63 
+  [thet]
+
 - Use ``bda.plone.orders.mailnotify.BOOKING_CANCELLED_TITLE_ATTRIBUTE``
   to set ``eventtitle`` as booking cancelled notification title.
   [rnix]
