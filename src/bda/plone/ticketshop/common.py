@@ -81,7 +81,13 @@ def ticket_title_generator(obj):
                 u"There is no event occurrence traverser implementation for "
                 u"this kind of object."
             )
-        event = traverser.publishTraverse(getRequest(), obj.id)
+        try:
+            event = traverser.publishTraverse(getRequest(), obj.id)
+        except KeyError:
+            # Maybe the ticket occurrence isn't valid anymore because the
+            # event occurence doesn't exist anymore.
+            # Just ignore that case.
+            return ret
 
     elif ITicket.providedBy(event):
         event = aq_parent(event)

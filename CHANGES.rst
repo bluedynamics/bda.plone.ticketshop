@@ -4,6 +4,9 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Make the ``ticket_title_generator`` more robust against cases, where a corresponding event occurrence of a ticket occurence isn't available anymore.
+  [thet]
+
 - Add ``item_stock_warning_threshold``, like in ``bda.plone.shop.at.SharedStockExtender``.
   Refs: https://github.com/bluedynamics/bda.plone.shop/pull/63 
   [thet]
