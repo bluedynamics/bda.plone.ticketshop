@@ -4,6 +4,10 @@ Changelog
 1.0 (unreleased)
 ----------------
 
+- Add a custom ``Title`` indexer for Ticket types.
+  It contains more context information from thet ``ticket_title_generator``: Event title, ticket title and event start and end dates.
+  [thet]
+
 - Make the ``ticket_title_generator`` more robust against cases, where a corresponding event occurrence of a ticket occurence isn't available anymore.
   [thet]
 
