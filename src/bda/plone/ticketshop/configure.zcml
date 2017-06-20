@@ -18,6 +18,8 @@
   <include zcml:condition="installed Products.ATContentTypes" package=".at" />
   <include zcml:condition="installed plone.dexterity" package=".dx" />
 
+  <adapter name="Title" factory=".indexer.ticket_title_indexer" />
+
   <subscriber handler=".subscribers.ticket_wf_changed" />
 
   <adapter factory=".common.EventTickets" />
